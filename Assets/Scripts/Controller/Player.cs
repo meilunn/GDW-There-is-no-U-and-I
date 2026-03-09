@@ -20,7 +20,17 @@ public class Player : MonoBehaviour
     private float gravityValue = -9.81f;
     [SerializeField]
     private float mass = 5.0f;
-
+    
+    
+    [Header ("Interaction")]
+    
+    [SerializeField]
+    private float interactionRange = 2.0f;
+    [SerializeField]
+    private LayerMask traceAgainst;
+    
+    Interactable currentInteractable;
+    
     private Vector3 velocity;
 
     private CharacterController controller;
@@ -29,7 +39,7 @@ public class Player : MonoBehaviour
 
     private PlayerInput playerInput;
 
-    private InputAction movementAction, rotateAction;
+    private InputAction movementAction, rotateAction, interactAction;
 
 
      void Awake() {
@@ -38,11 +48,13 @@ public class Player : MonoBehaviour
         controller = gameObject.GetComponent<CharacterController>();
         movementAction =  playerInput.actions["Move"];
         rotateAction = playerInput.actions["Look"];
+        interactAction = playerInput.actions["Interact"];
     }
 
     private void OnEnable() {
         movementAction.Enable();
         rotateAction.Enable();
+        interactAction.canceled += Interact;
     }
 
 
@@ -50,17 +62,15 @@ public class Player : MonoBehaviour
     private void OnDisable() {
         rotateAction.Disable();
         movementAction.Disable();
- 
+        interactAction.canceled -= Interact;
     }
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         cameraMain = Camera.main.transform;
     }
-
-
+    
     
     private void Move() {
         if (controller.isGrounded && velocity.y < 0)
@@ -74,7 +84,48 @@ public class Player : MonoBehaviour
         controller.Move((move + velocity) * Time.deltaTime * playerSpeed );
     }
 
-   
+    private void Update()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(cameraMain.position, cameraMain.forward, out hit, interactionRange, traceAgainst)) {
+            Collider coll = hit.collider;
+            Interactable newInteractable = coll.GetComponent<Interactable>();
+            if (newInteractable != null) 
+            {
+               ExchangeInteractable(newInteractable);
+            }
+            else 
+            {
+                DisableCurrentInteractable();
+            }
+        }
+        else {
+            DisableCurrentInteractable();
+        }
+    }
+
+    private void DisableCurrentInteractable()
+    {
+        currentInteractable?.TurnInteractable(false);
+        currentInteractable = null;
+    }
+    private void ExchangeInteractable(Interactable newInteractable)
+    {
+        if (currentInteractable != null)
+        {
+            if (currentInteractable != newInteractable) 
+            {
+                currentInteractable.TurnInteractable(false);
+                newInteractable.TurnInteractable(true);
+                currentInteractable = newInteractable;
+            }
+        }
+        else
+        {
+            newInteractable.TurnInteractable(true);
+            currentInteractable = newInteractable;
+        }
+    }
     void FixedUpdate()
     {
         UpdateGravity();
@@ -84,5 +135,9 @@ public class Player : MonoBehaviour
     void UpdateGravity() {
         var gravity = Physics.gravity * mass * Time.deltaTime;
         velocity.y =  controller.isGrounded ? -1f : gravity.y;
+    }
+    
+    private void Interact (InputAction.CallbackContext context)  {
+        currentInteractable?.Interact();
     }
 }
