@@ -4,8 +4,40 @@ using UnityEngine;
 public class MovableInteractable : Interactable
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     public override void Interact()
     {
-        Debug.Log("Interacted");
+        if (Player.Instance.ItemInHand == null)
+        {
+            //to be ignored by interaction
+            gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+            Transform hand = Player.Instance.PlayerHand;
+            Place(hand);
+            Player.Instance.ItemInHand = this;
+        }
+    }
+
+    public void PlaceInWorld(Transform parent)
+    {
+        if (Player.Instance.ItemInHand != this) return;
+        Place(parent);
+        gameObject.layer = LayerMask.NameToLayer("Default");
+        Player.Instance.ItemInHand = null;
+    }
+
+    private void Place(Transform parent)
+    {
+        gameObject.transform.parent = parent;
+        gameObject.transform.localPosition = Vector3.zero;
+        gameObject.transform.localRotation = Quaternion.identity;
+    }
+    [Flags]
+    public enum MovableType
+    {
+        None = 0,
+        Small = 1,
+        Medium = 2,
+        Cup = 4,
+        ToiletPaper = 8
     }
 }

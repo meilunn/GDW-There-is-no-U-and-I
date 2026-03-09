@@ -4,20 +4,24 @@ public abstract class Interactable : MonoBehaviour
 {
     public abstract void Interact();
     
-    Outline _outline;
+    [SerializeField]
+    private Outline outline;
     
     
     void Start()
     {
-        _outline = GetComponent<Outline>();
+        if (outline == null)
+        {
+            outline = GetComponent<Outline>();
+        }
         TurnInteractable(false);
     }
 
     public void TurnInteractable(bool toActive)
     {
-        if (_outline)
+        if (outline)
         {
-            _outline.enabled = toActive;
+            outline.enabled = toActive;
         }
         //todo: optionally dis/enable hints or so
     }
