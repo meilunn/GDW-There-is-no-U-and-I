@@ -2,11 +2,10 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
-    public abstract void Interact();
+    public abstract bool Interact();
     
     [SerializeField]
     private Outline outline;
-    
     
     void Start()
     {
@@ -15,8 +14,10 @@ public abstract class Interactable : MonoBehaviour
             outline = GetComponent<Outline>();
         }
         TurnInteractable(false);
+        OnStart();
     }
-
+    
+    protected virtual void OnStart() {}
     public void TurnInteractable(bool toActive)
     {
         if (outline)
