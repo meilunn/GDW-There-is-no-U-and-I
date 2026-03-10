@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 820361633767600656}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.494, y: 0.051, z: 0.381}
+  m_LocalPosition: {x: 0.901, y: 0.051, z: 0.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 1530488778611628009}
   - component: {fileID: 3745120299910329883}
   - component: {fileID: 223584345701906962}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,10 +223,10 @@ MonoBehaviour:
   maxPitch: 75
   gravityValue: -9.81
   mass: 5
-  interactionRange: 2
+  interactionRange: 10
   traceAgainst:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   ItemInHand: {fileID: 0}
   PlayerHand: {fileID: 6325919678839977536}
 --- !u!1 &1473198352589036277
@@ -445,7 +445,6 @@ GameObject:
   - component: {fileID: 4909693272171789684}
   - component: {fileID: 6063003016074021309}
   - component: {fileID: 6656343298700478779}
-  - component: {fileID: 5065600443572609686}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -494,7 +493,7 @@ MonoBehaviour:
   Lens:
     FieldOfView: 60.668266
     OrthographicSize: 5
-    NearClipPlane: 0.3
+    NearClipPlane: 0.1
     FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
@@ -537,25 +536,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineRotateWithFollowTarget
   Damping: 0
---- !u!114 &5065600443572609686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4101866648967778500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89875cdc57c54474a8a74efd9b2a3b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineInputAxisController
-  ScanRecursively: 1
-  SuppressInputWhileBlending: 1
-  IgnoreTimeScale: 0
-  m_ControllerManager:
-    Controllers: []
-  PlayerIndex: -1
-  AutoEnableInputs: 1
 --- !u!1 &6811498786707112526
 GameObject:
   m_ObjectHideFlags: 0
