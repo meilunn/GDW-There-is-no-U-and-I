@@ -50,10 +50,12 @@ MonoBehaviour:
   dialoguePanel: {fileID: 0}
   speakerLabel: {fileID: 0}
   speakerImage: {fileID: 0}
-  Barks: []
-  StandUpDialogues: []
-  EnemyDialogues: []
-  StoryDialogues: []
+  standUpDialogues:
+  - {fileID: 11400000, guid: bdc6c0a55d93e764bb6b7e2a1edac084, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  enemyDialogues: []
+  storyDialogues: []
   typeWriterEffect: 0
   timeBetweenLetters: 0.05
 --- !u!82 &5871702258148957074

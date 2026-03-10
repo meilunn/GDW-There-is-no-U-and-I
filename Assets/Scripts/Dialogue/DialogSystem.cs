@@ -4,7 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+
+public enum Character
+{
+    Unassigned,
+    Main,
+    Enemy,
+    Peter,
+    John,
+    Susy,
+    Beatrice
+}
 
 
 public class DialogueSystem : MonoBehaviour
@@ -25,11 +37,11 @@ public class DialogueSystem : MonoBehaviour
 
     
 
-    [FormerlySerializedAs("StandUpDialogues")]
+    
     [Header("Dialogues")]
     [SerializeField] private List<Dialogue> standUpDialogues;
-    [FormerlySerializedAs("EnemyDialogues")] [SerializeField] private List<Dialogue> enemyDialogues;
-    [FormerlySerializedAs("StoryDialogues")] [SerializeField] private List<Dialogue> storyDialogues;
+    [SerializeField] private List<Dialogue> enemyDialogues;
+    [SerializeField] private List<Dialogue> storyDialogues;
     /* Play only once + save (not necessary)
     private bool[] storyDialoguePlayed;
     private bool[] tutorialDialoguePlayed;
@@ -43,7 +55,7 @@ public class DialogueSystem : MonoBehaviour
     private Queue<DialogueLine> dialogueQueue; // Queue of dialogue lines with speakers
     private string currentLine = "";
     private bool isTyping = false;
-    [SerializeField]private bool typeWriterEffect = false;
+    [SerializeField] private bool typeWriterEffect = false;
     [SerializeField] private float timeBetweenLetters = 0.5f;
     
     private void Awake()
@@ -64,8 +76,21 @@ public class DialogueSystem : MonoBehaviour
         
         //LoadProgress();
     }
-
     
+    //Test
+    private void Start()
+    {
+        StartDialogue(0,DialogueType.StandUp);
+    }
+    private void Update()
+    {
+        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            DisplayNextLine();
+        }
+    }
+
+
     public void StartDialogue(int index, DialogueType dialogueType)
     {
         List<Dialogue> dialogues = null;
@@ -130,10 +155,11 @@ public class DialogueSystem : MonoBehaviour
     private void DisplayNextLine()
     {
         if (isTyping)
-        {
+        { 
             // Skip typing animation
             StopAllCoroutines();
             dialogueText.text = currentLine;
+            dialogueText.maxVisibleCharacters = int.MaxValue;
             isTyping = false;
             return;
         }
@@ -147,11 +173,10 @@ public class DialogueSystem : MonoBehaviour
         DialogueLine currentDialogue = dialogueQueue.Dequeue();
         currentLine = currentDialogue.dialogueText;
 
-        // Update UI elements
-        if (currentDialogue.speaker != null)
+        if (currentDialogue.character != Character.Unassigned)
         {
-            speakerLabel.text = Enum.GetName(typeof(SpeakerName),currentDialogue.speaker.speakerName);
-            speakerImage.sprite = currentDialogue.speaker.speakerImage;
+            speakerLabel.text = Enum.GetName(typeof(Character), currentDialogue.character);
+            //speakerImage.sprite = currentDialogue.speaker.speakerImage;
         }
         else
         {
@@ -159,7 +184,6 @@ public class DialogueSystem : MonoBehaviour
             speakerImage.sprite = null;
         }
 
-        // Play audio
         audioSource.Stop();
         if (currentDialogue.voiceClip != null)
         {
@@ -169,23 +193,29 @@ public class DialogueSystem : MonoBehaviour
         
         if(typeWriterEffect){
             // Start text typing coroutine
-            StartCoroutine(TypeLine(currentLine));
+                StartCoroutine(TypeLine(currentLine));
         }
         else
         {
             dialogueText.text = currentLine;
+            dialogueText.maxVisibleCharacters = int.MaxValue;
         }
     }
 
     private IEnumerator TypeLine(string line)
     {
         isTyping = true;
-        dialogueText.text = "";
 
-        foreach (var letter in line.ToCharArray())
+        dialogueText.text = line;
+        dialogueText.ForceMeshUpdate();
+
+        int totalVisibleCharacters = dialogueText.textInfo.characterCount;
+        dialogueText.maxVisibleCharacters = 0;
+
+        for (int i = 1; i <= totalVisibleCharacters; i++)
         {
-            dialogueText.text += letter;
-            yield return new WaitForSecondsRealtime(timeBetweenLetters); 
+            dialogueText.maxVisibleCharacters = i;
+            yield return new WaitForSecondsRealtime(timeBetweenLetters);
         }
 
         isTyping = false;
@@ -199,15 +229,6 @@ public class DialogueSystem : MonoBehaviour
 
     /*
     #region Save & Load
-   
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DisplayNextLine();
-        }
-    }
-
     public void SaveProgress()
     {
         SaveBoolArray(StoryKey, storyDialoguePlayed);

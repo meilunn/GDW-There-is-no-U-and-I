@@ -178,6 +178,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -351,11 +352,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "ARRRGH ... Zeus du hast einen kleinen Schwanz. Ich w\xFCrds wohl wissen,
-    ich hab deine Windeln gewechselt!"
+  m_text: WHAT THE HELL ARE YOU DOING????!!
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e740f35a5d2474bdcbcf509dad0cec87, type: 2}
-  m_sharedMaterial: {fileID: 1169448311351811210, guid: e740f35a5d2474bdcbcf509dad0cec87, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -390,6 +390,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -604,10 +605,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gaea
+  m_text: Peter
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 11cf081dbce2e411d887638a4dc3197a, type: 2}
-  m_sharedMaterial: {fileID: -5732118039486731350, guid: 11cf081dbce2e411d887638a4dc3197a, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -642,6 +643,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
