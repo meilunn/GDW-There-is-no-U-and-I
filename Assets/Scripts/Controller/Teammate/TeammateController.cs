@@ -65,6 +65,8 @@ public class TeammateController : MonoBehaviour
         
         curTeammateState = initialTeammateState;
         walkSpeed = baseWalkSpeed;
+
+        GoToDestination(Place.Workplace);
     }
 
     private void Update()
@@ -90,7 +92,7 @@ public class TeammateController : MonoBehaviour
 
                 // else
                 Debug.Log($"Arrived at {curDestination}");
-                
+
                 switch (curDestination)
                 {
                     case Place.Workplace: 
@@ -101,10 +103,7 @@ public class TeammateController : MonoBehaviour
                 }
 
                 break;
-        }
-
-
-        
+        } 
     }
 
     public float GetWalkSpeed()
@@ -113,7 +112,7 @@ public class TeammateController : MonoBehaviour
         return walkSpeed;
     }
 
-    public void GoingToDestination(Place place)
+    public void GoToDestination(Place place)
     {
         curTeammateState = TeammateState.GoingToDestination;
 
