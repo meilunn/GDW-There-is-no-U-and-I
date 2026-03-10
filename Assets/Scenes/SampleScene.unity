@@ -3430,7 +3430,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 102796231030777019, guid: 17c1340f7f5917444bf0b57ff56b72bb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.07
+      value: -1.29
       objectReference: {fileID: 0}
     - target: {fileID: 102796231030777019, guid: 17c1340f7f5917444bf0b57ff56b72bb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3438,7 +3438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 102796231030777019, guid: 17c1340f7f5917444bf0b57ff56b72bb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.19
+      value: 6.87
       objectReference: {fileID: 0}
     - target: {fileID: 102796231030777019, guid: 17c1340f7f5917444bf0b57ff56b72bb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4016,6 +4016,7 @@ MonoBehaviour:
   baseWalkSpeed: 3
   walkSpeedDrowsinessScale: 0
   walkSpeedBladderScale: 0
+  curDestination: 0
   workplace: {fileID: 1177701488}
   toilet: {fileID: 0}
   teammateStateText: {fileID: 605183217}
@@ -4132,7 +4133,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 102796231030777019, guid: 17c1340f7f5917444bf0b57ff56b72bb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.12
+      value: -5.44
       objectReference: {fileID: 0}
     - target: {fileID: 102796231030777019, guid: 17c1340f7f5917444bf0b57ff56b72bb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4140,7 +4141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 102796231030777019, guid: 17c1340f7f5917444bf0b57ff56b72bb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.4
+      value: 5.91
       objectReference: {fileID: 0}
     - target: {fileID: 102796231030777019, guid: 17c1340f7f5917444bf0b57ff56b72bb, type: 3}
       propertyPath: m_LocalRotation.w
