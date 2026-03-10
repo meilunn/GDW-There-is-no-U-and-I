@@ -170,8 +170,14 @@ public class Player : MonoBehaviour
         velocity.y =  controller.isGrounded ? -1f : gravity.y;
     }
     
-    private void Interact (InputAction.CallbackContext context)  {
-        currentInteractable?.Interact();
+    private void Interact (InputAction.CallbackContext context)
+    {
+        if (!currentInteractable) return;
+        Interactable[] allInteractables = currentInteractable.gameObject.GetComponents<Interactable>();
+        foreach (Interactable i in allInteractables)
+        {
+            if (i.Interact()) break;
+        }
     }
     
 }
