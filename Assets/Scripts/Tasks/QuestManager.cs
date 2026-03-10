@@ -1,14 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// should be replaced by ai agents lateron
-public enum TempAgent {
-	None,
-	Agent1,
-	Agent2,
-	Agent3
-}
-
 public class QuestManager : MonoBehaviour {
 	private readonly List<Quest> quests = new();
 
@@ -17,7 +9,7 @@ public class QuestManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="objectiveId"><see cref="ObjectiveId"/> of the completed <see cref="Objective"/>. </param>
 	/// <returns>true if an active objective was found and completed, false otherwise.</returns>
-	public bool CompleteObjective(ObjectiveId objectiveId, TempAgent owner) {
+	public bool CompleteObjective(ObjectiveId objectiveId, TeammateController owner) {
 		foreach (var quest in quests) {
 			if(!quest.IsActive) continue;
 			if(quest.CurrentObjective.id != objectiveId) continue;
@@ -40,7 +32,7 @@ public class QuestManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="questId"></param>
 	/// <param name="owner"></param>
-	public void AddQuest(QuestId questId, TempAgent owner) {
+	public void AddQuest(QuestId questId, TeammateController owner) {
 		if(quests.Exists(q => q.id == questId && q.owner == owner)) return;
 
 		var quest = Instantiate(Resources.Load<Quest>($"Quests/{questId}"));
@@ -66,7 +58,7 @@ public class QuestManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="questId"></param>
 	/// <param name="owner"></param>
-	public void CreateAndStartQuest(QuestId questId, TempAgent owner) {
+	public void CreateAndStartQuest(QuestId questId, TeammateController owner) {
 		AddQuest(questId, owner);
 		StartQuest(questId);
 	}

@@ -15,7 +15,7 @@ public enum QuestState {
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Quest")]
 public class Quest : ScriptableObject {
 	public QuestId id;
-	[NonSerialized] public TempAgent owner;
+	[NonSerialized] public TeammateController owner;
 
 	public int availableAsOfDay;
 	[SerializeField]
