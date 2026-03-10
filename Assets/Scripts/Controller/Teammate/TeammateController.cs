@@ -70,11 +70,12 @@ public class TeammateController : MonoBehaviour
     private void Update()
     {
         teammateStateText.text = $"Teammate state: {curTeammateState}";
-        // for testing: start patrol after 5 secs of working
+
         switch (curTeammateState)
         {
             case TeammateState.AtTable: 
-                time += Time.deltaTime;
+                // for testing: start patrol after 5 secs of working
+                time += Time.deltaTime;  // TODO: randomise going to patrol
 
                 if (time >= 5f)
                 {
@@ -88,6 +89,8 @@ public class TeammateController : MonoBehaviour
                 if (agent.remainingDistance > 0.1f) break; 
 
                 // else
+                Debug.Log($"Arrived at {curDestination}");
+                
                 switch (curDestination)
                 {
                     case Place.Workplace: 
@@ -110,16 +113,29 @@ public class TeammateController : MonoBehaviour
         return walkSpeed;
     }
 
-    public void GoToWorkplace()
+    public void GoingToDestination(Place place)
     {
-        Debug.Log("Returning to workplace");
-
         curTeammateState = TeammateState.GoingToDestination;
 
         agent.speed = GetWalkSpeed();
-        agent.SetDestination(workplace.transform.position);
 
-        curDestination = Place.Workplace;
+        curDestination = place;
+
+        switch(place)
+        {
+            case Place.Workplace: 
+                Debug.Log("Returning to workplace");
+
+                agent.SetDestination(workplace.transform.position);
+                break; 
+            
+            case Place.Toilet: 
+                Debug.Log("Returning to workplace");
+
+                agent.SetDestination(toilet.transform.position);
+                break; 
+        }
+        
     }
 
     // Draw places

@@ -65,7 +65,7 @@ public class PatrolController : MonoBehaviour
         index = -1;
         lastDest = false;
 
-        teammateController.GoToWorkplace();
+        teammateController.GoingToDestination(TeammateController.Place.Workplace);
     }
 
 
