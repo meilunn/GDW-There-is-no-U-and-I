@@ -18,7 +18,7 @@ public class Quest : ScriptableObject {
 
 	public int availableAsOfDay;
 	[SerializeField]
-	private float progressOnComplete;
+	private float progressOnComplete = 0f;
 	public string title;
 	public string description;
 
@@ -49,6 +49,6 @@ public class Quest : ScriptableObject {
 
 	private void OnComplete() {
 		State = QuestState.Completed;
-		GameManager.instance.progressMeter += progressOnComplete;
+		GameManager.instance.AddProgress(progressOnComplete);
 	}
 }
