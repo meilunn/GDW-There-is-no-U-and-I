@@ -5,6 +5,10 @@ public class MovableInteractable : Interactable
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     
+    public event Action OnItemPlaced;
+    public event Action OnItemTaken;
+    
+    public Type type;
     public override void Interact()
     {
         if (Player.Instance.ItemInHand == null)
@@ -14,6 +18,7 @@ public class MovableInteractable : Interactable
             Transform hand = Player.Instance.PlayerHand;
             Place(hand);
             Player.Instance.ItemInHand = this;
+            OnItemTaken?.Invoke();
         }
     }
 
@@ -23,21 +28,22 @@ public class MovableInteractable : Interactable
         Place(parent);
         gameObject.layer = LayerMask.NameToLayer("Default");
         Player.Instance.ItemInHand = null;
+        OnItemPlaced?.Invoke();
     }
 
-    private void Place(Transform parent)
+    public void Place(Transform parent)
     {
         gameObject.transform.parent = parent;
         gameObject.transform.localPosition = Vector3.zero;
         gameObject.transform.localRotation = Quaternion.identity;
     }
     [Flags]
-    public enum MovableType
+    public enum Type
     {
         None = 0,
-        Small = 1,
-        Medium = 2,
-        Cup = 4,
-        ToiletPaper = 8
+        Small = 1 << 0,
+        Medium = 1 << 1,
+        Cup = 1 << 2,
+        ToiletPaper = 1 << 3
     }
 }

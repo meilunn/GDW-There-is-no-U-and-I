@@ -2,14 +2,27 @@ using UnityEngine;
 
 public class PlaceInteractable : Interactable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public Transform itemPosition;
+
+    private PlaceSlot[] slots;
+    void Awake()
+    {
+        slots = GetComponentsInChildren<PlaceSlot>();
+    }
     public override void Interact()
     {
-        if (Player.Instance.ItemInHand != null)
+        MovableInteractable item = Player.Instance.ItemInHand;
+        if (item != null)
         {
-            Player.Instance.ItemInHand.PlaceInWorld(itemPosition);
+            foreach (PlaceSlot slot in slots)
+            {
+                if (slot.CanPlace(item))
+                {
+                    slot.PlaceItem(item);
+                    break;
+                }
+            }
         }
     }
 }
