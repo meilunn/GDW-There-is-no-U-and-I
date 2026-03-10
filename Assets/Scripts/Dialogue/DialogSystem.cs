@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.Events;
 
 public enum Character
 {
@@ -27,7 +28,8 @@ public class DialogueSystem : MonoBehaviour
         StandUp,
         Story
     }
-    
+
+
     public static DialogueSystem Instance { get; private set; } // Singleton instance
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private TMP_Text dialogueText; // UI Text component for displaying dialogue
@@ -35,9 +37,11 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private TMP_Text speakerLabel;
     [SerializeField] private Image speakerImage;
 
-    
+    [Header("Events")]
+    public UnityEvent OnDialogueStart;
+    public UnityEvent OnDialogueEnd;
+    public UnityEvent OnNewLine;
 
-    
     [Header("Dialogues")]
     [SerializeField] private List<Dialogue> standUpDialogues;
     [SerializeField] private List<Dialogue> enemyDialogues;
@@ -46,18 +50,18 @@ public class DialogueSystem : MonoBehaviour
     private bool[] storyDialoguePlayed;
     private bool[] tutorialDialoguePlayed;
     private bool[] towerDialoguePlayed;
-    
+
     private const string StoryKey = "StoryDialoguePlayed";
     private const string TutorialKey = "TutorialDialoguePlayed";
     private const string TowerKey = "TowerDialoguePlayed";
     */
-    
+
     private Queue<DialogueLine> dialogueQueue; // Queue of dialogue lines with speakers
     private string currentLine = "";
     private bool isTyping = false;
     [SerializeField] private bool typeWriterEffect = false;
     [SerializeField] private float timeBetweenLetters = 0.5f;
-    
+
     private void Awake()
     {
         // Singleton setup
@@ -73,10 +77,10 @@ public class DialogueSystem : MonoBehaviour
 
         dialogueQueue = new Queue<DialogueLine>();
         dialoguePanel.SetActive(false);
-        
+
         //LoadProgress();
     }
-    
+
     //Test
     private void Start()
     {
@@ -91,25 +95,25 @@ public class DialogueSystem : MonoBehaviour
     }
 
 
-    public void StartDialogue(int index, DialogueType dialogueType)
+    public void StartDialogue(int index, DialogueType type)
     {
         List<Dialogue> dialogues = null;
         //bool[] dialoguePlayed = null;
-        switch (dialogueType)
+        switch (type)
         {
             case DialogueType.StandUp:
                 dialogues = standUpDialogues;
                 //dialoguePlayed = tutorialDialoguePlayed;
                 break;
             case DialogueType.Enemy:
-                dialogues = standUpDialogues;
+                dialogues = enemyDialogues;
                 //dialoguePlayed = tutorialDialoguePlayed;
                 break;
             case  DialogueType.Story:
                 dialogues = storyDialogues;
                 break;
         }
-        
+
         // Ensure Dialogues is valid before proceeding
         //if (dialogues == null || dialoguePlayed == null)
         if(dialogues == null)
@@ -129,7 +133,7 @@ public class DialogueSystem : MonoBehaviour
         //if (!dialoguePlayed[index])
         //{
         StartDialogue(dialogues[index]);
-        
+
         //dialoguePlayed[index] = true;
         //}
     }
@@ -145,17 +149,18 @@ public class DialogueSystem : MonoBehaviour
         {
             dialogueQueue.Enqueue(line);
         }
-        
+
         
         
         dialoguePanel.SetActive(true);
+        OnDialogueStart?.Invoke();
         DisplayNextLine();
     }
 
     private void DisplayNextLine()
     {
         if (isTyping)
-        { 
+        {
             // Skip typing animation
             StopAllCoroutines();
             dialogueText.text = currentLine;
@@ -190,10 +195,12 @@ public class DialogueSystem : MonoBehaviour
             audioSource.clip = currentDialogue.voiceClip;
             audioSource.Play();
         }
-        
+
+        OnNewLine?.Invoke();
+
         if(typeWriterEffect){
             // Start text typing coroutine
-                StartCoroutine(TypeLine(currentLine));
+            StartCoroutine(TypeLine(currentLine));
         }
         else
         {
@@ -224,6 +231,7 @@ public class DialogueSystem : MonoBehaviour
     private void EndDialogue()
     {
         dialoguePanel.SetActive(false);
+        OnDialogueEnd?.Invoke();
         //gameManager.InvokeResumeGame(); Start Game
     }
 
@@ -255,7 +263,7 @@ public class DialogueSystem : MonoBehaviour
             storyDialoguePlayed = LoadBoolArray(StoryKey, storyDialogues.Count);
             tutorialDialoguePlayed = LoadBoolArray(TutorialKey, tutorialDialogue.Count);
             towerDialoguePlayed = LoadBoolArray(TowerKey, towerDialogue.Count);
-            
+
             Debug.Log("playDialogues = false - Loading dialogue progress from PlayerPrefs.");
         }
     }

@@ -3,15 +3,19 @@ using UnityEngine;
 
 public class MovableInteractable : Interactable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    
     public event Action OnItemPlaced;
     public event Action OnItemTaken;
     
     public Type type;
-    public override void Interact()
+
+    public bool isEdible => GetComponent<Edible>() != null;
+    public bool isSuspicious;
+    
+    
+    public override bool Interact()
     {
-        if (Player.Instance.ItemInHand == null)
+        MovableInteractable itemInHand = Player.Instance.ItemInHand;
+        if (itemInHand == null)
         {
             //to be ignored by interaction
             gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
@@ -19,9 +23,30 @@ public class MovableInteractable : Interactable
             Place(hand);
             Player.Instance.ItemInHand = this;
             OnItemTaken?.Invoke();
+            return true;
         }
+        
+        else if (isEdible && itemInHand.TryGetComponent<Medicine>(out Medicine medicine))
+        {
+            GetComponent<Edible>().AddIngredient(medicine.medicineData);
+            Player.Instance.ItemInHand = null;
+            Destroy(itemInHand.gameObject);
+            return true;
+        }
+        return false;
     }
-
+    
+    //e.g. for coffee machine
+    public void MakeEdible(EdibleData baseIngredient)
+    {
+        if (baseIngredient == null)
+        {
+            Debug.LogError("Making edible requires base Ingredient");
+            return;
+        }
+        var edible = gameObject.AddComponent<Edible>();
+        edible.baseIngredient = baseIngredient;
+    }
     public void PlaceInWorld(Transform parent)
     {
         if (Player.Instance.ItemInHand != this) return;
@@ -41,9 +66,16 @@ public class MovableInteractable : Interactable
     public enum Type
     {
         None = 0,
+        //Sizes to place
         Small = 1 << 0,
         Medium = 1 << 1,
-        Cup = 1 << 2,
-        ToiletPaper = 1 << 3
+        Big = 1 << 2,
+        //Cup is not edible, but can be make edible 
+        Cup = 1 << 3,
+        ToiletPaper = 1 << 4,
+        //Plates can have food in them (both Movable & Place Interactables)
+        Plate =  1 << 5,
+        EnergyDrink =  1 << 6,
+        USB = 1 << 7
     }
 }

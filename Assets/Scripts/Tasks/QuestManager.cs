@@ -3,6 +3,7 @@ using UnityEngine;
 
 // should be replaced by ai agents lateron
 public enum TempAgent {
+	None,
 	Agent1,
 	Agent2,
 	Agent3

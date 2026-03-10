@@ -37,6 +37,9 @@ public class PlaceSlot: MonoBehaviour
         item = null;
         isTaken = false;
     }
-    
-    //todo: AI checks whether there is an item of typeB in placeSlots
+
+    public void TakeItem(MovableInteractable itemToTake)
+    {
+        if (itemToTake == item) TakeItem();
+    }
 }
