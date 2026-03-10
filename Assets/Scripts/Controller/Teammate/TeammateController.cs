@@ -71,6 +71,9 @@ public class TeammateController : MonoBehaviour
 
     private void Update()
     {
+        //TODO: drowsiness & bladder const increase -> if reached max
+
+        
         teammateStateText.text = $"Teammate state: {curTeammateState}";
 
         switch (curTeammateState)
