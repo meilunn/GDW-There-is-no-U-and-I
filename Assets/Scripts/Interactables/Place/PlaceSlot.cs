@@ -17,14 +17,14 @@ public class PlaceSlot: MonoBehaviour
     }
     public bool CanPlace(MovableInteractable newItem)
     {
-        if (isTaken)
-            return false;
+        if (isTaken || newItem == null) return false;
 
         return (itemsAllowed & newItem.type) != 0;
     }
     
     public void PlaceItem(MovableInteractable newItem)
     {
+        if (newItem == null || item != null) return;
         isTaken = true;
         item = newItem;
         item.OnItemTaken += TakeItem;
