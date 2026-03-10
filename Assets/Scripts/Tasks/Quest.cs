@@ -12,6 +12,7 @@ public enum QuestState {
 	Completed
 }
 
+[CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Quest")]
 public class Quest : ScriptableObject {
 	public QuestId id;
 	[NonSerialized] public TempAgent owner;
@@ -19,8 +20,11 @@ public class Quest : ScriptableObject {
 	public int availableAsOfDay;
 	[SerializeField]
 	private float progressOnComplete = 0f;
+	[Tooltip("The quest's title displayed on the whiteboard and in the UI.")]
 	public string title;
 	public string description;
+	[Tooltip("Indicates whether this quest is a quest given to the player by their team during the standup meeting in the morning.")]
+	public bool isJobQuest;
 
 	public Objective[] objectives;
 	public QuestState State { get; private set; } = QuestState.NotStarted;
