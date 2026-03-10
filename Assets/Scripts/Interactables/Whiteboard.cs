@@ -11,8 +11,8 @@ public class Whiteboard : Interactable {
 		playerQuests = transform.Find("Canvas/PlayerTasks").GetComponent<TMP_Text>();
 	}
 
-	public override void Interact() {
-		// TODO: Implement whiteboard clean task
+	public override bool Interact() {
+		return false;
 	}
 
 	public void UpdateTeamTasks(List<ProjectTodoItem> teamTodos) {
