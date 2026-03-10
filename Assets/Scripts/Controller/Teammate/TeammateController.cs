@@ -1,6 +1,5 @@
 using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,7 +9,7 @@ public class TeammateController : MonoBehaviour
 {
     public enum TeammateState
     {
-        AtTable,
+        AtWorkplace,
         Sleeping,
         Shitting,
         Patrolling,
@@ -18,14 +17,17 @@ public class TeammateController : MonoBehaviour
     }
 
     [Header("States")]
-    public TeammateState initialTeammateState = TeammateState.AtTable;
+    public TeammateState initialTeammateState = TeammateState.AtWorkplace;
     public TeammateState curTeammateState;
 
     [Header("Stats")]
     public float drowsiness = 0f;
-    public float drowsinessIncrease;  // const increase, should be npc dependant
+    public float drowsinessIncrease;  // const increase per sec, should be npc dependant
+    public float drowsinessDecrease;  // when napping
     public float bladder = 0f;
     public float bladderIncrease;
+    public float hunger = 0f;
+    public float hungerIncrease;
 
     [Header("Walking")]
     public float baseWalkSpeed;
@@ -38,17 +40,17 @@ public class TeammateController : MonoBehaviour
     [Space(10)]
     public GameObject workplace;
     public GameObject toilet;
+    public GameObject exit;
 
     public enum Place
     {
         None,
         Workplace, 
-        Toilet
-        // TODO: 
+        Toilet,
+        Exit
     }
 
     public TMP_Text teammateStateText;
-
 
     private float time = 0f;
 
@@ -71,14 +73,29 @@ public class TeammateController : MonoBehaviour
 
     private void Update()
     {
-        //TODO: drowsiness & bladder const increase -> if reached max
-
+        drowsiness += drowsinessIncrease * Time.deltaTime;
+        bladder += bladderIncrease * Time.deltaTime;
+        hunger += hungerIncrease * Time.deltaTime;
         
         teammateStateText.text = $"Teammate state: {curTeammateState}";
 
+        if (drowsiness >= 100 && curTeammateState != TeammateState.Sleeping)
+            if (curTeammateState != TeammateState.AtWorkplace)
+                GoToDestination(Place.Workplace);
+        else if (bladder >= 100 && curTeammateState != TeammateState.Shitting)
+            GoToDestination(Place.Toilet);
+            
+
         switch (curTeammateState)
         {
-            case TeammateState.AtTable: 
+            case TeammateState.AtWorkplace: 
+                if (drowsiness >= 100)
+                {
+                    curTeammateState = TeammateState.Sleeping;
+
+                    break;
+                }
+
                 // for testing: start patrol after 5 secs of working
                 time += Time.deltaTime;  // TODO: randomise going to patrol
 
@@ -99,11 +116,30 @@ public class TeammateController : MonoBehaviour
                 switch (curDestination)
                 {
                     case Place.Workplace: 
-                        curTeammateState = TeammateState.AtTable;
+                        curTeammateState = TeammateState.AtWorkplace;
                         curDestination = Place.None;
+
                         break;
-                    // TODO: 
+                    case Place.Toilet: 
+                        CheckToiletPaper();
+
+                        break;
+                    case Place.Exit: 
+                        
+
+                        break;
                 }
+
+                break;
+
+            case TeammateState.Sleeping: 
+                if (drowsiness <= 0)  // wake up
+                {
+                    curTeammateState = TeammateState.AtWorkplace;
+                    break;
+                }
+
+                drowsiness -= drowsinessDecrease * Time.deltaTime;
 
                 break;
         } 
@@ -126,18 +162,29 @@ public class TeammateController : MonoBehaviour
         switch(place)
         {
             case Place.Workplace: 
-                Debug.Log("Returning to workplace");
+                Debug.Log("Going to workplace");
 
                 agent.SetDestination(workplace.transform.position);
                 break; 
             
             case Place.Toilet: 
-                Debug.Log("Returning to workplace");
+                Debug.Log("Going to toilet");
 
                 agent.SetDestination(toilet.transform.position);
+                break;
+
+            case Place.Exit: 
+                Debug.Log("Going to Exit");
+
+                agent.SetDestination(exit.transform.position);
                 break; 
-        }
-        
+        }        
+    }
+    
+    private void CheckToiletPaper()
+    {
+        // TODO: 
+        throw new NotImplementedException();
     }
 
     // Draw places
