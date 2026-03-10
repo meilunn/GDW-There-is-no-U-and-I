@@ -1,11 +1,11 @@
-using UnityEditor;
+using UnityEngine;
 
 public enum ObjectiveId {
 
 }
 
-public class Objective : SerializedObject {
-	public Objective(UnityEngine.Object obj) : base(obj) { }
+[CreateAssetMenu(fileName = "New Objective", menuName = "Quests/Objective")]
+public class Objective : ScriptableObject {
 
 	public ObjectiveId id;
 	public string description;
