@@ -27,10 +27,18 @@ public class QuestManager : MonoBehaviour {
 		return false;
 	}
 
+	/// <summary>
+	/// Clears all quests from the quest manager.
+	/// </summary>
 	public void ClearQuests() {
 		quests.Clear();
 	}
 
+	/// <summary>
+	/// Adds a quest with the given id and owner to the quest manager. If a quest with the same id and owner already exists, it will not be added again.
+	/// </summary>
+	/// <param name="questId"></param>
+	/// <param name="owner"></param>
 	public void AddQuest(QuestId questId, TempAgent owner) {
 		if(quests.Exists(q => q.id == questId && q.owner == owner)) return;
 
@@ -52,6 +60,11 @@ public class QuestManager : MonoBehaviour {
 		quest.Start();
 	}
 
+	/// <summary>
+	/// Starts a quest with the given id and owner, even if it doesn't exist yet.
+	/// </summary>
+	/// <param name="questId"></param>
+	/// <param name="owner"></param>
 	public void CreateAndStartQuest(QuestId questId, TempAgent owner) {
 		AddQuest(questId, owner);
 		StartQuest(questId);
