@@ -4412,6 +4412,8 @@ MonoBehaviour:
   bladderText: {fileID: 1480537002}
   hungerText: {fileID: 1267916127}
   curDestText: {fileID: 1543510719}
+  makeProgressInterval: 15
+  baseWorkEfficiency: 1
   player: {fileID: 0}
 --- !u!1 &1350832341
 GameObject:

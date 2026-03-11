@@ -110,19 +110,28 @@ public class TeammateController : MonoBehaviour
     public TMP_Text hungerText;
     public TMP_Text curDestText;
 
-    private float time = 0f;
+    [Header("Working params")]
+    [Tooltip("Teammate should make progress every x minutes in game")]
+    public int makeProgressInterval;
+    private double lastProgressMadeTime;
+    public float baseWorkEfficiency;
+    private float curWorkEfficiency;
 
+
+    private GameManager gameManager;
     private NavMeshAgent agent;
     private PatrolController patrolController;
-
+    private float time = 0f;
 
     public GameObject player;
 
     private void Start()
     {
+        gameManager = GameManager.instance;
         agent = GetComponent<NavMeshAgent>();
         patrolController = GetComponent<PatrolController>();
 
+        lastProgressMadeTime = gameManager.dayStartTime;
         curTeammateState = initialTeammateState;
 
         GoToDestination(Place.Workplace);
@@ -146,14 +155,29 @@ public class TeammateController : MonoBehaviour
                 }
 
                 DetectHand();
-                // for testing: start patrol after 5 secs of working
-                time += Time.deltaTime; // TODO: randomise going to patrol
 
-                if (time >= 5f)
+                // make progress
+                int makeProgIntervallInSec = makeProgressInterval * 60;
+                if (gameManager.dayTime >= lastProgressMadeTime + makeProgIntervallInSec)
                 {
-                    time = 0f;
-                    patrolController.StartPatrol();
+                    Debug.Log("ProjectProgress.Work");
+
+                    curWorkEfficiency = baseWorkEfficiency; // TODO: calculate based on stats
+
+                    gameManager.projectProgress.Work(curWorkEfficiency);
+
+                    lastProgressMadeTime = gameManager.dayTime;
                 }
+
+
+                // for testing: start patrol after 5 secs of working
+                // time += Time.deltaTime; // TODO: randomise going to patrol
+
+                // if (time >= 5f)
+                // {
+                //     time = 0f;
+                //     patrolController.StartPatrol();
+                // }
 
                 break;
 
