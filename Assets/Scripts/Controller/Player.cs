@@ -117,10 +117,10 @@ public class Player : MonoBehaviour {
 		if (Physics.Raycast(cameraMain.position, cameraMain.forward, out hit, interactionRange, traceAgainst)) {
 			Collider coll = hit.collider;
 			Interactable newInteractable = coll.GetComponent<Interactable>();
-			if (newInteractable != null) {
-				ExchangeInteractable(newInteractable);
-			} else {
+			if(newInteractable == null && currentInteractable) {
 				DisableCurrentInteractable();
+			} else if(newInteractable != currentInteractable) {
+				ExchangeInteractable(newInteractable);
 			}
 		} else {
 			DisableCurrentInteractable();
@@ -132,12 +132,11 @@ public class Player : MonoBehaviour {
 		currentInteractable = null;
 	}
 	private void ExchangeInteractable(Interactable newInteractable) {
+		Debug.Log(newInteractable.gameObject.name);
 		if (currentInteractable != null) {
-			if (currentInteractable != newInteractable) {
-				currentInteractable.TurnInteractable(false);
-				newInteractable.TurnInteractable(true);
-				currentInteractable = newInteractable;
-			}
+			currentInteractable.TurnInteractable(false);
+			newInteractable.TurnInteractable(true);
+			currentInteractable = newInteractable;
 		} else {
 			newInteractable.TurnInteractable(true);
 			currentInteractable = newInteractable;

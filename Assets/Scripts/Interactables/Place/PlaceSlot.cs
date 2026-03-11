@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlaceSlot: MonoBehaviour
+public class PlaceSlot : MonoBehaviour
 {
     public MovableInteractable.Type itemsAllowed;
     public bool isTaken;
@@ -18,14 +18,14 @@ public class PlaceSlot: MonoBehaviour
             item.Place(gameObject.transform);
         }
     }
-    public bool CanPlace(MovableInteractable newItem)
+    public virtual bool CanPlace(MovableInteractable newItem)
     {
         if (isTaken || newItem == null) return false;
 
         return (itemsAllowed & newItem.type) != 0;
     }
     
-    public void PlaceItem(MovableInteractable newItem)
+    public virtual void PlaceItem(MovableInteractable newItem)
     {
         if (newItem == null || item != null) return;
         isTaken = true;

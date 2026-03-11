@@ -2,23 +2,22 @@ using UnityEngine;
 
 public class Bin : Interactable {
 	private PlaceSlot trashSlot;
-	private PlaceSlot overflowSlot;
+	private VoidSlot overflowSlot;
 	[SerializeField] private GameObject trashItemPrefab;
 
-	void Start() {
+	void Awake() {
 		trashSlot = transform.Find("Trash Slot").GetComponent<PlaceSlot>();
-		overflowSlot = transform.Find("Overflow Slot").GetComponentInChildren<PlaceSlot>();
-		overflowSlot.OnItemPlaced += ClearOverflow;
+		overflowSlot = transform.Find("Overflow Slot").GetComponentInChildren<VoidSlot>();
 	}
 
 	public override bool Interact() {
 		MovableInteractable item = Player.Instance.ItemInHand;
 		if (item == null) {
 			if(!trashSlot.item) return false;
-			trashSlot.TakeItem();
 			var trashItem = trashSlot.item;
-			trashItem.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+			trashSlot.TakeItem();
 			trashItem.Place(Player.Instance.PlayerHand);
+			trashItem.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 			Player.Instance.ItemInHand = trashItem;
 			GameManager.instance.questManager.CompleteObjective(ObjectiveId.TrashEmptyBin, null);
 		} else {
@@ -32,11 +31,5 @@ public class Bin : Interactable {
 		if (trashSlot.item != null) return;
 		var newItem = Instantiate(trashItemPrefab).GetComponent<MovableInteractable>();
 		trashSlot.PlaceItem(newItem);
-	}
-
-	void ClearOverflow(MovableInteractable _) {
-		if (overflowSlot.item != null) {
-			overflowSlot.TakeItem();
-		}
 	}
 }

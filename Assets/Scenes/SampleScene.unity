@@ -475,6 +475,71 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1001 &191916639
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4546928400685809626, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: activeTimeOffset
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4546928400685809626, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: timeChangeAmount
+      value: 7200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8206803375165950527, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: m_Name
+      value: Clock
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840491974781702277, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.40835
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840491974781702277, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840491974781702277, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.235
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840491974781702277, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840491974781702277, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840491974781702277, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840491974781702277, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840491974781702277, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840491974781702277, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8840491974781702277, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8951e9240ccb365488253224a41d55cc, type: 3}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1643,6 +1708,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 677380589}
+  - component: {fileID: 677380591}
+  - component: {fileID: 677380590}
   m_Layer: 0
   m_Name: --------Managers--------
   m_TagString: Untagged
@@ -1665,6 +1732,40 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &677380590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677380588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c2960b4b20452459fd8d9e68c6c254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestManager
+--- !u!114 &677380591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677380588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f719c63f21670714fa8d44155cf0127d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  curGameState: 2
+  questManager: {fileID: 677380590}
+  MaxDays: 100
+  curDay: 0
+  dayTime: 0
+  dayStartTime: 0
+  dayEndTime: 86400
+  timeScale: 120
+  susMeter: 0
+  progressMeter: 0
 --- !u!1 &774844277
 GameObject:
   m_ObjectHideFlags: 0
@@ -2687,6 +2788,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3521079559227164405, guid: b5cfab88d4105eb43843ecf1c304a26d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8276921475779936506, guid: b5cfab88d4105eb43843ecf1c304a26d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.3399999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8276921475779936506, guid: b5cfab88d4105eb43843ecf1c304a26d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.49500012
+      objectReference: {fileID: 0}
+    - target: {fileID: 8276921475779936506, guid: b5cfab88d4105eb43843ecf1c304a26d, type: 3}
+      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -4011,14 +4124,18 @@ MonoBehaviour:
   curTeammateState: 0
   drowsiness: 0
   drowsinessIncrease: 0
+  drowsinessDecrease: 0
   bladder: 0
   bladderIncrease: 0
+  hunger: 0
+  hungerIncrease: 0
   baseWalkSpeed: 3
   walkSpeedDrowsinessScale: 0
   walkSpeedBladderScale: 0
   curDestination: 0
   workplace: {fileID: 1177701488}
   toilet: {fileID: 0}
+  exit: {fileID: 0}
   teammateStateText: {fileID: 605183217}
   player: {fileID: 0}
 --- !u!1 &1350832341
@@ -7286,6 +7403,7 @@ SceneRoots:
   - {fileID: 1294879807}
   - {fileID: 1897074809}
   - {fileID: 1536409208}
+  - {fileID: 191916639}
   - {fileID: 1688572989}
   - {fileID: 1350832345}
   - {fileID: 1891094149}
