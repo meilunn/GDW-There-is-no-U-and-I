@@ -34,7 +34,7 @@ public class TeammateController : MonoBehaviour
     {
         public float decrease;
         public float increase;
-        [Range(0f, 100f)] public float actThreshold;
+        [Range(1f, 100f)] public float actThreshold;
         public float tryActInterval;
         [Range(1f, 5f)] public float probCurveExponent;  // 1 = linear
     }
@@ -64,15 +64,19 @@ public class TeammateController : MonoBehaviour
     public float walkSpeedBladderScale;
     public float walkSpeedHungerScale;
 
-    [Header("Places")] public Place curDestination = Place.None;
-    [Space(10)] public GameObject workplace;
+    [Header("Places")] 
+    public Place curDestination = Place.None;
+    [Space(10)] 
+    public GameObject workplace;
     public GameObject toilet;
     public GameObject exit;
 
-    [Header("Field of View params")] public float angle = 90f;
+    [Header("Field of View params")] 
+    public float angle = 90f;
     public float radius = 10f;
 
-    [Header("Detection params")] public int detectionThreshold = 100;
+    [Header("Detection params")] 
+    public int detectionThreshold = 100;
     public static int currentPoints;
     [SerializeField] private int pointsPerCheck;
     [SerializeField] private LayerMask traceAgainst;
