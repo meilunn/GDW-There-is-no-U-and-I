@@ -15,9 +15,9 @@ public class Edible : MonoBehaviour
 
     public Vector3 GetParams()
     {
-        int bladder = baseIngredient.bladder;
-        int hunger = baseIngredient.hunger;
-        int energy = baseIngredient.energy;
+        float bladder = baseIngredient.bladder;
+        float hunger = baseIngredient.hunger;
+        float energy = baseIngredient.energy;
 
         foreach (var ingredient in extraIngredients)
         {

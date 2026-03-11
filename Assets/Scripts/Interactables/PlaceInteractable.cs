@@ -4,7 +4,7 @@ public class PlaceInteractable : Interactable
 {
 
     public Transform itemPosition;
-    public TempAgent owner;
+    public TeammateController owner;
     
     private PlaceSlot[] slots;
     void Awake()
