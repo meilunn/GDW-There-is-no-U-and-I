@@ -103,6 +103,7 @@ public class TeammateController : MonoBehaviour
     public TMP_Text energyText;
     public TMP_Text bladderText;
     public TMP_Text hungerText;
+    public TMP_Text curDestText;
 
     private float time = 0f;
 
@@ -182,7 +183,7 @@ public class TeammateController : MonoBehaviour
                 if (energy >= 100) // wake up
                 {
                     Debug.Log("Teammate wakes up");
-                    
+
                     curTeammateState = TeammateState.AtWorkplace;
                     break;
                 }
@@ -392,7 +393,7 @@ public class TeammateController : MonoBehaviour
         bladderText.text = $"Bladder: {bladder}";
         hungerText.text = $"Hunger: {hunger}";
 
-        // TODO: 
+        curDestText.text = $"Cur Dest: {curDestination}";
     }
 
     // Draw places

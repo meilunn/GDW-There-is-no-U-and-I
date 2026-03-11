@@ -51,6 +51,7 @@ public class PatrolController : MonoBehaviour
     {
         Debug.Log("Starting patrol");
         teammateController.curTeammateState = TeammateController.TeammateState.Patrolling;
+        teammateController.curDestination = TeammateController.Place.None;
 
         SetNextDestination();
         agent.speed = teammateController.GetWalkSpeed();
