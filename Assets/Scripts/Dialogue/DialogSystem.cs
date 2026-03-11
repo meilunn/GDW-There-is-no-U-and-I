@@ -11,12 +11,13 @@ using UnityEngine.Events;
 public enum Character
 {
     Unassigned,
-    Main,
-    Enemy,
+    Player,
     Peter,
-    John,
-    Susy,
-    Beatrice
+    Linus,
+    Joy,
+    Eve,
+    Giovanni,
+    Announcer
 }
 
 
