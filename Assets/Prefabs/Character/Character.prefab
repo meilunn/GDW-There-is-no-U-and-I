@@ -219,17 +219,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   playerSpeed: 10
+  acceleration: 15
+  playerCam: {fileID: 0}
   eyes: {fileID: 1809694224616113312}
   minPitch: -45
   maxPitch: 75
-  gravityValue: -9.81
-  mass: 5
+  rotationSpeed: 1
+  gravityScale: 3
   interactionRange: 10
   traceAgainst:
     serializedVersion: 2
     m_Bits: 1
   ItemInHand: {fileID: 0}
   PlayerHand: {fileID: 6325919678839977536}
+  MoveInput: {x: 0, y: 0}
+  LookInput: {x: 0, y: 0}
 --- !u!114 &3815088439086232338
 MonoBehaviour:
   m_ObjectHideFlags: 0
