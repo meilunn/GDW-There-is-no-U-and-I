@@ -51,16 +51,16 @@ public class TeammateController : MonoBehaviour
     [Header("Stats")]
     public StatConfig energyStatConfig = new();
     [Range(1f, 10f)] public float energyDecreaseScaleWhenWorking;
-    private float energy = 100f;
-    private float energyActCooldown = 0f;
+    private float energy;
+    private float energyActCooldown;
 
     public StatConfig bladderStatConfig = new();
-    private float bladder = 100f;
-    private float bladderActCooldown = 0f;
+    private float bladder;
+    private float bladderActCooldown;
 
     public StatConfig hungerStatConfig = new();
-    private float hunger = 100f;
-    private float hungerActCooldown = 0f;
+    private float hunger;
+    private float hungerActCooldown;
 
 
     [Header("Walking")]
@@ -127,7 +127,6 @@ public class TeammateController : MonoBehaviour
     private GameManager gameManager;
     private NavMeshAgent agent;
     private PatrolController patrolController;
-    private float time = 0f;
 
     public GameObject player;
 
@@ -137,10 +136,9 @@ public class TeammateController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         patrolController = GetComponent<PatrolController>();
 
-        lastProgressMadeTime = lastPatrolCheckTime = gameManager.dayStartTime;
-        curTeammateState = initialTeammateState;
+        DayReset();
 
-        GoToDestination(Place.Workplace);
+        //GoToDestination(Place.Workplace);
     }
 
     private void Update()
@@ -422,6 +420,20 @@ public class TeammateController : MonoBehaviour
         }
 
         Debug.Log($"Going to destination: {curDestination}");
+    }
+
+    public void DayReset()
+    {
+        lastProgressMadeTime = lastPatrolCheckTime = gameManager.dayStartTime;
+        curTeammateState = initialTeammateState;
+
+        energy = 100f;
+        bladder = 100f;
+        hunger = 100f;
+
+        energyActCooldown = 0f;
+        bladderActCooldown = 0f;
+        hungerActCooldown = 0f;
     }
 
     private void UpdateUI()
