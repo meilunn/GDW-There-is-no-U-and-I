@@ -4414,6 +4414,8 @@ MonoBehaviour:
   curDestText: {fileID: 1543510719}
   makeProgressInterval: 15
   baseWorkEfficiency: 1
+  patrolCheckInterval: 5
+  patrolProbability: 0.163
   player: {fileID: 0}
 --- !u!1 &1350832341
 GameObject:

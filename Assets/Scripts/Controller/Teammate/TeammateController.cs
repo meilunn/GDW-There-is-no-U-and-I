@@ -117,6 +117,12 @@ public class TeammateController : MonoBehaviour
     public float baseWorkEfficiency;
     private float curWorkEfficiency;
 
+    [Header("Patrol params")]
+    [Tooltip("Rolls for going to patrol every x minutes in game")]
+    public int patrolCheckInterval;
+    private double lastPatrolCheckTime;
+    [Tooltip("Probability of going on patrol when rolling")]
+    [Range(0f, 1f)] public float patrolProbability;
 
     private GameManager gameManager;
     private NavMeshAgent agent;
@@ -131,7 +137,7 @@ public class TeammateController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         patrolController = GetComponent<PatrolController>();
 
-        lastProgressMadeTime = gameManager.dayStartTime;
+        lastProgressMadeTime = lastPatrolCheckTime = gameManager.dayStartTime;
         curTeammateState = initialTeammateState;
 
         GoToDestination(Place.Workplace);
@@ -169,15 +175,18 @@ public class TeammateController : MonoBehaviour
                     lastProgressMadeTime = gameManager.dayTime;
                 }
 
+                // go patrol? 
+                int patrolCheckIntervallInSec = patrolCheckInterval * 60;
+                if (gameManager.dayTime >= lastPatrolCheckTime + patrolCheckIntervallInSec)
+                {
+                    Debug.Log("Go patrol check");
 
-                // for testing: start patrol after 5 secs of working
-                // time += Time.deltaTime; // TODO: randomise going to patrol
+                    if (Random.value < patrolProbability) 
+                        patrolController.StartPatrol();
+                    
+                    lastPatrolCheckTime = gameManager.dayTime;
+                }
 
-                // if (time >= 5f)
-                // {
-                //     time = 0f;
-                //     patrolController.StartPatrol();
-                // }
 
                 break;
 
@@ -194,6 +203,7 @@ public class TeammateController : MonoBehaviour
                     case Place.Workplace:
                         curTeammateState = TeammateState.AtWorkplace;
                         curDestination = Place.None;
+                        lastPatrolCheckTime = gameManager.dayTime;
 
                         break;
                     case Place.Toilet: 
