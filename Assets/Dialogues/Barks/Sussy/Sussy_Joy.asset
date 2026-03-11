@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0eb4aff5ac2429e83d791cd1fe6636c, type: 3}
+  m_Name: Sussy_Joy
+  m_EditorClassIdentifier: Assembly-CSharp::Bark
+  barkText: "Weirdo ... I\u2019m gonna tell my uncle!"
+  voiceClip: {fileID: 0}
+  character: 4

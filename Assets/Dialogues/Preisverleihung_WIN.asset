@@ -21,25 +21,24 @@ MonoBehaviour:
       this year\u2019s winner... "
     voiceClip: {fileID: 0}
     character: 7
-  - dialogueText: your_team!
+  - dialogueText: enemy_team!
     voiceClip: {fileID: 0}
     character: 7
-  - dialogueText: 'As expected, the champions secure the win once again this year,
-      keeping them on top and defending their title.
-
-'
+  - dialogueText: 'Wow what an upset! After so many years of losses, who could have
+      thought enemy_team would come out on top? '
     voiceClip: {fileID: 0}
     character: 7
-  - dialogueText: Never doubted you guys once. Great Job Team!
+  - dialogueText: "How ... How could this happen? I don\u2019t understand."
     voiceClip: {fileID: 0}
     character: 2
-  - dialogueText: I guess the accumulated 6 hours of sleep were worth it in the end...
+  - dialogueText: I guess my back is not strong enough to carry all of you through
+      this
     voiceClip: {fileID: 0}
     character: 3
-  - dialogueText: easy, peasy!
+  - dialogueText: "It\u2019s all because of that loser..."
     voiceClip: {fileID: 0}
     character: 4
-  - dialogueText: That calls for a party!
+  - dialogueText: Ah shucks ... well we tried our best at least.
     voiceClip: {fileID: 0}
     character: 5
   - dialogueText: Stay tuned for the competition next year
@@ -48,7 +47,8 @@ MonoBehaviour:
   - dialogueText: Afterwards you meet the enemy team.
     voiceClip: {fileID: 0}
     character: 0
-  - dialogueText: "Player we had a Deal. You broke that Deal. I don\u2019t like liars.
-      And you know what we do with liars? Well you\u2019ll find out soon enough"
+  - dialogueText: Good Job, you did well. Now take the money and get out of my sight.
+      If I hear you telling anyone about you, even the rat in your apartment, we
+      will come for you.
     voiceClip: {fileID: 0}
-    character: 0
+    character: 6

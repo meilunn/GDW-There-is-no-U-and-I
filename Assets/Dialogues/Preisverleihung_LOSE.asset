@@ -51,4 +51,4 @@ MonoBehaviour:
   - dialogueText: "Player we had a Deal. You broke that Deal. I don\u2019t like liars.
       And you know what we do with liars? Well you\u2019ll find out soon enough"
     voiceClip: {fileID: 0}
-    character: 0
+    character: 6
