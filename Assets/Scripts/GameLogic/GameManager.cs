@@ -5,6 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 
+	public delegate void VoidEvent();
+	public static event VoidEvent OnDayStart;
+
 
 	public enum GameState {
 		TitleScreen,
@@ -88,6 +91,7 @@ public class GameManager : MonoBehaviour {
 	void SetupNewDay() {
 		curDay++;
 		dayTime = dayStartTime;
+		OnDayStart?.Invoke();
 	}
 
 	public void AddProgress(float amount) {

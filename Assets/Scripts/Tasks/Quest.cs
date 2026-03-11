@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 public enum QuestId {
-
+	EmptyTrash
 }
 
 // this can be used for UI ig?

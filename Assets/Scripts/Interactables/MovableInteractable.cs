@@ -49,10 +49,9 @@ public class MovableInteractable : Interactable
     }
     public void PlaceInWorld(Transform parent)
     {
-        if (Player.Instance.ItemInHand != this) return;
         Place(parent);
         gameObject.layer = LayerMask.NameToLayer("Default");
-        Player.Instance.ItemInHand = null;
+        if (Player.Instance.ItemInHand == this) Player.Instance.ItemInHand = null;
         OnItemPlaced?.Invoke();
     }
 
@@ -76,6 +75,7 @@ public class MovableInteractable : Interactable
         //Plates can have food in them (both Movable & Place Interactables)
         Plate =  1 << 5,
         EnergyDrink =  1 << 6,
-        USB = 1 << 7
+        USB = 1 << 7,
+		Trash = 1 << 8
     }
 }
