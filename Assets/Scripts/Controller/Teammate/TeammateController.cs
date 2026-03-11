@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(PatrolController))]
 [RequireComponent(typeof(NavMeshAgent))]
@@ -14,153 +17,229 @@ public class TeammateController : MonoBehaviour
         Shitting,
         Patrolling,
         GoingToDestination
+
+        // TODO: add AtToilet
     }
 
-    [Header("States")]
+    /// <summary>
+    /// Properties:
+    /// <para><b>decrease</b>: Base constant decrease</para>
+    /// <para><b>increase</b>: Base constant increase</para>
+    /// <para><b>actThreshold</b>: Acting on low stat only possible below threshold</para>
+    /// <para><b>tryActInterval</b>: Check/Roll for acting every x seconds</para>
+    /// <para><b>probCurveExponent</b>: Probability for acting grows exponentially towards 0 stat</para>
+    /// </summary>
+    [Serializable]
+    public struct StatConfig
+    {
+        [Tooltip("Base constant decrease")]
+        public float decrease;
+        [Tooltip("Base constant increase")]
+        public float increase;
+        [Tooltip("Acting on low stat only possible below threshold")]
+        [Range(1f, 100f)] public float actThreshold;
+        [Tooltip("Check/Roll for acting every x seconds")]
+        public float tryActInterval;
+        [Tooltip("Probability for acting grows exponentially towards 0 stat")]
+        [Range(1f, 5f)] public float probCurveExponent;  // 1 = linear
+    }
+
+    [Header("State")]
     public TeammateState initialTeammateState = TeammateState.AtWorkplace;
     public TeammateState curTeammateState;
 
     [Header("Stats")]
-    public float drowsiness = 0f;
-    public float drowsinessIncrease;  // const increase per sec, should be npc dependant
-    public float drowsinessDecrease;  // when napping
-    public float bladder = 0f;
-    public float bladderIncrease;
-    public float hunger = 0f;
-    public float hungerIncrease;
+    public StatConfig energyStatConfig = new();
+    [Range(1f, 10f)] public float energyDecreaseScaleWhenWorking;
+    private float energy = 100f;
+    private float energyActCooldown = 0f;
+
+    public StatConfig bladderStatConfig = new();
+    private float bladder = 100f;
+    private float bladderActCooldown = 0f;
+
+    public StatConfig hungerStatConfig = new();
+    private float hunger = 100f;
+    private float hungerActCooldown = 0f;
+
 
     [Header("Walking")]
     public float baseWalkSpeed;
-    public float walkSpeedDrowsinessScale;
+    public float walkSpeedEnergyScale;
     public float walkSpeedBladderScale;
-    private float walkSpeed;  
+    public float walkSpeedHungerScale;
 
-    [Header("Places")]
+    [Header("Places")] 
     public Place curDestination = Place.None;
-    [Space(10)]
+    [Space(10)] 
     public GameObject workplace;
     public GameObject toilet;
     public GameObject exit;
-    
+
     [Header("Field of View params")] 
     public float angle = 90f;
     public float radius = 10f;
-    
+
     [Header("Detection params")] 
     public int detectionThreshold = 100;
     public static int currentPoints;
-    [SerializeField]
-    private int pointsPerCheck;
-    [SerializeField]
-    private LayerMask traceAgainst;
+    [SerializeField] private int pointsPerCheck;
+    [SerializeField] private LayerMask traceAgainst;
     private bool susDetected;
     public Transform rayCastOrigin;
+
+    //Food/Drink
+    private EdibleData.EdibleType _foodAwaited;
+    private EdibleData.EdibleType _energyAwaited;
+
+    public List<EdiblePreference> foodPreferences;
+    public List<EdiblePreference> energyPreferences;
 
     public enum Place
     {
         None,
-        Workplace, 
+        Workplace,
         Toilet,
         Exit
     }
 
+    [Header("UI")]
     public TMP_Text teammateStateText;
+    public TMP_Text energyText;
+    public TMP_Text bladderText;
+    public TMP_Text hungerText;
+    public TMP_Text curDestText;
 
-    private float time = 0f;
+    [Header("Working params")]
+    [Tooltip("Teammate should make progress every x minutes in game")]
+    public int makeProgressInterval;
+    private double lastProgressMadeTime;
+    public float baseWorkEfficiency;
+    private float curWorkEfficiency;
 
+    [Header("Patrol params")]
+    [Tooltip("Rolls for going to patrol every x minutes in game")]
+    public int patrolCheckInterval;
+    private double lastPatrolCheckTime;
+    [Tooltip("Probability of going on patrol when rolling")]
+    [Range(0f, 1f)] public float patrolProbability;
+
+    private GameManager gameManager;
     private NavMeshAgent agent;
     private PatrolController patrolController;
+    private float time = 0f;
+
+    public GameObject player;
 
     private void Start()
     {
+        gameManager = GameManager.instance;
         agent = GetComponent<NavMeshAgent>();
         patrolController = GetComponent<PatrolController>();
-        
+
+        lastProgressMadeTime = lastPatrolCheckTime = gameManager.dayStartTime;
         curTeammateState = initialTeammateState;
-        walkSpeed = baseWalkSpeed;
 
         GoToDestination(Place.Workplace);
     }
 
     private void Update()
     {
-        drowsiness += drowsinessIncrease * Time.deltaTime;
-        bladder += bladderIncrease * Time.deltaTime;
-        hunger += hungerIncrease * Time.deltaTime;
-        
-        teammateStateText.text = $"Teammate state: {curTeammateState}";
-
-        if (drowsiness >= 100 && curTeammateState != TeammateState.Sleeping)
-        {
-            if (curTeammateState != TeammateState.AtWorkplace)
-                            GoToDestination(Place.Workplace);
-        }
-        else if (bladder >= 100 && curTeammateState != TeammateState.Shitting)
-                GoToDestination(Place.Toilet);
-            
+        UpdateStats();
+        UpdateUI();
 
         switch (curTeammateState)
         {
-            case TeammateState.AtWorkplace: 
-                if (drowsiness >= 100)
+            case TeammateState.AtWorkplace:
+                if (energy <= 0)
                 {
+                    Debug.Log("Teammate fell asleep");
+
                     curTeammateState = TeammateState.Sleeping;
+
                     break;
                 }
-                DetectHand();
-                // for testing: start patrol after 5 secs of working
-                time += Time.deltaTime;  // TODO: randomise going to patrol
 
-                if (time >= 5f)
+                DetectHand();
+
+                // make progress
+                int makeProgIntervallInSec = makeProgressInterval * 60;
+                if (gameManager.dayTime >= lastProgressMadeTime + makeProgIntervallInSec)
                 {
-                    time = 0f;
-                    patrolController.StartPatrol();    
+                    Debug.Log("ProjectProgress.Work");
+
+                    curWorkEfficiency = baseWorkEfficiency; // TODO: calculate based on stats
+
+                    gameManager.projectProgress.Work(curWorkEfficiency);
+
+                    lastProgressMadeTime = gameManager.dayTime;
                 }
+
+                // go patrol? 
+                int patrolCheckIntervallInSec = patrolCheckInterval * 60;
+                if (gameManager.dayTime >= lastPatrolCheckTime + patrolCheckIntervallInSec)
+                {
+                    Debug.Log("Go patrol check");
+
+                    if (Random.value < patrolProbability) 
+                        patrolController.StartPatrol();
+                    
+                    lastPatrolCheckTime = gameManager.dayTime;
+                }
+
+
                 break;
+
             case TeammateState.GoingToDestination:
                 // if agent hasn't arrived at dest
                 DetectHand();
-                if (agent.remainingDistance > 0.1f) break; 
+                if (agent.remainingDistance > 0.1f) break;
 
                 // else
                 Debug.Log($"Arrived at {curDestination}");
 
                 switch (curDestination)
                 {
-                    case Place.Workplace: 
+                    case Place.Workplace:
                         curTeammateState = TeammateState.AtWorkplace;
                         curDestination = Place.None;
+                        lastPatrolCheckTime = gameManager.dayTime;
 
                         break;
                     case Place.Toilet: 
-                        CheckToiletPaper();
+                        // TODO: do something after arrived at toilet
 
                         break;
                     case Place.Exit: 
-                        
+                        // TODO: do something after arrived at exit
 
                         break;
                 }
 
                 break;
 
-            case TeammateState.Sleeping: 
-                if (drowsiness <= 0)  // wake up
+            case TeammateState.Sleeping:
+                if (energy >= 100) // wake up
                 {
+                    Debug.Log("Teammate wakes up");
+
                     curTeammateState = TeammateState.AtWorkplace;
                     break;
                 }
 
-                drowsiness -= drowsinessDecrease * Time.deltaTime;
-
                 break;
+
             default:
                 DetectHand();
                 break;
-        } 
+
+            // TODO: other states? 
+        }
     }
-     private void DetectHand()
-    {   //TODO: optionally, change amount of current/needed detect-points depending on sleepiness
+
+    private void DetectHand()
+    {
+        //TODO: optionally, change amount of current/needed detect-points depending on sleepiness
         susDetected = false;
         Vector3 handPosition = Player.Instance.PlayerHand.position;
         Vector3 distanceToHand = handPosition - transform.position;
@@ -169,13 +248,14 @@ public class TeammateController : MonoBehaviour
             if (Vector3.Dot(distanceToHand.normalized, transform.forward) > Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad))
             {
                 RaycastHit hit;
-                
+
                 Vector3 direction = handPosition - rayCastOrigin.position;
-               
+
                 if (Physics.Raycast(rayCastOrigin.position, direction, out hit, traceAgainst))
                 {
                     Debug.Log(hit.collider.gameObject.name);
-                    if (hit.collider.TryGetComponent<MovableInteractable>(out MovableInteractable detectedItem) && detectedItem == Player.Instance.ItemInHand && detectedItem.isSuspicious)
+                    if (hit.collider.TryGetComponent<MovableInteractable>(out MovableInteractable detectedItem) &&
+                        detectedItem == Player.Instance.ItemInHand && detectedItem.isSuspicious)
                     {
                         Debug.DrawRay(rayCastOrigin.position, direction, Color.green);
                         susDetected = true;
@@ -201,11 +281,119 @@ public class TeammateController : MonoBehaviour
             }
         }
     }
-    
 
+
+    /// <summary>
+    /// Constant stat updates. Try making teammate act upon low stat
+    /// </summary>
+    private void UpdateStats()
+    {
+        if (curTeammateState == TeammateState.AtWorkplace)
+            energy -= energyStatConfig.decrease * energyDecreaseScaleWhenWorking * Time.deltaTime;
+        else if (curTeammateState == TeammateState.Sleeping)
+            energy += energyStatConfig.increase * Time.deltaTime;
+        else
+            energy -= energyStatConfig.decrease * Time.deltaTime;
+
+        bladder -= bladderStatConfig.decrease * Time.deltaTime;
+        hunger -= hungerStatConfig.decrease * Time.deltaTime;
+
+        energy = Mathf.Clamp(energy, 0f, 100f);
+        bladder = Mathf.Clamp(bladder, 0f, 100f);
+        hunger = Mathf.Clamp(hunger, 0f, 100f);
+
+        if (curTeammateState == TeammateState.Sleeping) return;
+        // try acting on low stat if cooldown reached & not sleeping
+        energyActCooldown -= Time.deltaTime;
+        if (energyActCooldown <= 0f)
+        {
+            energyActCooldown = energyStatConfig.tryActInterval;
+            if (TryActOnStat(energy, energyStatConfig))
+                OnLowEnergy();
+        }
+
+        bladderActCooldown -= Time.deltaTime;
+        if (bladderActCooldown <= 0f)
+        {
+            bladderActCooldown = bladderStatConfig.tryActInterval;
+            if (TryActOnStat(bladder, bladderStatConfig))
+                OnLowBladder();
+        }
+
+        hungerActCooldown -= Time.deltaTime;
+        if (hungerActCooldown <= 0f)
+        {
+            hungerActCooldown = hungerStatConfig.tryActInterval;
+            if (TryActOnStat(hunger, hungerStatConfig))
+                OnLowHunger();
+        }
+    }
+
+    /// <summary>
+    /// Determines if teammate acts on low stat based on its config/probability
+    /// </summary>
+    /// <returns>True if should act, false if shouldn't act</returns>
+    private bool TryActOnStat(float statValue, StatConfig statConfig)
+    {
+        if (statValue > statConfig.actThreshold) return false;
+
+        // Remap stat from [threshold -> 0] to [0 -> 1]
+        float t = 1f - (statValue / statConfig.actThreshold);
+        float probability = Mathf.Pow(t, statConfig.probCurveExponent);
+
+        return Random.value < probability;
+    }
+
+    private void OnLowEnergy()
+    {
+        Debug.Log("Acting on low energy");
+        // TODO: 
+        if (curTeammateState == TeammateState.Patrolling)
+            patrolController.EndPatrol();
+    }
+
+    private void OnLowBladder()
+    {
+        Debug.Log("Acting on low bladder");
+        // TODO: 
+    }
+
+    private void OnLowHunger()
+    {
+        Debug.Log("Acting on low hunger");
+        // TODO: 
+
+        if (curTeammateState == TeammateState.AtWorkplace)
+        {
+
+        }
+    }
+
+    private void CheckTableFor()
+    {
+
+    }
+
+    /// <summary>
+    /// Dynamically calculate currentWalkSpeed, which is based on teammate stats
+    /// </summary>
+    /// <returns>Calculated walkSpeed</returns>
     public float GetWalkSpeed()
     {
-        // TODO: scale with drowsiness & bladder
+        // At 50% stat = 1.0 (no change), scales up/down from there
+        float energyMultiplier = energy / 100f * walkSpeedEnergyScale + (1f - walkSpeedEnergyScale * 0.5f);
+        float bladderMultiplier = (1f - bladder / 100f) * walkSpeedBladderScale + (1f - walkSpeedBladderScale * 0.5f);
+        float hungerMultiplier = hunger / 100f * walkSpeedHungerScale + (1f - walkSpeedHungerScale * 0.5f);
+
+        // Not 0
+        energyMultiplier = Mathf.Max(energyMultiplier, 0.1f);
+        bladderMultiplier = Mathf.Max(bladderMultiplier, 0.1f);
+        hungerMultiplier = Mathf.Max(hungerMultiplier, 0.1f);
+
+        float walkSpeed = baseWalkSpeed * energyMultiplier * hungerMultiplier * bladderMultiplier * 2f;
+
+        Debug.Log($"WalkSpeed set to: {walkSpeed}");
+
         return walkSpeed;
     }
 
@@ -217,32 +405,34 @@ public class TeammateController : MonoBehaviour
 
         curDestination = place;
 
-        switch(place)
+        switch (place)
         {
-            case Place.Workplace: 
-                Debug.Log("Going to workplace");
-
+            case Place.Workplace:
                 agent.SetDestination(workplace.transform.position);
-                break; 
-            
-            case Place.Toilet: 
-                Debug.Log("Going to toilet");
+                break;
 
+            case Place.Toilet:
                 agent.SetDestination(toilet.transform.position);
                 break;
 
-            case Place.Exit: 
-                Debug.Log("Going to Exit");
-
+            case Place.Exit:
                 agent.SetDestination(exit.transform.position);
-                break; 
-        }        
+
+                break;
+        }
+
+        Debug.Log($"Going to destination: {curDestination}");
     }
-    
-    private void CheckToiletPaper()
+
+    private void UpdateUI()
     {
-        // TODO: 
-        throw new NotImplementedException();
+        teammateStateText.text = $"Teammate state: {curTeammateState}";
+
+        energyText.text = $"Energy: {energy}";
+        bladderText.text = $"Bladder: {bladder}";
+        hungerText.text = $"Hunger: {hunger}";
+
+        curDestText.text = $"Cur Dest: {curDestination}";
     }
 
     // Draw places
@@ -251,11 +441,37 @@ public class TeammateController : MonoBehaviour
         Gizmos.color = Color.gray;
 
         Gizmos.DrawCube(workplace.transform.position, new Vector3(0.4f, 0.4f, 0.4f));
-        
+
         //FoV
-        Color c = new Color(0, 0, 0.6f, 0.4f);
+        Color c = new(0, 0, 0.6f, 0.4f);
         UnityEditor.Handles.color = c;
         Vector3 rotatedForward = Quaternion.Euler(0, -angle * 0.5f, 0) * transform.forward;
-        UnityEditor.Handles.DrawSolidArc(rayCastOrigin.position, Vector3.up,rotatedForward, angle, radius);
+        UnityEditor.Handles.DrawSolidArc(rayCastOrigin.position, Vector3.up, rotatedForward, angle, radius);
+    }
+
+    private EdibleData.EdibleType ChooseEdible(List<EdiblePreference> preferences)
+    {
+        //TODO
+        
+        float totalWeight = preferences.Sum(preference => preference.weight);
+
+        float random = Random.Range(0, totalWeight);
+
+        foreach (var p in preferences)
+        {
+            random -= p.weight;
+
+            if (random <= 0)
+                return p.type;
+        }
+
+        return EdibleData.EdibleType.Coffee;
     }
 }
+
+[System.Serializable]
+    public class EdiblePreference
+    {
+        public EdibleData.EdibleType type;
+        public float weight;
+    }
