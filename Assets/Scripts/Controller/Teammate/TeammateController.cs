@@ -91,9 +91,11 @@ public class TeammateController : MonoBehaviour
         teammateStateText.text = $"Teammate state: {curTeammateState}";
 
         if (drowsiness >= 100 && curTeammateState != TeammateState.Sleeping)
+        {
             if (curTeammateState != TeammateState.AtWorkplace)
-                GoToDestination(Place.Workplace);
-            else if (bladder >= 100 && curTeammateState != TeammateState.Shitting)
+                            GoToDestination(Place.Workplace);
+        }
+        else if (bladder >= 100 && curTeammateState != TeammateState.Shitting)
                 GoToDestination(Place.Toilet);
             
 
