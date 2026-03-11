@@ -21,7 +21,7 @@ public class PatrolController : MonoBehaviour
 
     private bool lastDest;
 
-    private float time;
+    private float stayTime;
 
     private void Start()
     {
@@ -35,10 +35,10 @@ public class PatrolController : MonoBehaviour
         if (teammateController.curTeammateState == TeammateController.TeammateState.Patrolling 
             && agent.remainingDistance <= 0.1f)
         {
-            time += Time.deltaTime;
-            if (time >= waitTimeCurWaypoint)
+            stayTime += Time.deltaTime;
+            if (stayTime >= waitTimeCurWaypoint)
             {
-                time = 0f;
+                stayTime = 0f;
                 if (lastDest)
                     EndPatrol();
                 else 
@@ -51,6 +51,7 @@ public class PatrolController : MonoBehaviour
     {
         Debug.Log("Starting patrol");
         teammateController.curTeammateState = TeammateController.TeammateState.Patrolling;
+        teammateController.curDestination = TeammateController.Place.None;
 
         SetNextDestination();
         agent.speed = teammateController.GetWalkSpeed();

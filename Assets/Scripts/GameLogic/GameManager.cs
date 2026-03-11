@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour {
 	private float progressMeter = 0;  // 0-100
 	private float requiredProgressPerDay;
 	private float progressMadeToday = 0;
+	public ProjectProgress projectProgress;
 
 	// public List<Task> tasksOfTheDay = new();
 
@@ -69,9 +70,11 @@ public class GameManager : MonoBehaviour {
 	}
 
 	float CalculateSusIncrease() {
-		float modifier = Mathf.Pow(100f / MaxDays / requiredProgressPerDay, 2) - 1f;
-		float susIncrease = modifier * Mathf.Pow(curDay, 2.8f);
-		return Mathf.Max(0f, Mathf.Min(100f, susIncrease));
+		return 0;
+		// das ist irgendwie bullshit
+		// float modifier = Mathf.Pow(100f / MaxDays / requiredProgressPerDay, 2) - 1f;
+		// float susIncrease = modifier * Mathf.Pow(curDay, 2.8f);
+		// return Mathf.Max(0f, Mathf.Min(100f, susIncrease));
 	}
 
 	IEnumerator OnDayEnd() {

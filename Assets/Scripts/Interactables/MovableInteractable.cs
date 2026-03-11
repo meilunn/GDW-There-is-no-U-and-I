@@ -18,7 +18,7 @@ public class MovableInteractable : Interactable
         if (itemInHand == null)
         {
             //to be ignored by interaction
-            gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+            gameObject.layer = LayerMask.NameToLayer("Item In Hand");
             Transform hand = Player.Instance.PlayerHand;
             Place(hand);
             Player.Instance.ItemInHand = this;
