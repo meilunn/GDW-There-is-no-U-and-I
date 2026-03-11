@@ -9,6 +9,8 @@ public class Player : MonoBehaviour {
 
 	[SerializeField] private float playerSpeed = 10.0f;
 	[SerializeField] private float acceleration = 15.0f;
+	private Vector3 velocity;
+	private float verticalVelocity;
 
 	[Header("Camera")]
 	[SerializeField] private CinemachineCamera playerCam;
@@ -41,15 +43,13 @@ public class Player : MonoBehaviour {
 
 	public Transform PlayerHand;
 
-	private Vector3 velocity;
-	private float verticalVelocity;
+
 
 	private CharacterController controller;
 
 
-	private PlayerInput playerInput;
-
-	private InputAction movementAction, rotateAction, interactAction;
+	public Vector2 MoveInput;
+	public Vector2 LookInput;
 
 	public static Player Instance;
 
@@ -59,23 +59,7 @@ public class Player : MonoBehaviour {
 			return;
 		}
 		Instance = this;
-		playerInput = GetComponent<PlayerInput>();
 		controller = GetComponent<CharacterController>();
-		movementAction = playerInput.actions["Move"];
-		rotateAction = playerInput.actions["Look"];
-		interactAction = playerInput.actions["Interact"];
-	}
-
-	private void OnEnable() {
-		movementAction.Enable();
-		rotateAction.Enable();
-		interactAction.canceled += Interact;
-	}
-
-	private void OnDisable() {
-		rotateAction.Disable();
-		movementAction.Disable();
-		interactAction.canceled -= Interact;
 	}
 
 	private void Start() {
@@ -89,8 +73,7 @@ public class Player : MonoBehaviour {
 			velocity.y = 0f;
 		}
 
-		Vector2 moveInput = movementAction.ReadValue<Vector2>();
-		Vector3 motion = transform.forward * moveInput.y + transform.right * moveInput.x;
+		Vector3 motion = transform.forward * MoveInput.y + transform.right * MoveInput.x;
         motion.y = 0f;
         motion.Normalize();	
 
@@ -120,8 +103,7 @@ public class Player : MonoBehaviour {
 	}
 
 	private void Rotate() {
-		//horizontal rotation
-		var rotationInput = rotateAction.ReadValue<Vector2>() * rotationSpeed;  //rotation speed is sens
+		Vector2 rotationInput = new(LookInput.x * rotationSpeed, LookInput.y * rotationSpeed);
 		
 		// look up and down
         CameraPitch -= rotationInput.y;
@@ -166,7 +148,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	private void Interact(InputAction.CallbackContext context) {
+	public void Interact() {
 		if (!currentInteractable) return;
 		Interactable[] allInteractables = currentInteractable.gameObject.GetComponents<Interactable>();
 		foreach (Interactable i in allInteractables) {
