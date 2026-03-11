@@ -1369,6 +1369,37 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &528744909
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 528744910}
+  m_Layer: 0
+  m_Name: RaycastOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &528744910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528744909}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.52, z: 0.64}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1313274860}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &535398609
 Mesh:
   m_ObjectHideFlags: 0
@@ -4007,7 +4038,8 @@ Transform:
   m_LocalPosition: {x: -5.69, y: 1.62, z: 8.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 528744910}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &1313274861
@@ -4070,6 +4102,7 @@ MonoBehaviour:
     actThreshold: 0
     tryActInterval: 0
     probCurveExponent: 0
+  energyDecreaseScaleWhenWorking: 1
   bladderStatConfig:
     decrease: 0
     increase: 0
@@ -4083,12 +4116,23 @@ MonoBehaviour:
     tryActInterval: 0
     probCurveExponent: 0
   baseWalkSpeed: 3
-  walkSpeedenergyScale: 0
+  walkSpeedEnergyScale: 0
   walkSpeedBladderScale: 0
+  walkSpeedHungerScale: 0
   curDestination: 0
   workplace: {fileID: 1177701488}
   toilet: {fileID: 0}
   exit: {fileID: 0}
+  angle: 90
+  radius: 10
+  detectionThreshold: 100
+  pointsPerCheck: 0
+  traceAgainst:
+    serializedVersion: 2
+    m_Bits: 0
+  rayCastOrigin: {fileID: 528744910}
+  foodPreferences: []
+  energyPreferences: []
   teammateStateText: {fileID: 605183217}
   player: {fileID: 0}
 --- !u!1 &1350832341
