@@ -2,7 +2,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour {
-	private readonly List<Quest> quests = new();
+	public List<Quest> Quests { get; private set; } = new();
+	private readonly List<Quest> availableJobQuests = new();
+	private readonly List<Quest> availableSabotageQuests = new();
+
+	void Start() {
+		foreach(var quest in Resources.LoadAll<Quest>("Resources/Quests")) {
+			switch (quest.type) {
+				case QuestType.Job:
+					availableJobQuests.Add(quest);
+					break;
+				case QuestType.Sabotage:
+					availableSabotageQuests.Add(quest);
+					break;
+			}
+		}
+	}
 
 	/// <summary>
 	/// Completes an objective with the given id.
@@ -10,7 +25,7 @@ public class QuestManager : MonoBehaviour {
 	/// <param name="objectiveId"><see cref="ObjectiveId"/> of the completed <see cref="Objective"/>. </param>
 	/// <returns>true if an active objective was found and completed, false otherwise.</returns>
 	public bool CompleteObjective(ObjectiveId objectiveId, TeammateController owner) {
-		foreach (var quest in quests) {
+		foreach (var quest in Quests) {
 			if(!quest.IsActive) continue;
 			if(quest.CurrentObjective.id != objectiveId) continue;
 			if(quest.CurrentObjective.ownerRequired && quest.owner != owner) continue;
@@ -24,7 +39,7 @@ public class QuestManager : MonoBehaviour {
 	/// Clears all quests from the quest manager.
 	/// </summary>
 	public void ClearQuests() {
-		quests.Clear();
+		Quests.Clear();
 	}
 
 	/// <summary>
@@ -33,11 +48,11 @@ public class QuestManager : MonoBehaviour {
 	/// <param name="questId"></param>
 	/// <param name="owner"></param>
 	public void AddQuest(QuestId questId, TeammateController owner) {
-		if(quests.Exists(q => q.id == questId && q.owner == owner)) return;
+		if(Quests.Exists(q => q.id == questId && q.owner == owner)) return;
 
 		var quest = Instantiate(Resources.Load<Quest>($"Resources/Quests/{questId}"));
 		quest.owner = owner;
-		quests.Add(quest);
+		Quests.Add(quest);
 	}
 
 	/// <summary>
@@ -45,7 +60,7 @@ public class QuestManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="questId">ID of the quest to be started</param>
 	public void StartQuest(QuestId questId) {
-		var quest = quests.Find(q => q.id == questId);
+		var quest = Quests.Find(q => q.id == questId);
 		if(quest == null) {
 			Debug.LogError($"Tried to start quest {questId} but it was not found in the quest manager.");
 			return;

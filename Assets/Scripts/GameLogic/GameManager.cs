@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour {
 	void SetupNewDay() {
 		curDay++;
 		dayTime = dayStartTime;
+		progressMadeToday = 0;
 		OnDayStart?.Invoke();
 	}
 

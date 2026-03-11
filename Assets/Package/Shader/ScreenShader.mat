@@ -49,7 +49,7 @@ Material:
     - _Fullscreen_SrcColorBlend: 5
     - _Gamma: 1
     - _NdotL: 1
-    - _NormalsOutline: 0
+    - _NormalsOutline: 1
     - _Offset: 0
     - _OutlineColorMixer: 0
     - _OutlineSize: 1

@@ -12,11 +12,18 @@ public enum QuestState {
 	Completed
 }
 
+public enum QuestType {
+	Job,
+	Request,
+	Sabotage,
+}
+
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Quest")]
 public class Quest : ScriptableObject {
 	public QuestId id;
 	[NonSerialized] public TeammateController owner;
 
+	public QuestType type;
 	public int availableAsOfDay;
 	[SerializeField]
 	private float progressOnComplete = 0f;
@@ -24,7 +31,6 @@ public class Quest : ScriptableObject {
 	public string title;
 	public string description;
 	[Tooltip("Indicates whether this quest is a quest given to the player by their team during the standup meeting in the morning.")]
-	public bool isJobQuest;
 
 	public Objective[] objectives;
 	public QuestState State { get; private set; } = QuestState.NotStarted;
