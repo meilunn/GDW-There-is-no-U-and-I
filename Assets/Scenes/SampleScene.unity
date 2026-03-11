@@ -475,6 +475,61 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &201541366
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 201541368}
+  - component: {fileID: 201541367}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &201541367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201541366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f719c63f21670714fa8d44155cf0127d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  curGameState: 1
+  questManager: {fileID: 0}
+  MaxDays: 10000000
+  curDay: 1
+  dayTime: 0
+  dayStartTime: 0
+  dayEndTime: 84600
+  timeScale: 120
+  susMeter: 0
+  progressMeter: 0
+  projectProgress: {fileID: 11400000, guid: c627106112bb2ca47a9338401d1a0fa1, type: 2}
+--- !u!4 &201541368
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201541366}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -4009,16 +4064,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TeammateController
   initialTeammateState: 0
   curTeammateState: 0
-  drowsiness: 0
-  drowsinessIncrease: 0
-  bladder: 0
-  bladderIncrease: 0
+  energyStatConfig:
+    decrease: 0
+    increase: 0
+    actThreshold: 0
+    tryActInterval: 0
+    probCurveExponent: 0
+  bladderStatConfig:
+    decrease: 0
+    increase: 0
+    actThreshold: 0
+    tryActInterval: 0
+    probCurveExponent: 0
+  hungerStatConfig:
+    decrease: 0
+    increase: 0
+    actThreshold: 0
+    tryActInterval: 0
+    probCurveExponent: 0
   baseWalkSpeed: 3
-  walkSpeedDrowsinessScale: 0
+  walkSpeedenergyScale: 0
   walkSpeedBladderScale: 0
   curDestination: 0
   workplace: {fileID: 1177701488}
   toilet: {fileID: 0}
+  exit: {fileID: 0}
   teammateStateText: {fileID: 605183217}
   player: {fileID: 0}
 --- !u!1 &1350832341
@@ -4185,6 +4255,50 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3463464090902513031, guid: 17c1340f7f5917444bf0b57ff56b72bb, type: 3}
   m_PrefabInstance: {fileID: 1374499364}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1424111762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1424111764}
+  - component: {fileID: 1424111763}
+  m_Layer: 0
+  m_Name: QuestManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1424111763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424111762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c2960b4b20452459fd8d9e68c6c254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestManager
+--- !u!4 &1424111764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424111762}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1453582274
 GameObject:
   m_ObjectHideFlags: 0
@@ -7276,6 +7390,8 @@ SceneRoots:
   - {fileID: 941075394}
   - {fileID: 1313274860}
   - {fileID: 677380589}
+  - {fileID: 201541368}
+  - {fileID: 1424111764}
   - {fileID: 1902672105}
   - {fileID: 785843161}
   - {fileID: 1267732344}
