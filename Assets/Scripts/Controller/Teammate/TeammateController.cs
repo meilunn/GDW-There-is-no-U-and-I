@@ -41,6 +41,20 @@ public class TeammateController : MonoBehaviour
     public GameObject workplace;
     public GameObject toilet;
     public GameObject exit;
+    
+    [Header("Field of View params")] 
+    public float angle = 90f;
+    public float radius = 10f;
+    
+    [Header("Detection params")] 
+    public int detectionThreshold = 100;
+    public static int currentPoints;
+    [SerializeField]
+    private int pointsPerCheck;
+    [SerializeField]
+    private LayerMask traceAgainst;
+    private bool susDetected;
+    public Transform rayCastOrigin;
 
     public enum Place
     {
@@ -56,9 +70,6 @@ public class TeammateController : MonoBehaviour
 
     private NavMeshAgent agent;
     private PatrolController patrolController;
-
-
-    public GameObject player;
 
     private void Start()
     {
@@ -82,8 +93,8 @@ public class TeammateController : MonoBehaviour
         if (drowsiness >= 100 && curTeammateState != TeammateState.Sleeping)
             if (curTeammateState != TeammateState.AtWorkplace)
                 GoToDestination(Place.Workplace);
-        else if (bladder >= 100 && curTeammateState != TeammateState.Shitting)
-            GoToDestination(Place.Toilet);
+            else if (bladder >= 100 && curTeammateState != TeammateState.Shitting)
+                GoToDestination(Place.Toilet);
             
 
         switch (curTeammateState)
@@ -92,10 +103,11 @@ public class TeammateController : MonoBehaviour
                 if (drowsiness >= 100)
                 {
                     curTeammateState = TeammateState.Sleeping;
-
                     break;
                 }
-
+                
+                
+                DetectHand();
                 // for testing: start patrol after 5 secs of working
                 time += Time.deltaTime;  // TODO: randomise going to patrol
 
@@ -105,9 +117,9 @@ public class TeammateController : MonoBehaviour
                     patrolController.StartPatrol();    
                 }
                 break;
-            
             case TeammateState.GoingToDestination:
                 // if agent hasn't arrived at dest
+                DetectHand();
                 if (agent.remainingDistance > 0.1f) break; 
 
                 // else
@@ -142,8 +154,55 @@ public class TeammateController : MonoBehaviour
                 drowsiness -= drowsinessDecrease * Time.deltaTime;
 
                 break;
+            default:
+                DetectHand();
+                break;
         } 
     }
+     private void DetectHand()
+    {   //TODO: optionally, change amount of current/needed detect-points depending on sleepiness
+        susDetected = false;
+        Vector3 handPosition = Player.Instance.PlayerHand.position;
+        Vector3 distanceToHand = handPosition - transform.position;
+        if (distanceToHand.magnitude <= radius)
+        {
+            if (Vector3.Dot(distanceToHand.normalized, transform.forward) > Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad))
+            {
+                RaycastHit hit;
+                
+                Vector3 direction = handPosition - rayCastOrigin.position;
+               
+                if (Physics.Raycast(rayCastOrigin.position, direction, out hit, traceAgainst))
+                {
+                    Debug.Log(hit.collider.gameObject.name);
+                    if (hit.collider.TryGetComponent<MovableInteractable>(out MovableInteractable detectedItem) && detectedItem == Player.Instance.ItemInHand && detectedItem.isSuspicious)
+                    {
+                        Debug.DrawRay(rayCastOrigin.position, direction, Color.green);
+                        susDetected = true;
+                        currentPoints += (int)Math.Ceiling(pointsPerCheck * Time.deltaTime * 4);
+                        Debug.Log(currentPoints);
+                        if (currentPoints >= detectionThreshold)
+                        {
+                            //TODO: Loose condition
+                            Debug.Log("Player would loose here because sus item was detected");
+                            currentPoints = 0;
+                        }
+                    }
+                    else
+                    {
+                        susDetected = false;
+                        Debug.DrawRay(rayCastOrigin.position, direction, Color.red);
+                        if (currentPoints > 0) currentPoints -= (int)Math.Ceiling(1 * Time.deltaTime);
+                    }
+                }
+            }
+            else
+            {
+                if (currentPoints > 0) currentPoints -= (int)Math.Ceiling(1 * Time.deltaTime);
+            }
+        }
+    }
+    
 
     public float GetWalkSpeed()
     {
@@ -193,5 +252,11 @@ public class TeammateController : MonoBehaviour
         Gizmos.color = Color.gray;
 
         Gizmos.DrawCube(workplace.transform.position, new Vector3(0.4f, 0.4f, 0.4f));
+        
+        //FoV
+        Color c = new Color(0, 0, 0.6f, 0.4f);
+        UnityEditor.Handles.color = c;
+        Vector3 rotatedForward = Quaternion.Euler(0, -angle * 0.5f, 0) * transform.forward;
+        UnityEditor.Handles.DrawSolidArc(rayCastOrigin.position, Vector3.up,rotatedForward, angle, radius);
     }
 }
