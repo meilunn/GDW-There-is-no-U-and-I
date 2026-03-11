@@ -7,23 +7,25 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour {
 	[Header("Movement")]
 
-	[SerializeField]
-
-	private float playerSpeed = 10.0f;
+	[SerializeField] private float playerSpeed = 10.0f;
+	[SerializeField] private float acceleration = 15.0f;
 
 	[Header("Camera")]
+	[SerializeField] private CinemachineCamera playerCam;
 	[SerializeField] private Transform eyes;
 	[SerializeField] private float minPitch = -45f;
 	[SerializeField] private float maxPitch = 75f;
-	private float cameraPitch = 0f;
-	private float rotationSpeed = 20.0f;
+	private float cameraPitch;
+	public float CameraPitch
+	{
+		get => cameraPitch;
+		set => cameraPitch = Mathf.Clamp(value, minPitch, maxPitch);
+	}
+	[SerializeField] private float rotationSpeed = 1f;
 
 	[Header("Gravity")]
 
-	[SerializeField]
-	private float gravityValue = -9.81f;
-	[SerializeField]
-	private float mass = 5.0f;
+	[SerializeField] private float gravityScale = 3f;
 
 
 	[Header("Interaction")]
@@ -40,10 +42,10 @@ public class Player : MonoBehaviour {
 	public Transform PlayerHand;
 
 	private Vector3 velocity;
+	private float verticalVelocity;
 
 	private CharacterController controller;
 
-	private Transform cameraMain;
 
 	private PlayerInput playerInput;
 
@@ -58,7 +60,7 @@ public class Player : MonoBehaviour {
 		}
 		Instance = this;
 		playerInput = GetComponent<PlayerInput>();
-		controller = gameObject.GetComponent<CharacterController>();
+		controller = GetComponent<CharacterController>();
 		movementAction = playerInput.actions["Move"];
 		rotateAction = playerInput.actions["Look"];
 		interactAction = playerInput.actions["Interact"];
@@ -78,7 +80,7 @@ public class Player : MonoBehaviour {
 
 	private void Start() {
 		Cursor.lockState = CursorLockMode.Locked;
-		cameraMain = Camera.main.transform;
+		Cursor.visible = false;
 	}
 
 
@@ -86,35 +88,56 @@ public class Player : MonoBehaviour {
 		if (controller.isGrounded && velocity.y < 0) {
 			velocity.y = 0f;
 		}
-		Vector2 movement = movementAction.ReadValue<Vector2>();
-		Vector3 move = new Vector3(movement.x, 0f, movement.y);
 
-		move = transform.forward * move.z + transform.right * move.x;
-		move.y = 0f;
-		controller.Move((move + velocity) * Time.deltaTime * playerSpeed);
+		Vector2 moveInput = movementAction.ReadValue<Vector2>();
+		Vector3 motion = transform.forward * moveInput.y + transform.right * moveInput.x;
+        motion.y = 0f;
+        motion.Normalize();	
 
+		if (motion.sqrMagnitude >= 0.01f)
+            velocity = Vector3.MoveTowards(
+                velocity,
+                motion * playerSpeed,
+                acceleration * Time.deltaTime
+            );
+        else
+            velocity = Vector3.MoveTowards(
+                velocity,
+                Vector3.zero,
+                acceleration * Time.deltaTime
+            );
 
+		if (controller.isGrounded && verticalVelocity <= 0.01f)
+            // important if climbing stairs to keep player stuck to ground
+            verticalVelocity = -3f;
+        else
+            // otherwise player will not fall down fast enough
+            verticalVelocity += Physics.gravity.y * gravityScale * Time.deltaTime;
+
+		Vector3 actualVelocity = new(velocity.x, 0f, velocity.z);
+
+		controller.Move(actualVelocity * Time.deltaTime);
 	}
 
 	private void Rotate() {
 		//horizontal rotation
-		var rotationInput = rotateAction.ReadValue<Vector2>();
-		Vector3 startingRotation = transform.rotation.eulerAngles;
-		Quaternion rotation = Quaternion.Euler(startingRotation.x, startingRotation.y + rotationInput.x, startingRotation.z);
-		transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+		var rotationInput = rotateAction.ReadValue<Vector2>() * rotationSpeed;  //rotation speed is sens
+		
+		// look up and down
+        CameraPitch -= rotationInput.y;
+        playerCam.transform.localRotation = Quaternion.Euler(CameraPitch, 0f, 0f);
 
-		//vertical rotation
-		cameraPitch -= rotationInput.y * rotationSpeed * Time.deltaTime;
-		cameraPitch = Mathf.Clamp(cameraPitch, minPitch, maxPitch);
-		Quaternion targetPitch = Quaternion.Euler(cameraPitch, 0f, 0f);
-		eyes.localRotation = Quaternion.Lerp(eyes.localRotation, targetPitch, Time.deltaTime * rotationSpeed);
+        // look left and right
+        transform.Rotate(Vector3.up * rotationInput.x);
 	}
 
 
 	private void Update() {
+		Move();
 		Rotate();
+
 		RaycastHit hit;
-		if (Physics.Raycast(cameraMain.position, cameraMain.forward, out hit, interactionRange, traceAgainst)) {
+		if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, interactionRange, traceAgainst)) {
 			Collider coll = hit.collider;
 			Interactable newInteractable = coll.GetComponent<Interactable>();
 			if(newInteractable == null && currentInteractable) {
@@ -141,15 +164,6 @@ public class Player : MonoBehaviour {
 			newInteractable.TurnInteractable(true);
 			currentInteractable = newInteractable;
 		}
-	}
-	void FixedUpdate() {
-		UpdateGravity();
-		Move();
-	}
-
-	void UpdateGravity() {
-		var gravity = Physics.gravity * mass * Time.deltaTime;
-		velocity.y = controller.isGrounded ? -1f : gravity.y;
 	}
 
 	private void Interact(InputAction.CallbackContext context) {
