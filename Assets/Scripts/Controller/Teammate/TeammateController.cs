@@ -93,8 +93,8 @@ public class TeammateController : MonoBehaviour
         if (drowsiness >= 100 && curTeammateState != TeammateState.Sleeping)
             if (curTeammateState != TeammateState.AtWorkplace)
                 GoToDestination(Place.Workplace);
-            else if (bladder >= 100 && curTeammateState != TeammateState.Shitting)
-                GoToDestination(Place.Toilet);
+        else if (bladder >= 100 && curTeammateState != TeammateState.Shitting)
+            GoToDestination(Place.Toilet);
             
 
         switch (curTeammateState)
@@ -180,7 +180,6 @@ public class TeammateController : MonoBehaviour
                         Debug.DrawRay(rayCastOrigin.position, direction, Color.green);
                         susDetected = true;
                         currentPoints += (int)Math.Ceiling(pointsPerCheck * Time.deltaTime * 4);
-                        Debug.Log(currentPoints);
                         if (currentPoints >= detectionThreshold)
                         {
                             //TODO: Loose condition
