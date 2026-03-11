@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -382,6 +383,19 @@ public class TeammateController : MonoBehaviour
     private EdibleData.EdibleType ChooseEdible(List<EdiblePreference> preferences)
     {
         //TODO
+        
+        float totalWeight = preferences.Sum(preference => preference.weight);
+
+        float random = Random.Range(0, totalWeight);
+
+        foreach (var p in preferences)
+        {
+            random -= p.weight;
+
+            if (random <= 0)
+                return p.type;
+        }
+
         return EdibleData.EdibleType.Coffee;
     }
 }
