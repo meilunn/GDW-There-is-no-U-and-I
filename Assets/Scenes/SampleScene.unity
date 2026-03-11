@@ -1931,8 +1931,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 677380589}
-  - component: {fileID: 677380591}
-  - component: {fileID: 677380590}
   m_Layer: 0
   m_Name: --------Managers--------
   m_TagString: Untagged
@@ -1955,40 +1953,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &677380590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 677380588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7c2960b4b20452459fd8d9e68c6c254, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestManager
---- !u!114 &677380591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 677380588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f719c63f21670714fa8d44155cf0127d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  curGameState: 2
-  questManager: {fileID: 677380590}
-  MaxDays: 100
-  curDay: 0
-  dayTime: 0
-  dayStartTime: 0
-  dayEndTime: 86400
-  timeScale: 120
-  susMeter: 0
-  progressMeter: 0
 --- !u!1 &774844277
 GameObject:
   m_ObjectHideFlags: 0
