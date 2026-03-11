@@ -23,8 +23,8 @@ public class TeammateController : MonoBehaviour
 
     /// <summary>
     /// Properties:
-    /// <para><b>decrease</b>: Constant decrease</para>
-    /// <para><b>increase</b>: Constant increase</para>
+    /// <para><b>decrease</b>: Base constant decrease</para>
+    /// <para><b>increase</b>: Base constant increase</para>
     /// <para><b>actThreshold</b>: Acting on low stat only possible below threshold</para>
     /// <para><b>tryActInterval</b>: Check/Roll for acting every x seconds</para>
     /// <para><b>probCurveExponent</b>: Probability for acting grows exponentially towards 0 stat</para>
@@ -32,10 +32,15 @@ public class TeammateController : MonoBehaviour
     [Serializable]
     public struct StatConfig
     {
+        [Tooltip("Base constant decrease")]
         public float decrease;
+        [Tooltip("Base constant increase")]
         public float increase;
+        [Tooltip("Acting on low stat only possible below threshold")]
         [Range(1f, 100f)] public float actThreshold;
+        [Tooltip("Check/Roll for acting every x seconds")]
         public float tryActInterval;
+        [Tooltip("Probability for acting grows exponentially towards 0 stat")]
         [Range(1f, 5f)] public float probCurveExponent;  // 1 = linear
     }
 
