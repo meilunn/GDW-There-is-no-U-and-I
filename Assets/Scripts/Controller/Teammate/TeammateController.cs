@@ -16,7 +16,8 @@ public class TeammateController : MonoBehaviour
         Sleeping,
         Shitting,
         Patrolling,
-        GoingToDestination
+        GoingToDestination,
+        Yapping
 
         // TODO: add AtToilet
     }
@@ -43,6 +44,43 @@ public class TeammateController : MonoBehaviour
         [Tooltip("Probability for acting grows exponentially towards 0 stat")]
         [Range(1f, 5f)] public float probCurveExponent;  // 1 = linear
     }
+    
+    [Serializable]
+    public struct YapConfig
+    {
+        [Header("Detection")]
+        [Tooltip("How close teammates must be to trigger a yap check")]
+        public float detectionRadius;
+        [Tooltip("How often (seconds) a patrolling teammate scans for nearby teammates")]
+        public float checkInterval;
+
+        [Header("Probability")]
+        [Tooltip("Chance to start yapping when two patrollers meet")]
+        [Range(0f, 1f)] public float probabilityPatrollerToPatroller;
+        [Tooltip("Chance a patroller starts yapping at a working teammate")]
+        [Range(0f, 1f)] public float probabilityPatrollerToWorker;
+
+        [Header("Duration")]
+        [Tooltip("Base duration of a yap conversation (seconds)")]
+        public float duration;
+        [Tooltip("Random ± offset so conversations vary in length")]
+        public float durationVariance;
+
+        [Header("Stat Effects")]
+        [Tooltip("Fun gained per second while yapping")]
+        public float funIncrease;
+
+        [Header("Disturbance (for the working teammate)")]
+        [Tooltip("Work efficiency multiplier while being yapped at (e.g. 0.5 = half)")]
+        [Range(0f, 1f)] public float disturbedEfficiencyScale;
+        [Tooltip("How long the productivity penalty lingers after the yap ends (seconds)")]
+        public float disturbedDuration;
+
+        [Header("Cooldown")]
+        [Tooltip("After a yap ends, this teammate can't yap again for this many seconds")]
+        public float globalCooldown;
+        
+    }
 
     [Header("State")]
     public TeammateState initialTeammateState = TeammateState.AtWorkplace;
@@ -51,6 +89,8 @@ public class TeammateController : MonoBehaviour
     [Header("Stats")]
     public StatConfig energyStatConfig = new();
     [Range(1f, 10f)] public float energyDecreaseScaleWhenWorking;
+    [Range(-10f, 10f)]public float energyYappingScale;
+    
     private float energy;
     private float energyActCooldown;
 
@@ -61,8 +101,20 @@ public class TeammateController : MonoBehaviour
     public StatConfig hungerStatConfig = new();
     private float hunger;
     private float hungerActCooldown;
+    
+    public StatConfig funStatConfig = new();
+    private float fun;
+    private float funActCooldown;
 
-
+    [Header("Yapping params")]
+    public YapConfig yapConfig = new();
+    private float yapCheckCooldown;
+    private float yapTimer;
+    private float yapGlobalCooldownTimer;
+    private float yapDisturbedTimer;
+    private bool isDisturbed;
+    private TeammateController yapPartner;
+    
     [Header("Walking")]
     public float baseWalkSpeed;
     public float walkSpeedEnergyScale;
@@ -117,13 +169,14 @@ public class TeammateController : MonoBehaviour
     public float baseWorkEfficiency;
     private float curWorkEfficiency;
 
+    
     [Header("Patrol params")]
     [Tooltip("Rolls for going to patrol every x minutes in game")]
     public int patrolCheckInterval;
     private double lastPatrolCheckTime;
     [Tooltip("Probability of going on patrol when rolling")]
     [Range(0f, 1f)] public float patrolProbability;
-
+    
     private GameManager gameManager;
     private NavMeshAgent agent;
     private PatrolController patrolController;
@@ -144,6 +197,8 @@ public class TeammateController : MonoBehaviour
     private void Update()
     {
         UpdateStats();
+        UpdateYapping();
+        UpdateDisturbance();
         UpdateUI();
 
         switch (curTeammateState)
@@ -173,19 +228,6 @@ public class TeammateController : MonoBehaviour
                     lastProgressMadeTime = gameManager.dayTime;
                 }
 
-                // go patrol? 
-                int patrolCheckIntervallInSec = patrolCheckInterval * 60;
-                if (gameManager.dayTime >= lastPatrolCheckTime + patrolCheckIntervallInSec)
-                {
-                    Debug.Log("Go patrol check");
-
-                    if (Random.value < patrolProbability) 
-                        patrolController.StartPatrol();
-                    
-                    lastPatrolCheckTime = gameManager.dayTime;
-                }
-
-
                 break;
 
             case TeammateState.GoingToDestination:
@@ -204,11 +246,11 @@ public class TeammateController : MonoBehaviour
                         lastPatrolCheckTime = gameManager.dayTime;
 
                         break;
-                    case Place.Toilet: 
+                    case Place.Toilet:
                         // TODO: do something after arrived at toilet
 
                         break;
-                    case Place.Exit: 
+                    case Place.Exit:
                         // TODO: do something after arrived at exit
 
                         break;
@@ -226,12 +268,17 @@ public class TeammateController : MonoBehaviour
                 }
 
                 break;
-
+            case TeammateState.Yapping:
+                break;
+            case TeammateState.Patrolling:
+                DetectHand();
+                TryStartYapping();
+                break;
             default:
                 DetectHand();
                 break;
 
-            // TODO: other states? 
+            // TODO: other states?
         }
     }
 
@@ -286,19 +333,31 @@ public class TeammateController : MonoBehaviour
     /// </summary>
     private void UpdateStats()
     {
-        if (curTeammateState == TeammateState.AtWorkplace)
-            energy -= energyStatConfig.decrease * energyDecreaseScaleWhenWorking * Time.deltaTime;
-        else if (curTeammateState == TeammateState.Sleeping)
-            energy += energyStatConfig.increase * Time.deltaTime;
-        else
-            energy -= energyStatConfig.decrease * Time.deltaTime;
+        
+        switch (curTeammateState)
+        {
+            case TeammateState.AtWorkplace:
+                energy -= energyStatConfig.decrease * energyDecreaseScaleWhenWorking * Time.deltaTime;
+                break;
+            case TeammateState.Sleeping:
+                energy += energyStatConfig.increase * Time.deltaTime;
+                break;
+            case TeammateState.Yapping:
+                energy += energyStatConfig.increase * energyYappingScale * Time.deltaTime;
+                break;
+            default:
+                energy -= energyStatConfig.decrease * Time.deltaTime;
+                break;
+        }
 
         bladder -= bladderStatConfig.decrease * Time.deltaTime;
         hunger -= hungerStatConfig.decrease * Time.deltaTime;
+        fun -= funStatConfig.decrease * Time.deltaTime;
 
         energy = Mathf.Clamp(energy, 0f, 100f);
         bladder = Mathf.Clamp(bladder, 0f, 100f);
         hunger = Mathf.Clamp(hunger, 0f, 100f);
+        fun = Mathf.Clamp(fun, 0f, 100f);
 
         if (curTeammateState == TeammateState.Sleeping) return;
         // try acting on low stat if cooldown reached & not sleeping
@@ -324,6 +383,16 @@ public class TeammateController : MonoBehaviour
             hungerActCooldown = hungerStatConfig.tryActInterval;
             if (TryActOnStat(hunger, hungerStatConfig))
                 OnLowHunger();
+        }
+
+        funActCooldown -= Time.deltaTime;
+        if (funActCooldown <= 0f)
+        {
+            funActCooldown = funStatConfig.tryActInterval;
+            if (TryActOnStat(fun, funStatConfig))
+            {
+                OnLowFun();
+            }
         }
     }
 
@@ -366,6 +435,166 @@ public class TeammateController : MonoBehaviour
 
         }
     }
+
+    private void OnLowFun()
+    {
+        Debug.Log("Acting on low fun");
+
+        if (curTeammateState != TeammateState.AtWorkplace)
+            return;
+
+        patrolController.StartPatrol();
+    }
+    
+    #region Yapping
+
+    /// <summary>
+    /// Called every frame from Patrolling state. Scans for nearby teammates to yap with.
+    /// Only the patrolling teammate initiates — this avoids double-triggering.
+    /// </summary>
+    private void TryStartYapping()
+    {
+        // Global cooldown still active
+        if (yapGlobalCooldownTimer > 0f) return;
+
+        // Periodic check
+        yapCheckCooldown -= Time.deltaTime;
+        if (yapCheckCooldown > 0f) return;
+        yapCheckCooldown = yapConfig.checkInterval;
+
+        foreach (var other in GameManager.instance.teammates)
+        {
+            if (other == this) continue;
+            if (other == null) continue;
+
+            // Don't yap with someone who's already yapping or on global cooldown
+            if (other.curTeammateState == TeammateState.Yapping) continue;
+            if (other.yapGlobalCooldownTimer > 0f) continue;
+
+            // Only yap with patrollers or workers
+            if (other.curTeammateState != TeammateState.Patrolling &&
+                other.curTeammateState != TeammateState.AtWorkplace)
+                continue;
+
+            float dist = Vector3.Distance(transform.position, other.transform.position);
+            if (dist > yapConfig.detectionRadius) continue;
+
+            // Yap probability
+            float prob = other.curTeammateState == TeammateState.Patrolling
+                ? (yapConfig.probabilityPatrollerToPatroller + other.yapConfig.probabilityPatrollerToPatroller)/2
+                : (yapConfig.probabilityPatrollerToWorker + other.yapConfig.probabilityPatrollerToWorker)/2;
+            
+
+            if (Random.value > prob) continue;
+
+            // Success — start yapping!
+            BeginYapping(other);
+            return; // Only one conversation at a time
+        }
+    }
+
+    /// <summary>
+    /// Initiates a yap conversation between this teammate and the given partner.
+    /// </summary>
+    private void BeginYapping(TeammateController other)
+    {
+        float duration = (yapConfig.duration + other.yapConfig.duration)/2 + Random.Range(-yapConfig.durationVariance, yapConfig.durationVariance);
+        duration = Mathf.Max(duration, 0.5f); // At least half a second
+
+        bool otherWasWorking = other.curTeammateState == TeammateState.AtWorkplace;
+
+        Debug.Log($"{gameObject.name} starts yapping with {other.gameObject.name} " +
+                  $"(duration: {duration:F1}s, other was working: {otherWasWorking})");
+        
+        EnterYappingState(other, duration);
+        other.EnterYappingState(this, duration);
+
+        if (otherWasWorking)
+            other.isDisturbed = true;
+    }
+
+    /// <summary>
+    /// Puts this teammate into the Yapping state with the given partner and timer.
+    /// </summary>
+    private void EnterYappingState(TeammateController partner, float duration)
+    {
+        // Remember previous state so PatrolController can be paused
+        yapPartner = partner;
+        yapTimer = duration;
+
+        // Stop NavMesh movement
+        agent.isStopped = true;
+
+        curTeammateState = TeammateState.Yapping;
+    }
+
+    /// <summary>
+    /// Ticked every frame. Counts down yap timer, applies fun increase,
+    /// and ends the conversation when time is up.
+    /// </summary>
+    private void UpdateYapping()
+    {
+        // Tick global cooldown regardless of state
+        if (yapGlobalCooldownTimer > 0f)
+            yapGlobalCooldownTimer -= Time.deltaTime;
+
+        if (curTeammateState != TeammateState.Yapping) return;
+
+        // Increase fun while yapping
+        fun += yapConfig.funIncrease * Time.deltaTime;
+        fun = Mathf.Clamp(fun, 0f, 100f);
+
+        yapTimer -= Time.deltaTime;
+        if (yapTimer <= 0f)
+            EndYapping();
+    }
+
+    /// <summary>
+    /// Ends this teammate's yapping session and returns them to their previous activity.
+    /// </summary>
+    private void EndYapping()
+    {
+        Debug.Log($"{gameObject.name} stops yapping");
+
+        // Start global cooldown
+        yapGlobalCooldownTimer = yapConfig.globalCooldown;
+
+        // Resume movement
+        agent.isStopped = false;
+
+        // If this teammate was disturbed (i.e. was working), start the linger timer
+        if (isDisturbed)
+        {
+            yapDisturbedTimer = yapConfig.disturbedDuration;
+            // isDisturbed stays true until the linger timer expires
+        }
+
+        yapPartner = null;
+
+        // Return to appropriate state:
+        // If patrol was in progress, resume patrol; otherwise go back to workplace
+        if (patrolController.IsPatrolInProgress())
+            curTeammateState = TeammateState.Patrolling;
+        else
+            GoToDestination(Place.Workplace);
+    }
+
+    /// <summary>
+    /// Ticks the post-yap disturbance timer. While active, work efficiency is reduced.
+    /// </summary>
+    private void UpdateDisturbance()
+    {
+        if (!isDisturbed) return;
+
+        yapDisturbedTimer -= Time.deltaTime;
+        if (yapDisturbedTimer <= 0f)
+        {
+            isDisturbed = false;
+            Debug.Log($"{gameObject.name} is no longer disturbed");
+        }
+    }
+
+    #endregion
 
     private void CheckTableFor()
     {
@@ -430,10 +659,19 @@ public class TeammateController : MonoBehaviour
         energy = 100f;
         bladder = 100f;
         hunger = 100f;
+        fun = 100f;
 
         energyActCooldown = 0f;
         bladderActCooldown = 0f;
         hungerActCooldown = 0f;
+        funActCooldown = 0f;
+        
+        yapCheckCooldown = 0f;
+        yapTimer = 0f;
+        yapGlobalCooldownTimer = 0f;
+        yapDisturbedTimer = 0f;
+        isDisturbed = false;
+        yapPartner = null;
     }
 
     private void UpdateUI()

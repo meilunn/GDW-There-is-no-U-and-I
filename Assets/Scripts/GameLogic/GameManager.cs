@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour {
 	private float requiredProgressPerDay;
 	private float progressMadeToday = 0;
 	public ProjectProgress projectProgress;
+	
+	public TeammateController[] teammates;
 
 	// public List<Task> tasksOfTheDay = new();
 
@@ -56,6 +58,8 @@ public class GameManager : MonoBehaviour {
 
 	void Start() {
 		SetupNewDay();
+		if (teammates == null || teammates.Length == 0)
+			teammates = FindObjectsByType<TeammateController>(FindObjectsSortMode.None);
 	}
 
 	void Update() {

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0eb4aff5ac2429e83d791cd1fe6636c, type: 3}
   m_Name: Shitting_Joy
   m_EditorClassIdentifier: Assembly-CSharp::Bark
-  barkText: Hey loser! I need food ASAP!
+  barkText: Gotta powder my nose real quick.
   voiceClip: {fileID: 0}
   character: 4
