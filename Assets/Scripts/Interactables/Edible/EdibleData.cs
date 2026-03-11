@@ -13,7 +13,6 @@ public class EdibleData : ScriptableObject
     public enum EdibleType
     {
         Coffee,
-        DecafCoffee,
         Sandwich,
         EnergyDrink
     }
