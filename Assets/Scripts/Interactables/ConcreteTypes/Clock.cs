@@ -56,5 +56,6 @@ public class Clock : Interactable {
 		yield return new WaitForSeconds(timeChangeEffectDuration);
 		if (GameManager.instance.curDay != day) yield break;  // if the day has changed since the time change started, don't change the time again
 		yield return DOTween.To(x => activeTimeOffset = x, activeTimeOffset, 43200, (43200-timeOffset) * 2 / timeChangePerSecond).SetEase(Ease.Linear).WaitForCompletion();
+		activeTimeOffset = 0;
 	}
 }
