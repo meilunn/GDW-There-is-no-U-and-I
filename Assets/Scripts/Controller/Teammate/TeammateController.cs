@@ -93,8 +93,8 @@ public class TeammateController : MonoBehaviour
         if (drowsiness >= 100 && curTeammateState != TeammateState.Sleeping)
             if (curTeammateState != TeammateState.AtWorkplace)
                 GoToDestination(Place.Workplace);
-        else if (bladder >= 100 && curTeammateState != TeammateState.Shitting)
-            GoToDestination(Place.Toilet);
+            else if (bladder >= 100 && curTeammateState != TeammateState.Shitting)
+                GoToDestination(Place.Toilet);
             
 
         switch (curTeammateState)
@@ -105,8 +105,6 @@ public class TeammateController : MonoBehaviour
                     curTeammateState = TeammateState.Sleeping;
                     break;
                 }
-                
-                
                 DetectHand();
                 // for testing: start patrol after 5 secs of working
                 time += Time.deltaTime;  // TODO: randomise going to patrol
