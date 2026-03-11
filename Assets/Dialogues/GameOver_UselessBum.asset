@@ -10,26 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a09710a68f3b04843a405d33a0731aa3, type: 3}
-  m_Name: StandUp_DayOne
+  m_Name: GameOver_UselessBum
   m_EditorClassIdentifier: Assembly-CSharp::Dialogue
   dialogues:
-  - dialogueText: Good morning everyone, as you all know the Game Jam is starting
-      today. I hope you are all ready to win once again. I expect top performance
-      from all of you!
+  - dialogueText: "You haven\u2019t managed to complete the easiest tasks here, you\u2019re
+      never gonna make it.\r\nI didn\u2019t have a lot of expectations of you, but
+      you managed to disappoint me either way. You should learn a thing or two from
+      my niece.\r\n"
     voiceClip: {fileID: 0}
     character: 2
-  - dialogueText: Alrighty boss!
-    voiceClip: {fileID: 0}
-    character: 5
-  - dialogueText: 'Joy
-
-      Yay my first project! Thanks for this amazing opportunity
-      uncle :D'
-    voiceClip: {fileID: 0}
-    character: 4
-  - dialogueText: 'Let''s just get this meeting over with and get to work. '
+  - dialogueText: One less disturbance to my peace.
     voiceClip: {fileID: 0}
     character: 3
-  - dialogueText: Yeah, sure...
+  - dialogueText: I really liked working with you, but some things are not meant
+      to be.
     voiceClip: {fileID: 0}
-    character: 1
+    character: 5
+  - dialogueText: Bye-bye :P
+    voiceClip: {fileID: 0}
+    character: 4

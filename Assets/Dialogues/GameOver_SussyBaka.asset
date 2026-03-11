@@ -10,26 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a09710a68f3b04843a405d33a0731aa3, type: 3}
-  m_Name: StandUp_DayOne
+  m_Name: GameOver_SussyBaka
   m_EditorClassIdentifier: Assembly-CSharp::Dialogue
   dialogues:
-  - dialogueText: Good morning everyone, as you all know the Game Jam is starting
-      today. I hope you are all ready to win once again. I expect top performance
-      from all of you!
+  - dialogueText: What the hell are you even doing? I knew I made a mistake giving
+      a chance to someone like you.
     voiceClip: {fileID: 0}
     character: 2
-  - dialogueText: Alrighty boss!
-    voiceClip: {fileID: 0}
-    character: 5
-  - dialogueText: 'Joy
-
-      Yay my first project! Thanks for this amazing opportunity
-      uncle :D'
-    voiceClip: {fileID: 0}
-    character: 4
-  - dialogueText: 'Let''s just get this meeting over with and get to work. '
+  - dialogueText: "Not doing shit and then causing me more overtime? Wow that\u2019s
+      low man."
     voiceClip: {fileID: 0}
     character: 3
-  - dialogueText: Yeah, sure...
+  - dialogueText: How could you do this to us? To ME?
     voiceClip: {fileID: 0}
-    character: 1
+    character: 5
+  - dialogueText: I knew you were a loser.
+    voiceClip: {fileID: 0}
+    character: 4
