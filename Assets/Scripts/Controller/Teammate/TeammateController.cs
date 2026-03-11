@@ -139,10 +139,11 @@ public class TeammateController : MonoBehaviour
 
                         break;
                     case Place.Toilet: 
-                        CheckToiletPaper();
+                        // TODO: do something after arrived at toilet
 
                         break;
                     case Place.Exit: 
+                        // TODO: do something after arrived at exit
                         
 
                         break;
@@ -160,6 +161,8 @@ public class TeammateController : MonoBehaviour
                 energy -= energyStatConfig.decrease * Time.deltaTime;
 
                 break;
+
+            // TODO: other states? 
         } 
     }
 
@@ -172,7 +175,7 @@ public class TeammateController : MonoBehaviour
             energy -= energyStatConfig.decrease * energyDecreaseScaleWhenWorking * Time.deltaTime;
         else 
             energy -= energyStatConfig.decrease * Time.deltaTime;
-            
+
         bladder -= bladderStatConfig.decrease * Time.deltaTime;
         hunger -= hungerStatConfig.decrease * Time.deltaTime;
 
@@ -250,34 +253,25 @@ public class TeammateController : MonoBehaviour
         switch(place)
         {
             case Place.Workplace: 
-                Debug.Log("Going to workplace");
-
                 agent.SetDestination(workplace.transform.position);
                 break; 
             
             case Place.Toilet: 
-                Debug.Log("Going to toilet");
-
                 agent.SetDestination(toilet.transform.position);
                 break;
 
-            case Place.Exit: 
-                Debug.Log("Going to Exit");
-
+            case Place.Exit:
                 agent.SetDestination(exit.transform.position);
                 break; 
-        }        
-    }
-    
-    private void CheckToiletPaper()
-    {
-        // TODO: 
-        throw new NotImplementedException();
+        }
+        
+        Debug.Log($"Going to destination: {curDestination}");
     }
 
     private void UpdateUI()
     {
         teammateStateText.text = $"Teammate state: {curTeammateState}";
+        // TODO: 
     }
 
     // Draw places
