@@ -5,6 +5,9 @@ public class PlaceSlot: MonoBehaviour
     public MovableInteractable.Type itemsAllowed;
     public bool isTaken;
     public MovableInteractable item;
+	public delegate void PlaceSlotEvent(MovableInteractable item);
+	public event PlaceSlotEvent OnItemRemoved;
+	public event PlaceSlotEvent OnItemPlaced;
 
     private void Start()
     {
@@ -29,6 +32,7 @@ public class PlaceSlot: MonoBehaviour
         item = newItem;
         item.OnItemTaken += TakeItem;
         item.PlaceInWorld(gameObject.transform);
+		OnItemPlaced?.Invoke(item);
     }
 
     public void TakeItem()
@@ -36,6 +40,7 @@ public class PlaceSlot: MonoBehaviour
         item.OnItemTaken -= TakeItem;
         item = null;
         isTaken = false;
+		OnItemRemoved?.Invoke(item);
     }
 
     public void TakeItem(MovableInteractable itemToTake)

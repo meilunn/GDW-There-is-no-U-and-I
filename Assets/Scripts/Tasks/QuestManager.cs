@@ -35,7 +35,7 @@ public class QuestManager : MonoBehaviour {
 	public void AddQuest(QuestId questId, TeammateController owner) {
 		if(quests.Exists(q => q.id == questId && q.owner == owner)) return;
 
-		var quest = Instantiate(Resources.Load<Quest>($"Quests/{questId}"));
+		var quest = Instantiate(Resources.Load<Quest>($"Resources/Quests/{questId}"));
 		quest.owner = owner;
 		quests.Add(quest);
 	}
