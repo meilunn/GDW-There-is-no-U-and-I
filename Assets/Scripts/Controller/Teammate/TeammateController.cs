@@ -43,6 +43,7 @@ public class TeammateController : MonoBehaviour
 
     [Header("Stats")]
     public StatConfig energyStatConfig = new();
+    [Range(1f, 10f)] public float energyDecreaseScaleWhenWorking;
     private float energy = 100f;
     private float energyActCooldown = 0f;
 
@@ -228,7 +229,11 @@ public class TeammateController : MonoBehaviour
     /// </summary>
     private void UpdateStats()
     {
-        energy -= energyStatConfig.decrease * Time.deltaTime;
+        if (curTeammateState == TeammateState.AtWorkplace)
+            energy -= energyStatConfig.decrease * energyDecreaseScaleWhenWorking * Time.deltaTime;
+        else 
+            energy -= energyStatConfig.decrease * Time.deltaTime;
+            
         bladder -= bladderStatConfig.decrease * Time.deltaTime;
         hunger -= hungerStatConfig.decrease * Time.deltaTime;
 
