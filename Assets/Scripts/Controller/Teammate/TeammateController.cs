@@ -58,9 +58,9 @@ public class TeammateController : MonoBehaviour
 
     [Header("Walking")]
     public float baseWalkSpeed;
-    public float walkSpeedenergyScale;
+    public float walkSpeedEnergyScale;
     public float walkSpeedBladderScale;
-    private float walkSpeed;  
+    public float walkSpeedHungerScale;
 
     [Header("Places")]
     public Place curDestination = Place.None;
@@ -108,7 +108,6 @@ public class TeammateController : MonoBehaviour
         patrolController = GetComponent<PatrolController>();
         
         curTeammateState = initialTeammateState;
-        walkSpeed = baseWalkSpeed;
 
         GoToDestination(Place.Workplace);
     }
@@ -297,9 +296,26 @@ public class TeammateController : MonoBehaviour
         // TODO: 
     }
 
+    /// <summary>
+    /// Dynamically calculate currentWalkSpeed, which is based on teammate stats
+    /// </summary>
+    /// <returns>Calculated walkSpeed</returns>
     public float GetWalkSpeed()
     {
-        // TODO: scale with energy & bladder
+        // At 50% stat = 1.0 (no change), scales up/down from there
+        float energyMultiplier = energy / 100f * walkSpeedEnergyScale + (1f - walkSpeedEnergyScale * 0.5f);
+        float bladderMultiplier = (1f - bladder / 100f) * walkSpeedBladderScale + (1f - walkSpeedBladderScale * 0.5f);
+        float hungerMultiplier = hunger / 100f * walkSpeedHungerScale + (1f - walkSpeedHungerScale * 0.5f);
+
+        // Not 0
+        energyMultiplier = Mathf.Max(energyMultiplier, 0.1f);
+        bladderMultiplier = Mathf.Max(bladderMultiplier, 0.1f);
+        hungerMultiplier = Mathf.Max(hungerMultiplier, 0.1f);
+
+        float walkSpeed = baseWalkSpeed * energyMultiplier * hungerMultiplier * bladderMultiplier * 2f;
+
+        Debug.Log($"WalkSpeed set to: {walkSpeed}");
+
         return walkSpeed;
     }
 
