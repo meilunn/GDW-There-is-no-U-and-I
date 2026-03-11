@@ -5,9 +5,9 @@ using UnityEngine;
 public class EdibleData : ScriptableObject
 {
     public EdibleType type;
-    public int bladder;
-    public int hunger;
-    public int energy;
+    public float bladder;
+    public float hunger;
+    public float energy;
     
     [Serializable]
     public enum EdibleType
