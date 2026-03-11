@@ -247,12 +247,12 @@ public class TeammateController : MonoBehaviour
             if (TryActOnStat(bladder, bladderStatConfig))
                 OnLowBladder();
         }
-        energyActCooldown -= Time.deltaTime;
-        if (energyActCooldown <= 0f)
+        hungerActCooldown -= Time.deltaTime;
+        if (hungerActCooldown <= 0f)
         {
-            energyActCooldown = energyStatConfig.tryActInterval;
-            if (TryActOnStat(energy, energyStatConfig))
-                OnLowEnergy();
+            hungerActCooldown = hungerStatConfig.tryActInterval;
+            if (TryActOnStat(hunger, hungerStatConfig))
+                OnLowHunger();
         }
     }
 
