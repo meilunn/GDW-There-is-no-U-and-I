@@ -100,6 +100,9 @@ public class TeammateController : MonoBehaviour
 
     [Header("UI")]
     public TMP_Text teammateStateText;
+    public TMP_Text energyText;
+    public TMP_Text bladderText;
+    public TMP_Text hungerText;
 
     private float time = 0f;
 
@@ -127,8 +130,10 @@ public class TeammateController : MonoBehaviour
         switch (curTeammateState)
         {
             case TeammateState.AtWorkplace:
-                if (energy <= 100)
+                if (energy <= 0)
                 {
+                    Debug.Log("Teammate fell asleep");
+
                     curTeammateState = TeammateState.Sleeping;
 
                     break;
@@ -176,11 +181,11 @@ public class TeammateController : MonoBehaviour
             case TeammateState.Sleeping:
                 if (energy >= 100) // wake up
                 {
+                    Debug.Log("Teammate wakes up");
+                    
                     curTeammateState = TeammateState.AtWorkplace;
                     break;
                 }
-
-                energy -= energyStatConfig.decrease * Time.deltaTime;
 
                 break;
 
@@ -245,13 +250,20 @@ public class TeammateController : MonoBehaviour
     {
         if (curTeammateState == TeammateState.AtWorkplace)
             energy -= energyStatConfig.decrease * energyDecreaseScaleWhenWorking * Time.deltaTime;
+        else if (curTeammateState == TeammateState.Sleeping)
+            energy += energyStatConfig.increase * Time.deltaTime;
         else
             energy -= energyStatConfig.decrease * Time.deltaTime;
 
         bladder -= bladderStatConfig.decrease * Time.deltaTime;
         hunger -= hungerStatConfig.decrease * Time.deltaTime;
 
-        // try acting on low stat if cooldown reached
+        energy = Mathf.Clamp(energy, 0f, 100f);
+        bladder = Mathf.Clamp(bladder, 0f, 100f);
+        hunger = Mathf.Clamp(hunger, 0f, 100f);
+
+        if (curTeammateState == TeammateState.Sleeping) return;
+        // try acting on low stat if cooldown reached & not sleeping
         energyActCooldown -= Time.deltaTime;
         if (energyActCooldown <= 0f)
         {
@@ -296,6 +308,8 @@ public class TeammateController : MonoBehaviour
     {
         Debug.Log("Acting on low energy");
         // TODO: 
+        if (curTeammateState == TeammateState.Patrolling)
+            patrolController.EndPatrol();
     }
 
     private void OnLowBladder()
@@ -373,6 +387,11 @@ public class TeammateController : MonoBehaviour
     private void UpdateUI()
     {
         teammateStateText.text = $"Teammate state: {curTeammateState}";
+
+        energyText.text = $"Energy: {energy}";
+        bladderText.text = $"Bladder: {bladder}";
+        hungerText.text = $"Hunger: {hunger}";
+
         // TODO: 
     }
 
