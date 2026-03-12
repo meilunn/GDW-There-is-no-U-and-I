@@ -179,14 +179,14 @@ public class TeammateController : MonoBehaviour
 
     public List<EdiblePreference> foodPreferences;
     public List<EdiblePreference> energyPreferences;
-
+/*
     [Header("UI")]
     public TMP_Text teammateStateText;
     public TMP_Text energyText;
     public TMP_Text bladderText;
     public TMP_Text hungerText;
     public TMP_Text curDestText;
-    
+*/ 
     private GameManager gameManager;
     private NavMeshAgent agent;
     private PatrolController patrolController;
@@ -212,7 +212,7 @@ public class TeammateController : MonoBehaviour
         UpdateStats();
         UpdateYapping();
         UpdateDisturbance();
-        UpdateUI();
+        //UpdateUI();
 
         switch (curTeammateState)
         {
@@ -745,6 +745,7 @@ public class TeammateController : MonoBehaviour
         yapPartner = null;
     }
 
+    /*
     private void UpdateUI()
     {
         teammateStateText.text = $"Teammate state: {curTeammateState}";
@@ -755,7 +756,8 @@ public class TeammateController : MonoBehaviour
 
         curDestText.text = $"Cur Dest: {curDestination}";
     }
-
+    */
+    
     // Draw places
     private void OnDrawGizmos()
     {

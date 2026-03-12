@@ -3475,6 +3475,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 757976308}
   - {fileID: 1373820999}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3605,19 +3606,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 677380589}
     m_Modifications:
     - target: {fileID: 460828535256647291, guid: adb180fb8c0475947ae00c1f46dc00f3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.97235
+      value: 5.40049
       objectReference: {fileID: 0}
     - target: {fileID: 460828535256647291, guid: adb180fb8c0475947ae00c1f46dc00f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.23183
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 460828535256647291, guid: adb180fb8c0475947ae00c1f46dc00f3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.21046
+      value: 14.18368
       objectReference: {fileID: 0}
     - target: {fileID: 460828535256647291, guid: adb180fb8c0475947ae00c1f46dc00f3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3625,15 +3626,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 460828535256647291, guid: adb180fb8c0475947ae00c1f46dc00f3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 460828535256647291, guid: adb180fb8c0475947ae00c1f46dc00f3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 460828535256647291, guid: adb180fb8c0475947ae00c1f46dc00f3, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 460828535256647291, guid: adb180fb8c0475947ae00c1f46dc00f3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3672,6 +3673,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: adb180fb8c0475947ae00c1f46dc00f3, type: 3}
+--- !u!4 &757976308 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 460828535256647291, guid: adb180fb8c0475947ae00c1f46dc00f3, type: 3}
+  m_PrefabInstance: {fileID: 757976307}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &774844277
 GameObject:
   m_ObjectHideFlags: 0
@@ -5729,11 +5735,6 @@ MonoBehaviour:
     globalCooldown: 15
   foodPreferences: []
   energyPreferences: []
-  teammateStateText: {fileID: 605183217}
-  energyText: {fileID: 142134923}
-  bladderText: {fileID: 1480537002}
-  hungerText: {fileID: 1267916127}
-  curDestText: {fileID: 1543510719}
 --- !u!114 &1313274864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11203,7 +11204,6 @@ SceneRoots:
   - {fileID: 1042039458}
   - {fileID: 1819153356}
   - {fileID: 1899856329}
-  - {fileID: 757976307}
   - {fileID: 1725166958}
   - {fileID: 406414873}
   - {fileID: 441763128}

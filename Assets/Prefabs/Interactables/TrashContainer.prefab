@@ -100,7 +100,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3085361625874551398, guid: f597542f760048faa9389788c0fd4af2, type: 3}
+  - {fileID: 2100000, guid: a9ff0ec8dfb1c1d2b9e3274e79dfe550, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -243,7 +243,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VoidSlot
   itemsAllowed: -1
-  isTaken: 0
   item: {fileID: 0}
   owner: {fileID: 0}
 --- !u!114 &9046995412639054939
@@ -287,7 +286,7 @@ Transform:
   m_GameObject: {fileID: 7044190099225311717}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

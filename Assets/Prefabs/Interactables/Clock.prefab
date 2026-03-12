@@ -226,7 +226,6 @@ GameObject:
   - component: {fileID: 4546928400685809626}
   - component: {fileID: 3462389522099860827}
   - component: {fileID: 8801290072091417390}
-  - component: {fileID: 8661288693814002604}
   m_Layer: 0
   m_Name: Clock
   m_TagString: Untagged
@@ -742,21 +741,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: 4ca989a9ac512d23fab51006c5c49565, type: 3}
---- !u!114 &8661288693814002604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8206803375165950527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9df150be9d5a2644fa94e800aa6fe4ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SusData
-  action: 0
-  basePenalty: 0
-  penaltyModifier: 5
-  penaltyFunction: 0
-  range: Infinity
-  autoInflictOnEveryoneInRange: 1
