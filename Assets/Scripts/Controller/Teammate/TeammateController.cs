@@ -339,7 +339,7 @@ public class TeammateController : MonoBehaviour
 
                 if (Physics.Raycast(rayCastOrigin.position, direction, out RaycastHit hit, traceAgainst))
                 {
-                    Debug.Log(hit.collider.gameObject.name);
+                    //Debug.Log(hit.collider.gameObject.name);
                     
                     if (hit.collider.TryGetComponent(out MovableInteractable detectedItem) &&
                         detectedItem == Player.Instance.ItemInHand && detectedItem.isSuspicious)
