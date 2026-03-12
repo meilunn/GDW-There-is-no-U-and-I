@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(PatrolController))]
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(VoiceLineSystem))]
 public class TeammateController : MonoBehaviour
 {
     #region Structs & Enums
@@ -190,6 +191,7 @@ public class TeammateController : MonoBehaviour
     private NavMeshAgent agent;
     private PatrolController patrolController;
 
+    public VoiceLineSystem voiceLineSystem;
     #endregion
 
     #region Methods
@@ -442,13 +444,15 @@ public class TeammateController : MonoBehaviour
     {
         Debug.Log("Acting on low energy");
         // TODO: 
-        if (curTeammateState == TeammateState.Patrolling)
+        voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Tired);
+        if (curTeammateState == TeammateState.Patrolling || curTeammateState == TeammateState.Yapping)
             patrolController.EndPatrol();
     }
 
     private void OnLowBladder()
     {
         Debug.Log("Acting on low bladder");
+        voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Shitting);
         // TODO: 
     }
 
@@ -456,10 +460,9 @@ public class TeammateController : MonoBehaviour
     {
         Debug.Log("Acting on low hunger");
         // TODO: 
-
         if (curTeammateState == TeammateState.AtWorkplace)
         {
-
+            voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Hungry);
         }
     }
 
@@ -469,6 +472,8 @@ public class TeammateController : MonoBehaviour
 
         if (curTeammateState != TeammateState.AtWorkplace)
             return;
+        
+        voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Hungry);
 
         // Reset the timed patrol cooldown so we don't get a double patrol shortly after
         lastPatrolCheckTime = gameManager.dayTime;
