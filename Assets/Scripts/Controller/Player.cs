@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -43,7 +44,7 @@ public class Player : MonoBehaviour {
 
 	public Transform PlayerHand;
 
-
+	private readonly List<GameObject> moveLocks = new();
 
 	private CharacterController controller;
 
@@ -115,7 +116,7 @@ public class Player : MonoBehaviour {
 
 
 	private void Update() {
-		Move();
+		if(moveLocks.Count == 0) Move();
 		Rotate();
 
 		RaycastHit hit;
@@ -156,4 +157,13 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	public void AddMoveLock(GameObject locker) {
+		if (!moveLocks.Contains(locker)) {
+			moveLocks.Add(locker);
+		}
+	}
+
+	public void RemoveMoveLock(GameObject locker) {
+		moveLocks.Remove(locker);
+	}
 }

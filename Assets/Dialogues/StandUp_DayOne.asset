@@ -21,10 +21,8 @@ MonoBehaviour:
   - dialogueText: Alrighty boss!
     voiceClip: {fileID: 0}
     character: 5
-  - dialogueText: 'Joy
-
-      Yay my first project! Thanks for this amazing opportunity
-      uncle :D'
+  - dialogueText: Yay my first project! Thanks for this amazing opportunity uncle
+      :D
     voiceClip: {fileID: 0}
     character: 4
   - dialogueText: 'Let''s just get this meeting over with and get to work. '

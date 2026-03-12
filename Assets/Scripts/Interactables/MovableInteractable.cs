@@ -14,6 +14,7 @@ public class MovableInteractable : Interactable
     
     public override bool Interact()
     {
+		if(!enabled) return false;
         MovableInteractable itemInHand = Player.Instance.ItemInHand;
         if (itemInHand == null)
         {
