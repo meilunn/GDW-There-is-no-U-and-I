@@ -3,7 +3,10 @@ using UnityEngine;
 
 public enum QuestId {
 	EmptyTrash,
-	RefillToiletPaper
+	RefillToiletPaper,
+	BringFood,
+	BringCoffee,
+	BringEnergyDrink
 }
 
 // this can be used for UI ig?

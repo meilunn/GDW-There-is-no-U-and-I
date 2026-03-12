@@ -190,8 +190,7 @@ public class TeammateController : MonoBehaviour
     private GameManager gameManager;
     private NavMeshAgent agent;
     private PatrolController patrolController;
-
-    public VoiceLineSystem voiceLineSystem;
+    private VoiceLineSystem voiceLineSystem;
     #endregion
 
     #region Methods
@@ -201,6 +200,7 @@ public class TeammateController : MonoBehaviour
         gameManager = GameManager.instance;
         agent = GetComponent<NavMeshAgent>();
         patrolController = GetComponent<PatrolController>();
+        voiceLineSystem = GetComponent<VoiceLineSystem>();
 
         DayReset();
 
@@ -271,12 +271,13 @@ public class TeammateController : MonoBehaviour
                 {
                     case Place.Workplace:
                         curTeammateState = TeammateState.AtWorkplace;
-                        curDestination = Place.None;
                         lastPatrolCheckTime = gameManager.dayTime;
 
                         break;
                     case Place.Toilet:
                         // TODO: do something after arrived at toilet
+
+                        curTeammateState = TeammateState.Shitting;
 
                         break;
                     case Place.Exit:
@@ -284,6 +285,8 @@ public class TeammateController : MonoBehaviour
 
                         break;
                 }
+                
+                curDestination = Place.None;
 
                 break;
 
@@ -297,12 +300,24 @@ public class TeammateController : MonoBehaviour
                 }
 
                 break;
+
             case TeammateState.Yapping:
                 break;
+
             case TeammateState.Patrolling:
                 DetectHand();
                 TryStartYapping();
                 break;
+
+            case TeammateState.Shitting: 
+                if (bladder >= 100)
+                {
+                    Debug.Log($"{gameObject.name} finished shitting");
+
+                    GoToDestination(Place.Workplace);
+                }
+                break;
+
             default:
                 DetectHand();
                 break;
@@ -379,7 +394,11 @@ public class TeammateController : MonoBehaviour
                 break;
         }
 
-        bladder -= bladderStatConfig.decrease * Time.deltaTime;
+        if (curTeammateState == TeammateState.Shitting)
+            bladder += bladderStatConfig.increase * Time.deltaTime;
+        else 
+            bladder -= bladderStatConfig.decrease * Time.deltaTime;
+        
         hunger -= hungerStatConfig.decrease * Time.deltaTime;
         fun -= funStatConfig.decrease * Time.deltaTime;
 
@@ -442,11 +461,23 @@ public class TeammateController : MonoBehaviour
 
     private void OnLowEnergy()
     {
-        Debug.Log($"{gameObject.name} acting on low energy");
         // TODO: 
         voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Tired);
         if (curTeammateState == TeammateState.Patrolling || curTeammateState == TeammateState.Yapping)
             patrolController.EndPatrol();
+        
+        EdibleData.EdibleType pref = ChooseEdible(energyPreferences);
+
+        switch (pref)
+        {
+            case EdibleData.EdibleType.Coffee: 
+                gameManager.questManager.CreateAndStartQuest(QuestId.BringCoffee, this);
+                break;
+            case EdibleData.EdibleType.EnergyDrink: 
+                gameManager.questManager.CreateAndStartQuest(QuestId.BringEnergyDrink, this);
+                break;
+        }
+        Debug.Log($"{gameObject.name} wants {pref}");
     }
 
     private void OnLowBladder()
@@ -454,15 +485,20 @@ public class TeammateController : MonoBehaviour
         Debug.Log($"{gameObject.name} acting on low bladder");
         voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Shitting);
         // TODO: 
+
+        GoToDestination(Place.Toilet);
     }
 
     private void OnLowHunger()
     {
-        Debug.Log($"{gameObject.name} acting on low hunger");
         // TODO: 
         if (curTeammateState == TeammateState.AtWorkplace)
         {
             voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Hungry);
+
+            gameManager.questManager.CreateAndStartQuest(QuestId.BringFood, this);
+
+            Debug.Log($"{gameObject.name} wants food");
         }
     }
 
@@ -473,7 +509,7 @@ public class TeammateController : MonoBehaviour
         if (curTeammateState != TeammateState.AtWorkplace)
             return;
         
-        voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Hungry);
+        voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Bored);
 
         // Reset the timed patrol cooldown so we don't get a double patrol shortly after
         lastPatrolCheckTime = gameManager.dayTime;
