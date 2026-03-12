@@ -5091,8 +5091,7 @@ Transform:
   m_LocalPosition: {x: 0.118, y: -0.522, z: 0.776}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1294879807}
+  m_Children: []
   m_Father: {fileID: 1547739200}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1222732490
@@ -5373,11 +5372,6 @@ PrefabInstance:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3463464090902513031, guid: 17c1340f7f5917444bf0b57ff56b72bb, type: 3}
   m_PrefabInstance: {fileID: 1294700347}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1294879807 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4060232553358319446, guid: 81fb1b85bf552e8409d50a2566c1007d, type: 3}
-  m_PrefabInstance: {fileID: 1540984474152554978}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1313274856
 GameObject:
@@ -7880,6 +7874,9 @@ MonoBehaviour:
   owner: {fileID: 0}
   coffeeButton: {fileID: 404753328}
   decafbutton: {fileID: 1642869793}
+  coffeeData: {fileID: 0}
+  decafData: {fileID: 0}
+  filledCupPrefab: {fileID: 0}
 --- !u!1 &1642869793
 GameObject:
   m_ObjectHideFlags: 0
@@ -10893,7 +10890,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1222732489}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 853411152105487165, guid: 81fb1b85bf552e8409d50a2566c1007d, type: 3}
       propertyPath: 'bakeKeys.Array.data[0]'
@@ -10905,15 +10902,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4060232553358319446, guid: 81fb1b85bf552e8409d50a2566c1007d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -3.29
       objectReference: {fileID: 0}
     - target: {fileID: 4060232553358319446, guid: 81fb1b85bf552e8409d50a2566c1007d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.15000004
+      value: 1.3025551
       objectReference: {fileID: 0}
     - target: {fileID: 4060232553358319446, guid: 81fb1b85bf552e8409d50a2566c1007d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -6.597
       objectReference: {fileID: 0}
     - target: {fileID: 4060232553358319446, guid: 81fb1b85bf552e8409d50a2566c1007d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11182,6 +11179,7 @@ SceneRoots:
   - {fileID: 1160557504}
   - {fileID: 1253471931}
   - {fileID: 774844283}
+  - {fileID: 1540984474152554978}
   - {fileID: 1897074809}
   - {fileID: 1889642634}
   - {fileID: 639734257}
