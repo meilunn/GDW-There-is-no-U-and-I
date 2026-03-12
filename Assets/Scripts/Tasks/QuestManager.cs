@@ -4,10 +4,12 @@ using UnityEngine;
 public class QuestManager : MonoBehaviour {
 	public List<Quest> Quests { get; private set; } = new();
 	private readonly List<Quest> availableJobQuests = new();
+	public List<Quest> AvailableJobQuests => availableJobQuests;
 	private readonly List<Quest> availableSabotageQuests = new();
 
-	void Start() {
-		foreach(var quest in Resources.LoadAll<Quest>("Resources/Quests")) {
+	void Awake() {
+		foreach(var quest in Resources.LoadAll<Quest>("Quests")) {
+			Debug.Log($"Loaded quest {quest.id}");
 			switch (quest.type) {
 				case QuestType.Job:
 					availableJobQuests.Add(quest);
@@ -47,10 +49,11 @@ public class QuestManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="questId"></param>
 	/// <param name="owner"></param>
-	public void AddQuest(QuestId questId, TeammateController owner) {
-		if(Quests.Exists(q => q.id == questId && q.owner == owner)) return;
+	/// <param name="allowDuplicates">Will skip duplicate check if true.</param>
+	public void AddQuest(QuestId questId, TeammateController owner, bool allowDuplicates = false) {
+		if(!allowDuplicates && Quests.Exists(q => q.id == questId && q.owner == owner)) return;
 
-		var quest = Instantiate(Resources.Load<Quest>($"Resources/Quests/{questId}"));
+		var quest = Instantiate(Resources.Load<Quest>($"Quests/{questId}"));
 		quest.owner = owner;
 		Quests.Add(quest);
 	}

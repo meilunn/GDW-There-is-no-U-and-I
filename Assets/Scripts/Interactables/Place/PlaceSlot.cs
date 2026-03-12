@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlaceSlot : MonoBehaviour
@@ -5,9 +6,8 @@ public class PlaceSlot : MonoBehaviour
     public MovableInteractable.Type itemsAllowed;
     public bool isTaken;
     public MovableInteractable item;
-	public delegate void PlaceSlotEvent(MovableInteractable item);
-	public event PlaceSlotEvent OnItemRemoved;
-	public event PlaceSlotEvent OnItemPlaced;
+	public event Action<MovableInteractable> OnItemRemoved;
+	public event Action<MovableInteractable> OnItemPlaced;
 
     private void Start()
     {

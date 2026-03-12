@@ -5,6 +5,7 @@ public class Bin : Interactable {
 	private VoidSlot overflowSlot;
 	[SerializeField] private GameObject trashItemPrefab;
 
+
 	void Awake() {
 		trashSlot = transform.Find("Trash Slot").GetComponent<PlaceSlot>();
 		overflowSlot = transform.Find("Overflow Slot").GetComponentInChildren<VoidSlot>();
@@ -16,20 +17,25 @@ public class Bin : Interactable {
 			if(!trashSlot.item) return false;
 			var trashItem = trashSlot.item;
 			trashSlot.TakeItem();
-			trashItem.Place(Player.Instance.PlayerHand);
-			trashItem.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
-			Player.Instance.ItemInHand = trashItem;
+			// borderline kriminell
+			trashItem.Interact();
 			GameManager.instance.questManager.CompleteObjective(ObjectiveId.TrashEmptyBin, null);
 		} else {
-			FillBin(item);
+			FillBin();
 			overflowSlot.PlaceItem(item);
 		}
 		return true;
 	}
 
-	public void FillBin(MovableInteractable item) {
+	public void FillBin() {
 		if (trashSlot.item != null) return;
 		var newItem = Instantiate(trashItemPrefab).GetComponent<MovableInteractable>();
 		trashSlot.PlaceItem(newItem);
+	}
+
+	private void OnGUI() {
+		if(GUILayout.Button("Fill Bin (Debug)")) {
+			FillBin();
+		}
 	}
 }

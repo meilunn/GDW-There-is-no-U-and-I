@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 5057654444691392643}
   - component: {fileID: 8187472100161652518}
+  - component: {fileID: 1146714286618084404}
   - component: {fileID: 6231655010248061932}
   - component: {fileID: 355640398121124896}
-  - component: {fileID: 1146714286618084404}
   - component: {fileID: 5028075295443926468}
   m_Layer: 0
   m_Name: Bin
-  m_TagString: Untagged
+  m_TagString: Bin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,6 +46,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5583255480243966521}
   m_Mesh: {fileID: -7300668765330950975, guid: 1470d3dc991bad420a90cd6599139d55, type: 3}
+--- !u!114 &1146714286618084404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5583255480243966521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 202a8d32a2039cd4f87340b7bc5c38d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bin
+  outline: {fileID: 355640398121124896}
+  trashItemPrefab: {fileID: 3638707949005180980, guid: 497b18aaacc00804e9b929241b0b5cf9, type: 3}
 --- !u!23 &6231655010248061932
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -211,20 +225,6 @@ MonoBehaviour:
     - {x: 0.027423011, y: 0.99924767, z: -0.027422788}
     - {x: -0.027422989, y: 0.99924767, z: -0.027422788}
     - {x: -0.5124125, y: 0.6891059, z: 0.5124125}
---- !u!114 &1146714286618084404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5583255480243966521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 202a8d32a2039cd4f87340b7bc5c38d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Bin
-  outline: {fileID: 355640398121124896}
-  trashItemPrefab: {fileID: 0}
 --- !u!64 &5028075295443926468
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 2025552419915987289}
   m_Layer: 0
   m_Name: Overflow Slot
-  m_TagString: Untagged
+  m_TagString: Bin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 1624947657385896837}
   m_Layer: 0
   m_Name: Trash Slot
-  m_TagString: Untagged
+  m_TagString: Bin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
