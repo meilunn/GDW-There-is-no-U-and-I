@@ -1251,6 +1251,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Linus
       objectReference: {fileID: 0}
+    - target: {fileID: 5188680816772806464, guid: 931917f644993cf4f81b42e87222dbdb, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 4004243561178358970}
     - target: {fileID: 8219333134130019262, guid: 931917f644993cf4f81b42e87222dbdb, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.08433366
@@ -1360,6 +1364,10 @@ PrefabInstance:
       propertyPath: 'patrolWaypoints.Array.data[2]'
       value: 
       objectReference: {fileID: 620248606}
+    - target: {fileID: 6989508876124297244, guid: 5cf92cc5c47139c4cb2ef8583dd3ebd0, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 4004243561178358970}
     - target: {fileID: 8179790439686265007, guid: 5cf92cc5c47139c4cb2ef8583dd3ebd0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.8530803
@@ -5669,10 +5677,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -9352,6 +9360,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Test Character for Voicelines
       objectReference: {fileID: 0}
+    - target: {fileID: 8689734602418920292, guid: c697abdd554d8964b99adab2ea859a8f, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 4004243561178358970}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
