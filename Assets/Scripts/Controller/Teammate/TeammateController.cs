@@ -219,7 +219,7 @@ public class TeammateController : MonoBehaviour
             case TeammateState.AtWorkplace:
                 if (energy <= 0)
                 {
-                    Debug.Log("Teammate fell asleep");
+                    Debug.Log($"{gameObject.name} fell asleep");
 
                     curTeammateState = TeammateState.Sleeping;
 
@@ -232,7 +232,7 @@ public class TeammateController : MonoBehaviour
                 int makeProgIntervallInSec = makeProgressInterval * 60;
                 if (gameManager.dayTime >= lastProgressMadeTime + makeProgIntervallInSec)
                 {
-                    Debug.Log("ProjectProgress.Work");
+                    Debug.Log($"{gameObject.name} ProjectProgress.Work");
 
                     curWorkEfficiency = baseWorkEfficiency; // TODO: calculate based on stats
 
@@ -249,7 +249,7 @@ public class TeammateController : MonoBehaviour
                 int patrolCheckIntervallInSec = patrolCheckInterval * 60;
                 if (gameManager.dayTime >= lastPatrolCheckTime + patrolCheckIntervallInSec)
                 {
-                    Debug.Log("Go patrol check");
+                    Debug.Log($"{gameObject.name} patrol check");
 
                     if (Random.value < patrolProbability)
                         patrolController.StartPatrol();
@@ -265,7 +265,7 @@ public class TeammateController : MonoBehaviour
                 if (agent.remainingDistance > 0.1f) break;
 
                 // else
-                Debug.Log($"Arrived at {curDestination}");
+                Debug.Log($"{gameObject.name} arrived at {curDestination}");
 
                 switch (curDestination)
                 {
@@ -290,7 +290,7 @@ public class TeammateController : MonoBehaviour
             case TeammateState.Sleeping:
                 if (energy >= 100) // wake up
                 {
-                    Debug.Log("Teammate wakes up");
+                    Debug.Log($"{gameObject.name} wakes up");
 
                     curTeammateState = TeammateState.AtWorkplace;
                     break;
@@ -442,7 +442,7 @@ public class TeammateController : MonoBehaviour
 
     private void OnLowEnergy()
     {
-        Debug.Log("Acting on low energy");
+        Debug.Log($"{gameObject.name} acting on low energy");
         // TODO: 
         voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Tired);
         if (curTeammateState == TeammateState.Patrolling || curTeammateState == TeammateState.Yapping)
@@ -451,14 +451,14 @@ public class TeammateController : MonoBehaviour
 
     private void OnLowBladder()
     {
-        Debug.Log("Acting on low bladder");
+        Debug.Log($"{gameObject.name} acting on low bladder");
         voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Shitting);
         // TODO: 
     }
 
     private void OnLowHunger()
     {
-        Debug.Log("Acting on low hunger");
+        Debug.Log($"{gameObject.name} acting on low hunger");
         // TODO: 
         if (curTeammateState == TeammateState.AtWorkplace)
         {
@@ -468,7 +468,7 @@ public class TeammateController : MonoBehaviour
 
     private void OnLowFun()
     {
-        Debug.Log("Acting on low fun");
+        Debug.Log($"{gameObject.name} acting on low fun");
 
         if (curTeammateState != TeammateState.AtWorkplace)
             return;
@@ -654,7 +654,7 @@ public class TeammateController : MonoBehaviour
 
         float walkSpeed = baseWalkSpeed * energyMultiplier * hungerMultiplier * bladderMultiplier * 2f;
 
-        Debug.Log($"WalkSpeed set to: {walkSpeed}");
+        Debug.Log($"{gameObject.name} walkSpeed set to: {walkSpeed}");
 
         return walkSpeed;
     }
@@ -683,7 +683,7 @@ public class TeammateController : MonoBehaviour
                 break;
         }
 
-        Debug.Log($"Going to destination: {curDestination}");
+        Debug.Log($"{gameObject.name} going to destination: {curDestination}");
     }
 
     public void DayReset()
