@@ -3,7 +3,10 @@ using UnityEngine;
 public enum ObjectiveId {
 	TrashEmptyBin,
 	TrashVoidGarbageBag,
-	ToiletPaperRefill
+	ToiletPaperRefill,
+	BringFoodToTable,
+	BringCoffeeToTable,
+	BringEnergyToTable
 }
 
 [CreateAssetMenu(fileName = "New Objective", menuName = "Quests/Objective")]

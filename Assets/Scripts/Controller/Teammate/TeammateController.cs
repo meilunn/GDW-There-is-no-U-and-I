@@ -8,8 +8,10 @@ using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(PatrolController))]
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(VoiceLineSystem))]
 public class TeammateController : MonoBehaviour
 {
+    #region Structs & Enums
     public enum TeammateState
     {
         AtWorkplace,
@@ -20,6 +22,17 @@ public class TeammateController : MonoBehaviour
         Yapping
 
         // TODO: add AtToilet
+    }
+
+    /// <summary>
+    /// Mainly used to set curDestination. Helps to determine behaviour upon arriving at place
+    /// </summary>
+    public enum Place
+    {
+        None,
+        Workplace,
+        Toilet,
+        Exit
     }
 
     /// <summary>
@@ -82,6 +95,10 @@ public class TeammateController : MonoBehaviour
         
     }
 
+    #endregion
+
+    #region Fields & Params
+
     [Header("State")]
     public TeammateState initialTeammateState = TeammateState.AtWorkplace;
     public TeammateState curTeammateState;
@@ -106,6 +123,47 @@ public class TeammateController : MonoBehaviour
     private float fun;
     private float funActCooldown;
 
+    [Header("Places")] 
+    public Place curDestination = Place.None;
+    [Space(10)] 
+    public GameObject workplace;
+    public GameObject toilet;
+    public GameObject exit;
+    
+    [Header("Walking params")]
+    public float baseWalkSpeed;
+    public float walkSpeedEnergyScale;
+    public float walkSpeedBladderScale;
+    public float walkSpeedHungerScale;
+
+    [Header("Field of View params")] 
+    public float angle = 90f;
+    public float radius = 10f;
+
+    [Header("Detection params")] 
+    [Tooltip("Calls Gamemanager.IncreaseSus() when local sus points over threshold")]
+    public int detectionThreshold = 100;
+    [Tooltip("Local sus points gained per sus item seen")]
+    [SerializeField] private int pointsPerCheck;
+    private int currentPoints = 0;
+    
+    [SerializeField] private LayerMask traceAgainst;
+    public Transform rayCastOrigin;
+
+    [Header("Working params")]
+    [Tooltip("Teammate should make progress every x minutes in game")]
+    public int makeProgressInterval;
+    private double lastProgressMadeTime;
+    public float baseWorkEfficiency;
+    private float curWorkEfficiency;
+    
+    [Header("Patrol params")]
+    [Tooltip("Rolls for going to patrol every x minutes in game")]
+    public int patrolCheckInterval;
+    private double lastPatrolCheckTime;
+    [Tooltip("Probability of going on patrol when rolling")]
+    [Range(0f, 1f)] public float patrolProbability;
+
     [Header("Yapping params")]
     public YapConfig yapConfig = new();
     private float yapCheckCooldown;
@@ -114,46 +172,13 @@ public class TeammateController : MonoBehaviour
     private float yapDisturbedTimer;
     private bool isDisturbed;
     private TeammateController yapPartner;
-    
-    [Header("Walking")]
-    public float baseWalkSpeed;
-    public float walkSpeedEnergyScale;
-    public float walkSpeedBladderScale;
-    public float walkSpeedHungerScale;
 
-    [Header("Places")] 
-    public Place curDestination = Place.None;
-    [Space(10)] 
-    public GameObject workplace;
-    public GameObject toilet;
-    public GameObject exit;
-
-    [Header("Field of View params")] 
-    public float angle = 90f;
-    public float radius = 10f;
-
-    [Header("Detection params")] 
-    public int detectionThreshold = 100;
-    public static int currentPoints;
-    [SerializeField] private int pointsPerCheck;
-    [SerializeField] private LayerMask traceAgainst;
-    private bool susDetected;
-    public Transform rayCastOrigin;
-
-    //Food/Drink
+    [Header("Food n Drink")]
     private EdibleData.EdibleType _foodAwaited;
     private EdibleData.EdibleType _energyAwaited;
 
     public List<EdiblePreference> foodPreferences;
     public List<EdiblePreference> energyPreferences;
-
-    public enum Place
-    {
-        None,
-        Workplace,
-        Toilet,
-        Exit
-    }
 
     [Header("UI")]
     public TMP_Text teammateStateText;
@@ -161,33 +186,21 @@ public class TeammateController : MonoBehaviour
     public TMP_Text bladderText;
     public TMP_Text hungerText;
     public TMP_Text curDestText;
-
-    [Header("Working params")]
-    [Tooltip("Teammate should make progress every x minutes in game")]
-    public int makeProgressInterval;
-    private double lastProgressMadeTime;
-    public float baseWorkEfficiency;
-    private float curWorkEfficiency;
-
-    
-    [Header("Patrol params")]
-    [Tooltip("Rolls for going to patrol every x minutes in game")]
-    public int patrolCheckInterval;
-    private double lastPatrolCheckTime;
-    [Tooltip("Probability of going on patrol when rolling")]
-    [Range(0f, 1f)] public float patrolProbability;
     
     private GameManager gameManager;
     private NavMeshAgent agent;
     private PatrolController patrolController;
+    private VoiceLineSystem voiceLineSystem;
+    #endregion
 
-    public GameObject player;
+    #region Methods
 
     private void Start()
     {
         gameManager = GameManager.instance;
         agent = GetComponent<NavMeshAgent>();
         patrolController = GetComponent<PatrolController>();
+        voiceLineSystem = GetComponent<VoiceLineSystem>();
 
         DayReset();
 
@@ -206,7 +219,7 @@ public class TeammateController : MonoBehaviour
             case TeammateState.AtWorkplace:
                 if (energy <= 0)
                 {
-                    Debug.Log("Teammate fell asleep");
+                    Debug.Log($"{gameObject.name} fell asleep");
 
                     curTeammateState = TeammateState.Sleeping;
 
@@ -219,7 +232,7 @@ public class TeammateController : MonoBehaviour
                 int makeProgIntervallInSec = makeProgressInterval * 60;
                 if (gameManager.dayTime >= lastProgressMadeTime + makeProgIntervallInSec)
                 {
-                    Debug.Log("ProjectProgress.Work");
+                    Debug.Log($"{gameObject.name} ProjectProgress.Work");
 
                     curWorkEfficiency = baseWorkEfficiency; // TODO: calculate based on stats
 
@@ -236,7 +249,7 @@ public class TeammateController : MonoBehaviour
                 int patrolCheckIntervallInSec = patrolCheckInterval * 60;
                 if (gameManager.dayTime >= lastPatrolCheckTime + patrolCheckIntervallInSec)
                 {
-                    Debug.Log("Go patrol check");
+                    Debug.Log($"{gameObject.name} patrol check");
 
                     if (Random.value < patrolProbability)
                         patrolController.StartPatrol();
@@ -252,18 +265,19 @@ public class TeammateController : MonoBehaviour
                 if (agent.remainingDistance > 0.1f) break;
 
                 // else
-                Debug.Log($"Arrived at {curDestination}");
+                Debug.Log($"{gameObject.name} arrived at {curDestination}");
 
                 switch (curDestination)
                 {
                     case Place.Workplace:
                         curTeammateState = TeammateState.AtWorkplace;
-                        curDestination = Place.None;
                         lastPatrolCheckTime = gameManager.dayTime;
 
                         break;
                     case Place.Toilet:
                         // TODO: do something after arrived at toilet
+
+                        curTeammateState = TeammateState.Shitting;
 
                         break;
                     case Place.Exit:
@@ -271,25 +285,39 @@ public class TeammateController : MonoBehaviour
 
                         break;
                 }
+                
+                curDestination = Place.None;
 
                 break;
 
             case TeammateState.Sleeping:
                 if (energy >= 100) // wake up
                 {
-                    Debug.Log("Teammate wakes up");
+                    Debug.Log($"{gameObject.name} wakes up");
 
                     curTeammateState = TeammateState.AtWorkplace;
                     break;
                 }
 
                 break;
+
             case TeammateState.Yapping:
                 break;
+
             case TeammateState.Patrolling:
                 DetectHand();
                 TryStartYapping();
                 break;
+
+            case TeammateState.Shitting: 
+                if (bladder >= 100)
+                {
+                    Debug.Log($"{gameObject.name} finished shitting");
+
+                    GoToDestination(Place.Workplace);
+                }
+                break;
+
             default:
                 DetectHand();
                 break;
@@ -300,38 +328,38 @@ public class TeammateController : MonoBehaviour
 
     private void DetectHand()
     {
-        //TODO: optionally, change amount of current/needed detect-points depending on sleepiness
-        susDetected = false;
         Vector3 handPosition = Player.Instance.PlayerHand.position;
         Vector3 distanceToHand = handPosition - transform.position;
+
         if (distanceToHand.magnitude <= radius)
         {
             if (Vector3.Dot(distanceToHand.normalized, transform.forward) > Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad))
             {
-                RaycastHit hit;
-
                 Vector3 direction = handPosition - rayCastOrigin.position;
 
-                if (Physics.Raycast(rayCastOrigin.position, direction, out hit, traceAgainst))
+                if (Physics.Raycast(rayCastOrigin.position, direction, out RaycastHit hit, traceAgainst))
                 {
                     Debug.Log(hit.collider.gameObject.name);
-                    if (hit.collider.TryGetComponent<MovableInteractable>(out MovableInteractable detectedItem) &&
+                    
+                    if (hit.collider.TryGetComponent(out MovableInteractable detectedItem) &&
                         detectedItem == Player.Instance.ItemInHand && detectedItem.isSuspicious)
                     {
-                        Debug.DrawRay(rayCastOrigin.position, direction, Color.green);
-                        susDetected = true;
-                        currentPoints += (int)Math.Ceiling(pointsPerCheck * Time.deltaTime * 4);
+                        Debug.DrawRay(rayCastOrigin.position, direction, Color.red);
+
+                        currentPoints += (int)Math.Ceiling(pointsPerCheck * Time.deltaTime);
+
+                        //TODO: calculate current/needed detect-points depending on sleepiness
+
                         if (currentPoints >= detectionThreshold)
                         {
-                            //TODO: Loose condition
-                            Debug.Log("Player would loose here because sus item was detected");
+                            gameManager.IncreaseSus();
                             currentPoints = 0;
                         }
                     }
                     else
                     {
-                        susDetected = false;
-                        Debug.DrawRay(rayCastOrigin.position, direction, Color.red);
+                        Debug.DrawRay(rayCastOrigin.position, direction, Color.green);
+
                         if (currentPoints > 0) currentPoints -= (int)Math.Ceiling(1 * Time.deltaTime);
                     }
                 }
@@ -366,7 +394,11 @@ public class TeammateController : MonoBehaviour
                 break;
         }
 
-        bladder -= bladderStatConfig.decrease * Time.deltaTime;
+        if (curTeammateState == TeammateState.Shitting)
+            bladder += bladderStatConfig.increase * Time.deltaTime;
+        else 
+            bladder -= bladderStatConfig.decrease * Time.deltaTime;
+        
         hunger -= hungerStatConfig.decrease * Time.deltaTime;
         fun -= funStatConfig.decrease * Time.deltaTime;
 
@@ -429,35 +461,55 @@ public class TeammateController : MonoBehaviour
 
     private void OnLowEnergy()
     {
-        Debug.Log("Acting on low energy");
         // TODO: 
-        if (curTeammateState == TeammateState.Patrolling)
+        voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Tired);
+        if (curTeammateState == TeammateState.Patrolling || curTeammateState == TeammateState.Yapping)
             patrolController.EndPatrol();
+        
+        EdibleData.EdibleType pref = ChooseEdible(energyPreferences);
+
+        switch (pref)
+        {
+            case EdibleData.EdibleType.Coffee: 
+                gameManager.questManager.CreateAndStartQuest(QuestId.BringCoffee, this);
+                break;
+            case EdibleData.EdibleType.EnergyDrink: 
+                gameManager.questManager.CreateAndStartQuest(QuestId.BringEnergy, this);
+                break;
+        }
+        Debug.Log($"{gameObject.name} wants {pref}");
     }
 
     private void OnLowBladder()
     {
-        Debug.Log("Acting on low bladder");
+        Debug.Log($"{gameObject.name} acting on low bladder");
+        voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Shitting);
         // TODO: 
+
+        GoToDestination(Place.Toilet);
     }
 
     private void OnLowHunger()
     {
-        Debug.Log("Acting on low hunger");
         // TODO: 
-
         if (curTeammateState == TeammateState.AtWorkplace)
         {
+            voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Hungry);
 
+            gameManager.questManager.CreateAndStartQuest(QuestId.BringFood, this);
+
+            Debug.Log($"{gameObject.name} wants food");
         }
     }
 
     private void OnLowFun()
     {
-        Debug.Log("Acting on low fun");
+        Debug.Log($"{gameObject.name} acting on low fun");
 
         if (curTeammateState != TeammateState.AtWorkplace)
             return;
+        
+        voiceLineSystem.PlayBark(VoiceLineSystem.BarkType.Bored);
 
         // Reset the timed patrol cooldown so we don't get a double patrol shortly after
         lastPatrolCheckTime = gameManager.dayTime;
@@ -638,7 +690,7 @@ public class TeammateController : MonoBehaviour
 
         float walkSpeed = baseWalkSpeed * energyMultiplier * hungerMultiplier * bladderMultiplier * 2f;
 
-        Debug.Log($"WalkSpeed set to: {walkSpeed}");
+        Debug.Log($"{gameObject.name} walkSpeed set to: {walkSpeed}");
 
         return walkSpeed;
     }
@@ -667,7 +719,7 @@ public class TeammateController : MonoBehaviour
                 break;
         }
 
-        Debug.Log($"Going to destination: {curDestination}");
+        Debug.Log($"{gameObject.name} going to destination: {curDestination}");
     }
 
     public void DayReset()
@@ -738,9 +790,11 @@ public class TeammateController : MonoBehaviour
     }
 }
 
-[System.Serializable]
-    public class EdiblePreference
-    {
-        public EdibleData.EdibleType type;
-        public float weight;
-    }
+#endregion
+
+[Serializable]
+public class EdiblePreference
+{
+    public EdibleData.EdibleType type;
+    public float weight;
+}
