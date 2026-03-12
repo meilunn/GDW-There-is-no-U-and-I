@@ -10,6 +10,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(NavMeshAgent))]
 public class TeammateController : MonoBehaviour
 {
+    #region Structs & Enums
     public enum TeammateState
     {
         AtWorkplace,
@@ -20,6 +21,17 @@ public class TeammateController : MonoBehaviour
         Yapping
 
         // TODO: add AtToilet
+    }
+
+    /// <summary>
+    /// Mainly used to set curDestination. Helps to determine behaviour upon arriving at place
+    /// </summary>
+    public enum Place
+    {
+        None,
+        Workplace,
+        Toilet,
+        Exit
     }
 
     /// <summary>
@@ -82,6 +94,10 @@ public class TeammateController : MonoBehaviour
         
     }
 
+    #endregion
+
+    #region Fields & Params
+
     [Header("State")]
     public TeammateState initialTeammateState = TeammateState.AtWorkplace;
     public TeammateState curTeammateState;
@@ -106,6 +122,47 @@ public class TeammateController : MonoBehaviour
     private float fun;
     private float funActCooldown;
 
+    [Header("Places")] 
+    public Place curDestination = Place.None;
+    [Space(10)] 
+    public GameObject workplace;
+    public GameObject toilet;
+    public GameObject exit;
+    
+    [Header("Walking params")]
+    public float baseWalkSpeed;
+    public float walkSpeedEnergyScale;
+    public float walkSpeedBladderScale;
+    public float walkSpeedHungerScale;
+
+    [Header("Field of View params")] 
+    public float angle = 90f;
+    public float radius = 10f;
+
+    [Header("Detection params")] 
+    [Tooltip("Calls Gamemanager.IncreaseSus() when local sus points over threshold")]
+    public int detectionThreshold = 100;
+    [Tooltip("Local sus points gained per sus item seen")]
+    [SerializeField] private int pointsPerCheck;
+    private int currentPoints = 0;
+    
+    [SerializeField] private LayerMask traceAgainst;
+    public Transform rayCastOrigin;
+
+    [Header("Working params")]
+    [Tooltip("Teammate should make progress every x minutes in game")]
+    public int makeProgressInterval;
+    private double lastProgressMadeTime;
+    public float baseWorkEfficiency;
+    private float curWorkEfficiency;
+    
+    [Header("Patrol params")]
+    [Tooltip("Rolls for going to patrol every x minutes in game")]
+    public int patrolCheckInterval;
+    private double lastPatrolCheckTime;
+    [Tooltip("Probability of going on patrol when rolling")]
+    [Range(0f, 1f)] public float patrolProbability;
+
     [Header("Yapping params")]
     public YapConfig yapConfig = new();
     private float yapCheckCooldown;
@@ -114,46 +171,13 @@ public class TeammateController : MonoBehaviour
     private float yapDisturbedTimer;
     private bool isDisturbed;
     private TeammateController yapPartner;
-    
-    [Header("Walking")]
-    public float baseWalkSpeed;
-    public float walkSpeedEnergyScale;
-    public float walkSpeedBladderScale;
-    public float walkSpeedHungerScale;
 
-    [Header("Places")] 
-    public Place curDestination = Place.None;
-    [Space(10)] 
-    public GameObject workplace;
-    public GameObject toilet;
-    public GameObject exit;
-
-    [Header("Field of View params")] 
-    public float angle = 90f;
-    public float radius = 10f;
-
-    [Header("Detection params")] 
-    public int detectionThreshold = 100;
-    public static int currentPoints;
-    [SerializeField] private int pointsPerCheck;
-    [SerializeField] private LayerMask traceAgainst;
-    private bool susDetected;
-    public Transform rayCastOrigin;
-
-    //Food/Drink
+    [Header("Food n Drink")]
     private EdibleData.EdibleType _foodAwaited;
     private EdibleData.EdibleType _energyAwaited;
 
     public List<EdiblePreference> foodPreferences;
     public List<EdiblePreference> energyPreferences;
-
-    public enum Place
-    {
-        None,
-        Workplace,
-        Toilet,
-        Exit
-    }
 
     [Header("UI")]
     public TMP_Text teammateStateText;
@@ -161,27 +185,14 @@ public class TeammateController : MonoBehaviour
     public TMP_Text bladderText;
     public TMP_Text hungerText;
     public TMP_Text curDestText;
-
-    [Header("Working params")]
-    [Tooltip("Teammate should make progress every x minutes in game")]
-    public int makeProgressInterval;
-    private double lastProgressMadeTime;
-    public float baseWorkEfficiency;
-    private float curWorkEfficiency;
-
-    
-    [Header("Patrol params")]
-    [Tooltip("Rolls for going to patrol every x minutes in game")]
-    public int patrolCheckInterval;
-    private double lastPatrolCheckTime;
-    [Tooltip("Probability of going on patrol when rolling")]
-    [Range(0f, 1f)] public float patrolProbability;
     
     private GameManager gameManager;
     private NavMeshAgent agent;
     private PatrolController patrolController;
 
-    public GameObject player;
+    #endregion
+
+    #region Methods
 
     private void Start()
     {
@@ -300,38 +311,38 @@ public class TeammateController : MonoBehaviour
 
     private void DetectHand()
     {
-        //TODO: optionally, change amount of current/needed detect-points depending on sleepiness
-        susDetected = false;
         Vector3 handPosition = Player.Instance.PlayerHand.position;
         Vector3 distanceToHand = handPosition - transform.position;
+
         if (distanceToHand.magnitude <= radius)
         {
             if (Vector3.Dot(distanceToHand.normalized, transform.forward) > Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad))
             {
-                RaycastHit hit;
-
                 Vector3 direction = handPosition - rayCastOrigin.position;
 
-                if (Physics.Raycast(rayCastOrigin.position, direction, out hit, traceAgainst))
+                if (Physics.Raycast(rayCastOrigin.position, direction, out RaycastHit hit, traceAgainst))
                 {
                     Debug.Log(hit.collider.gameObject.name);
-                    if (hit.collider.TryGetComponent<MovableInteractable>(out MovableInteractable detectedItem) &&
+                    
+                    if (hit.collider.TryGetComponent(out MovableInteractable detectedItem) &&
                         detectedItem == Player.Instance.ItemInHand && detectedItem.isSuspicious)
                     {
-                        Debug.DrawRay(rayCastOrigin.position, direction, Color.green);
-                        susDetected = true;
-                        currentPoints += (int)Math.Ceiling(pointsPerCheck * Time.deltaTime * 4);
+                        Debug.DrawRay(rayCastOrigin.position, direction, Color.red);
+
+                        currentPoints += (int)Math.Ceiling(pointsPerCheck * Time.deltaTime);
+
+                        //TODO: calculate current/needed detect-points depending on sleepiness
+
                         if (currentPoints >= detectionThreshold)
                         {
-                            //TODO: Loose condition
-                            Debug.Log("Player would loose here because sus item was detected");
+                            gameManager.IncreaseSus();
                             currentPoints = 0;
                         }
                     }
                     else
                     {
-                        susDetected = false;
-                        Debug.DrawRay(rayCastOrigin.position, direction, Color.red);
+                        Debug.DrawRay(rayCastOrigin.position, direction, Color.green);
+
                         if (currentPoints > 0) currentPoints -= (int)Math.Ceiling(1 * Time.deltaTime);
                     }
                 }
@@ -738,9 +749,11 @@ public class TeammateController : MonoBehaviour
     }
 }
 
-[System.Serializable]
-    public class EdiblePreference
-    {
-        public EdibleData.EdibleType type;
-        public float weight;
-    }
+#endregion
+
+[Serializable]
+public class EdiblePreference
+{
+    public EdibleData.EdibleType type;
+    public float weight;
+}

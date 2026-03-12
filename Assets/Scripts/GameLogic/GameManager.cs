@@ -32,7 +32,8 @@ public class GameManager : MonoBehaviour {
 	[Tooltip("Amount of ingame seconds that pass per real second.")]
 	private double timeScale = 120.0f;
 
-	public float susMeter = 0;  // 0-100
+	public float susIncrease;
+	private float susMeter = 0;  // 0-100
 	private float happinessMeter = 0;
 	private float maxHappinessMeter = 0;
 	[Tooltip("The amount of happiness the player can achieve per day. Higher values result in more quests and a higher difficulty.")]
@@ -97,6 +98,12 @@ public class GameManager : MonoBehaviour {
 		// float modifier = Mathf.Pow(100f / MaxDays / requiredProgressPerDay, 2) - 1f;
 		// float susIncrease = modifier * Mathf.Pow(curDay, 2.8f);
 		// return Mathf.Max(0f, Mathf.Min(100f, susIncrease));
+	}
+
+	public void IncreaseSus()
+	{
+		Debug.Log("Increase sus");
+		susMeter += susIncrease;
 	}
 
 	IEnumerator OnDayEnd() {
