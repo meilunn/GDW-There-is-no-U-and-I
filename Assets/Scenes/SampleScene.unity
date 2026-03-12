@@ -2857,6 +2857,7 @@ GameObject:
   - component: {fileID: 677380589}
   - component: {fileID: 677380591}
   - component: {fileID: 677380590}
+  - component: {fileID: 677380592}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -2906,7 +2907,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   curGameState: 1
   questManager: {fileID: 677380590}
-  standUpMeeting: {fileID: 0}
+  standUpMeeting: {fileID: 677380592}
   MaxDays: 10000000
   curDay: 0
   dayTime: 0
@@ -2919,6 +2920,19 @@ MonoBehaviour:
   requiredHappinessPercentage: 0.75
   projectProgress: {fileID: 11400000, guid: c627106112bb2ca47a9338401d1a0fa1, type: 2}
   teammates: []
+--- !u!114 &677380592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677380588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6671e645f5d2574091177974a39d278, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StandUpMeeting
+  seats: []
 --- !u!1001 &757976307
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -128,6 +128,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	async Awaitable SetupNewDay() {
+		Debug.Log("new day");
 		dayTime = dayStartTime;
 		if(susMeter >= 100f) EmploymentState = PlayerEmploymentState.TooSus;
 		else if(happinessToday < requiredHappinessPerDay) EmploymentState = PlayerEmploymentState.TooLazy;
@@ -178,11 +179,13 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 
+			Debug.Log("Selected quests:");
+
 			foreach (var quest in selectedQuests) {
-				questManager.AddQuest(quest.id, null, true);
+				Debug.Log(quest.Title);
+				questManager.AddQuest(quest.id, null, true).Start();
 			}
 		}
-		await FadeTo(Fade.Transparent);
 
 		await standUpMeeting.StartMeeting();
 

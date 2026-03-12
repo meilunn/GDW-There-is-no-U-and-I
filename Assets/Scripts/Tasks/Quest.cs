@@ -70,11 +70,10 @@ public class Quest : ScriptableObject {
 	/// </summary>
 	/// <returns>true if the quest is completed, false otherwise</returns>
 	public bool CompleteCurrentObjective() {
-		if (currentObjectiveIndex >= objectives.Length) {
+		if (++currentObjectiveIndex >= objectives.Length) {
 			OnComplete();
 			return true;
 		}
-		currentObjectiveIndex++;
 		return false;
 	}
 

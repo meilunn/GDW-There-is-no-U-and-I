@@ -8,9 +8,12 @@ public class PlaceSlot : MonoBehaviour
     public MovableInteractable item;
 	public event Action<MovableInteractable> OnItemRemoved;
 	public event Action<MovableInteractable> OnItemPlaced;
+	protected PlaceModule[] modules;
+	public TeammateController owner;
 
     private void Start()
     {
+		modules = GetComponents<PlaceModule>();
         if (item != null)
         {
             item.OnItemTaken += TakeItem;
@@ -32,6 +35,9 @@ public class PlaceSlot : MonoBehaviour
         item = newItem;
         item.OnItemTaken += TakeItem;
         item.PlaceInWorld(gameObject.transform);
+		foreach(var module in modules) {
+			module.OnPlace(item);
+		}
 		OnItemPlaced?.Invoke(item);
     }
 
@@ -40,6 +46,9 @@ public class PlaceSlot : MonoBehaviour
         item.OnItemTaken -= TakeItem;
         item = null;
         isTaken = false;
+		foreach(var module in modules) {
+			module.OnTake(item);
+		}
 		OnItemRemoved?.Invoke(item);
     }
 
