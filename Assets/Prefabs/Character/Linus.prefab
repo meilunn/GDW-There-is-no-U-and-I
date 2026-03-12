@@ -275,8 +275,8 @@ MonoBehaviour:
     tryActInterval: 5
     probCurveExponent: 2
   funStatConfig:
-    decrease: 1
-    increase: 3
+    decrease: 10
+    increase: 10
     actThreshold: 1
     tryActInterval: 5
     probCurveExponent: 5
@@ -291,10 +291,10 @@ MonoBehaviour:
   angle: 90
   radius: 10
   detectionThreshold: 100
-  pointsPerCheck: 15
+  pointsPerCheck: 0
   traceAgainst:
     serializedVersion: 2
-    m_Bits: 1048576
+    m_Bits: 0
   rayCastOrigin: {fileID: 3175803018057942451}
   makeProgressInterval: 15
   baseWorkEfficiency: 1
@@ -318,7 +318,6 @@ MonoBehaviour:
   bladderText: {fileID: 0}
   hungerText: {fileID: 0}
   curDestText: {fileID: 0}
-  voiceLineSystem: {fileID: 0}
 --- !u!114 &8289023499421324408
 MonoBehaviour:
   m_ObjectHideFlags: 0
