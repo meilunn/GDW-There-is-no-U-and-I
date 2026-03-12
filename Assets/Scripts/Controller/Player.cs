@@ -19,8 +19,7 @@ public class Player : MonoBehaviour {
 	[SerializeField] private float minPitch = -45f;
 	[SerializeField] private float maxPitch = 75f;
 	private float cameraPitch;
-	public float CameraPitch
-	{
+	public float CameraPitch {
 		get => cameraPitch;
 		set => cameraPitch = Mathf.Clamp(value, minPitch, maxPitch);
 	}
@@ -48,6 +47,8 @@ public class Player : MonoBehaviour {
 
 	private CharacterController controller;
 
+	public List<SusData> SusObjects { get; private set; } = new();
+	public bool IsSus { get => SusObjects.Count > 0; }
 
 	public Vector2 MoveInput;
 	public Vector2 LookInput;
@@ -75,28 +76,28 @@ public class Player : MonoBehaviour {
 		}
 
 		Vector3 motion = transform.forward * MoveInput.y + transform.right * MoveInput.x;
-        motion.y = 0f;
-        motion.Normalize();	
+		motion.y = 0f;
+		motion.Normalize();
 
 		if (motion.sqrMagnitude >= 0.01f)
-            velocity = Vector3.MoveTowards(
-                velocity,
-                motion * playerSpeed,
-                acceleration * Time.deltaTime
-            );
-        else
-            velocity = Vector3.MoveTowards(
-                velocity,
-                Vector3.zero,
-                acceleration * Time.deltaTime
-            );
+			velocity = Vector3.MoveTowards(
+				velocity,
+				motion * playerSpeed,
+				acceleration * Time.deltaTime
+			);
+		else
+			velocity = Vector3.MoveTowards(
+				velocity,
+				Vector3.zero,
+				acceleration * Time.deltaTime
+			);
 
 		if (controller.isGrounded && verticalVelocity <= 0.01f)
-            // important if climbing stairs to keep player stuck to ground
-            verticalVelocity = -3f;
-        else
-            // otherwise player will not fall down fast enough
-            verticalVelocity += Physics.gravity.y * gravityScale * Time.deltaTime;
+			// important if climbing stairs to keep player stuck to ground
+			verticalVelocity = -3f;
+		else
+			// otherwise player will not fall down fast enough
+			verticalVelocity += Physics.gravity.y * gravityScale * Time.deltaTime;
 
 		Vector3 actualVelocity = new(velocity.x, 0f, velocity.z);
 
@@ -105,27 +106,27 @@ public class Player : MonoBehaviour {
 
 	private void Rotate() {
 		Vector2 rotationInput = new(LookInput.x * rotationSpeed, LookInput.y * rotationSpeed);
-		
-		// look up and down
-        CameraPitch -= rotationInput.y;
-        playerCam.transform.localRotation = Quaternion.Euler(CameraPitch, 0f, 0f);
 
-        // look left and right
-        transform.Rotate(Vector3.up * rotationInput.x);
+		// look up and down
+		CameraPitch -= rotationInput.y;
+		playerCam.transform.localRotation = Quaternion.Euler(CameraPitch, 0f, 0f);
+
+		// look left and right
+		transform.Rotate(Vector3.up * rotationInput.x);
 	}
 
 
 	private void Update() {
-		if(moveLocks.Count == 0) Move();
+		if (moveLocks.Count == 0) Move();
 		Rotate();
 
 		RaycastHit hit;
 		if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, interactionRange, traceAgainst)) {
 			Collider coll = hit.collider;
 			Interactable newInteractable = coll.GetComponent<Interactable>();
-			if(newInteractable == null && currentInteractable) {
+			if (newInteractable == null && currentInteractable) {
 				DisableCurrentInteractable();
-			} else if(newInteractable != currentInteractable) {
+			} else if (newInteractable != currentInteractable) {
 				ExchangeInteractable(newInteractable);
 			}
 		} else {

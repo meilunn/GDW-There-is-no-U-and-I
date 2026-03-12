@@ -15,7 +15,8 @@ public class Clock : Interactable {
 	private float timeChangeDuration;
 	[SerializeField]
 	private float timeChangeEffectDuration;
-	private float timeChangePerSecond;
+
+	private SusData susData;
 
 	public override bool Interact() {
 		if (activeTimeOffset != 0) return false;
@@ -26,19 +27,7 @@ public class Clock : Interactable {
 	protected override void OnStart() {
 		hourHand = transform.Find("Hour Hand");
 		minuteHand = transform.Find("Minute Hand");
-		timeChangePerSecond = timeOffset / timeChangeDuration;
-	}
-
-	void OnEnable() {
-		GameManager.OnDayStart += ResetTimeOffset;
-	}
-
-	void OnDisable() {
-		GameManager.OnDayStart -= ResetTimeOffset;
-	}
-
-	void ResetTimeOffset() {
-		activeTimeOffset = 0;
+		susData = GetComponent<SusData>();
 	}
 
 	void Update() {
@@ -51,11 +40,10 @@ public class Clock : Interactable {
 	}
 
 	IEnumerator TimeChangeCoroutine() {
+		susData.Enable();
 		yield return DOTween.To(x => activeTimeOffset = x, activeTimeOffset, timeOffset, timeChangeDuration).SetEase(Ease.InOutCubic).WaitForCompletion();
-		int day = GameManager.instance.curDay;
-		yield return new WaitForSeconds(timeChangeEffectDuration);
-		if (GameManager.instance.curDay != day) yield break;  // if the day has changed since the time change started, don't change the time again
-		yield return DOTween.To(x => activeTimeOffset = x, activeTimeOffset, 43200, (43200-timeOffset) * 2 / timeChangePerSecond).SetEase(Ease.Linear).WaitForCompletion();
+		GameManager.instance.dayTime += activeTimeOffset;
 		activeTimeOffset = 0;
+		susData.Disable();
 	}
 }
