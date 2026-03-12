@@ -52,7 +52,7 @@ Material:
     - _NormalsOutline: 0
     - _Offset: 0
     - _OutlineColorMixer: 0
-    - _OutlineSize: 2.63
+    - _OutlineSize: 2
     - _ShadowSoftnes: 3
     - _ShadowSteps: 4.28
     - _Steps: 4

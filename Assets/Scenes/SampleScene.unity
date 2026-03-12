@@ -2854,6 +2854,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 677380589}
+  - component: {fileID: 677380591}
+  - component: {fileID: 677380590}
   m_Layer: 0
   m_Name: --------Managers--------
   m_TagString: Untagged
@@ -2869,13 +2871,50 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 677380588}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.42814, y: 0.23183, z: -1.97322}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.42814, y: 0.23183012, z: -1.97322}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &677380590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677380588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c2960b4b20452459fd8d9e68c6c254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::QuestManager
+--- !u!114 &677380591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677380588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f719c63f21670714fa8d44155cf0127d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  curGameState: 1
+  questManager: {fileID: 677380590}
+  MaxDays: 10000000
+  curDay: 0
+  dayTime: 0
+  dayStartTime: 0
+  dayEndTime: 84600
+  timeScale: 120
+  susMeter: 0
+  targetHappinessPerDay: 20
+  maxHappinessOvertime: 3
+  requiredHappinessPercentage: 0.75
+  projectProgress: {fileID: 11400000, guid: c627106112bb2ca47a9338401d1a0fa1, type: 2}
 --- !u!1001 &757976307
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5824,50 +5863,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3463464090902513031, guid: 17c1340f7f5917444bf0b57ff56b72bb, type: 3}
   m_PrefabInstance: {fileID: 1374499364}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1424111762
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1424111764}
-  - component: {fileID: 1424111763}
-  m_Layer: 0
-  m_Name: QuestManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1424111763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1424111762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7c2960b4b20452459fd8d9e68c6c254, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::QuestManager
---- !u!4 &1424111764
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1424111762}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1451064184
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10537,6 +10532,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 677380589}
   - {fileID: 8276921475378572088}
   - {fileID: 410087041}
   - {fileID: 832575519}

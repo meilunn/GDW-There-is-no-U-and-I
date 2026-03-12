@@ -13,9 +13,16 @@ MonoBehaviour:
   m_Name: EmptyTrash
   m_EditorClassIdentifier: Assembly-CSharp::Quest
   id: 0
+  objectives:
+  - {fileID: 11400000, guid: 1d477632d35e5ed40904383da97ef9d3, type: 2}
+  - {fileID: 11400000, guid: 619f41f5d2cce714da24baa6e63f30b6, type: 2}
+  type: 0
   availableAsOfDay: 0
-  progressOnComplete: 0
-  title: 
-  description: 
-  isJobQuest: 0
-  objectives: []
+  chooseProbability: 10
+  chooseAgainProbability: 10
+  chooseAgainProbabilityDecrease: 5
+  weight: 2
+  cooldown: 0
+  title: "M\xFClleimer leeren"
+  description: "Leere einen M\xFClleimer aus und wirf den M\xFCllbeutel in die M\xFCllrutsche
+    am Eingang"

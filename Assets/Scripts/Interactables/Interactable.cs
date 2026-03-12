@@ -5,7 +5,7 @@ public abstract class Interactable : MonoBehaviour
     public abstract bool Interact();
     
     [SerializeField]
-    private Outline outline;
+    protected Outline outline;
     
     void Start()
     {
