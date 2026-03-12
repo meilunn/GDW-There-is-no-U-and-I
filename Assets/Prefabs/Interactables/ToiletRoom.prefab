@@ -245,7 +245,7 @@ Transform:
   - {fileID: 1300912533912480218}
   - {fileID: 7100750334731627273}
   - {fileID: 1732208299539550853}
-  - {fileID: 6640356492161929592}
+  - {fileID: 4755085115191883007}
   m_Father: {fileID: 4935646063267508988}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7380503623475458131
@@ -257,9 +257,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1732208299539550853}
+  - component: {fileID: 479719649276713979}
   - component: {fileID: 6008482831601182490}
   - component: {fileID: 6345395329353851664}
-  - component: {fileID: 7609857998548448792}
   - component: {fileID: 5821890649579109571}
   - component: {fileID: 6996183361230541750}
   m_Layer: 0
@@ -284,6 +284,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8816315041071777419}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &479719649276713979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7380503623475458131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c114e5d6672b7af48af8801cf8743fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ToiletDoor
+  outline: {fileID: 5821890649579109571}
+  locked: 0
+  openingAngle: 85
+  animationDuration: 0.5
+  place: {fileID: 3287705899041996907}
 --- !u!33 &6008482831601182490
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -342,22 +359,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7609857998548448792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7380503623475458131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49b6f1655f95ba646961d2e1f453f97f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Door
-  outline: {fileID: 0}
-  locked: 0
-  openingAngle: 85
-  animationDuration: 0.5
 --- !u!114 &5821890649579109571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,6 +560,136 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.8607001, y: 2.1000001, z: 0.06689453}
   m_Center: {x: -0.4303498, y: 1.0500001, z: -0.034198523}
+--- !u!1 &8243128633701132742
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4755085115191883007}
+  - component: {fileID: 3287705899041996907}
+  - component: {fileID: 8286578122744034479}
+  m_Layer: 0
+  m_Name: Toilet Paper Place
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4755085115191883007
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8243128633701132742}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.2072, y: 1.0657, z: 1.0246}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6640356492161929592}
+  - {fileID: 7785493456701349835}
+  m_Father: {fileID: 8816315041071777419}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3287705899041996907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8243128633701132742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521d337341fc02d409a4ec678369f646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceInteractable
+  outline: {fileID: 1248666925945491591}
+  itemPosition: {fileID: 0}
+  owner: {fileID: 0}
+--- !u!65 &8286578122744034479
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8243128633701132742}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.16486436, y: 0.06995332, z: 0.20455557}
+  m_Center: {x: 0.055134922, y: 0.0007942319, z: 0.030108422}
+--- !u!1 &8641601646789811371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7785493456701349835}
+  - component: {fileID: 1248666925945491591}
+  - component: {fileID: 8745200811641466522}
+  m_Layer: 0
+  m_Name: Outline Renderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7785493456701349835
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641601646789811371}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4755085115191883007}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1248666925945491591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641601646789811371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 0}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!33 &8745200811641466522
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641601646789811371}
+  m_Mesh: {fileID: -8873786902571586346, guid: 086713f2f8ef14ad593895830a554e0f, type: 3}
 --- !u!1 &9189599860594444939
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,13 +715,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9189599860594444939}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2072, y: 1.0657, z: 1.0246}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2811443468927065526}
-  m_Father: {fileID: 8816315041071777419}
+  m_Father: {fileID: 4755085115191883007}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4580212749033918163
 MonoBehaviour:

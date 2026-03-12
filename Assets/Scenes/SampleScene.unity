@@ -2916,6 +2916,7 @@ MonoBehaviour:
   maxHappinessOvertime: 3
   requiredHappinessPercentage: 0.75
   projectProgress: {fileID: 11400000, guid: c627106112bb2ca47a9338401d1a0fa1, type: 2}
+  teammates: []
 --- !u!1001 &757976307
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5286,7 +5287,7 @@ GameObject:
   - component: {fileID: 1313274862}
   m_Layer: 7
   m_Name: Teammate
-  m_TagString: Untagged
+  m_TagString: Teammate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6964,7 +6965,7 @@ GameObject:
   - component: {fileID: 1547445856}
   m_Layer: 7
   m_Name: Teammate (1)
-  m_TagString: Untagged
+  m_TagString: Teammate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10598,9 +10599,6 @@ SceneRoots:
   - {fileID: 8107217517825935839}
   - {fileID: 1313274860}
   - {fileID: 1547445862}
-  - {fileID: 677380589}
-  - {fileID: 201541368}
-  - {fileID: 1424111764}
   - {fileID: 1902672105}
   - {fileID: 785843161}
   - {fileID: 1267732344}

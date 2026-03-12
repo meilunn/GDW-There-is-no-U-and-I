@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-partial class Door : Interactable {
+public class Door : Interactable {
 	protected bool Open { get; private set; } = false;
 	public bool locked = false;
 	[SerializeField]
@@ -11,11 +11,22 @@ partial class Door : Interactable {
 
 
 	public override bool Interact() {
-		if(locked) return false;
+		if (locked) return false;
 
 		Open = !Open;
+		Animate();
+		return true;
+	}
+
+	private void Animate() {
 		float targetAngle = Open ? openingAngle : 0f;
 		transform.DOLocalRotate(new Vector3(0, targetAngle, 0), animationDuration);
-		return true;
+	}
+
+	public void OnTriggerEnter(Collider other) {
+		if (!locked && !Open && other.CompareTag("Teammate")) {
+			Open = true;
+			Animate();
+		}
 	}
 }

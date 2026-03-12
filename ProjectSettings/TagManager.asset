@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Bin
+  - Teammate
   layers:
   - Default
   - TransparentFX
