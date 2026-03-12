@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0693a74cff5b8743adb4d534e1e8669, type: 3}
+  m_Name: RefillToiletPaper
+  m_EditorClassIdentifier: Assembly-CSharp::Quest
+  id: 1
+  objectives:
+  - {fileID: 11400000, guid: b12eec39aa58888469931c94ad65870f, type: 2}
+  type: 1
+  availableAsOfDay: 1
+  chooseProbability: 0
+  chooseAgainProbability: 0
+  chooseAgainProbabilityDecrease: 0
+  weight: 0
+  cooldown: 0
+  title: Deliver the Roll
+  description: '{name} has run out of toilet paper. Bring them a fresh roll as quickly
+    as possible.'

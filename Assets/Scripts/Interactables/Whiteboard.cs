@@ -46,7 +46,7 @@ public class Whiteboard : Interactable {
 			if(quest.type != QuestType.Job) continue;
 			string statusStart = quest.State == QuestState.Completed ? "<s>" : "";
 			string statusEnd = quest.State == QuestState.Completed ? "</s>" : "";
-			sb.AppendLine($"- {statusStart}{quest.title}{statusEnd}");
+			sb.AppendLine($"- {statusStart}{quest.Title}{statusEnd}");
 		}
 		this.playerQuests.text = sb.ToString();
 	}

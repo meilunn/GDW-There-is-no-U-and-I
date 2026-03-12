@@ -2,7 +2,8 @@ using System;
 using UnityEngine;
 
 public enum QuestId {
-	EmptyTrash
+	EmptyTrash,
+	RefillToiletPaper
 }
 
 // this can be used for UI ig?
@@ -21,12 +22,14 @@ public enum QuestType {
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quests/Quest")]
 public class Quest : ScriptableObject {
 	public QuestId id;
-	[NonSerialized] public TeammateController owner;
+	[NonSerialized]
+	public TeammateController owner;
 	public Objective[] objectives;
 
 	public QuestType type;
 	[Header("Job Quest Config")]
-	[Tooltip("The day on which this quest becomes available during the standup meeting.")] [Min(1)]
+	[Tooltip("The day on which this quest becomes available during the standup meeting.")]
+	[Min(1)]
 	public int availableAsOfDay = 1;
 	[Tooltip("The base probability that this quest will be chosen.")]
 	public float chooseProbability;
@@ -41,8 +44,13 @@ public class Quest : ScriptableObject {
 
 	[Header("Quest Info")]
 	[Tooltip("The quest's title displayed on the whiteboard and in the UI.")]
-	public string title;
-	public string description;
+	[SerializeField]
+	private string title;
+	public string Title => title;
+	[SerializeField, TextArea]
+	private string description;
+	private string _description;
+	public string Description => _description ??= description.Replace("{name}", owner ? owner.name : "No Owner"); 
 	[Tooltip("Indicates whether this quest is a quest given to the player by their team during the standup meeting in the morning.")]
 
 
