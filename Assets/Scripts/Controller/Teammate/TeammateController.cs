@@ -223,9 +223,25 @@ public class TeammateController : MonoBehaviour
 
                     curWorkEfficiency = baseWorkEfficiency; // TODO: calculate based on stats
 
+                    // Apply disturbance penalty
+                    if (isDisturbed)
+                        curWorkEfficiency *= yapConfig.disturbedEfficiencyScale;
+
                     gameManager.projectProgress.Work(curWorkEfficiency);
 
                     lastProgressMadeTime = gameManager.dayTime;
+                }
+
+                // go patrol?
+                int patrolCheckIntervallInSec = patrolCheckInterval * 60;
+                if (gameManager.dayTime >= lastPatrolCheckTime + patrolCheckIntervallInSec)
+                {
+                    Debug.Log("Go patrol check");
+
+                    if (Random.value < patrolProbability)
+                        patrolController.StartPatrol();
+
+                    lastPatrolCheckTime = gameManager.dayTime;
                 }
 
                 break;
@@ -442,6 +458,9 @@ public class TeammateController : MonoBehaviour
 
         if (curTeammateState != TeammateState.AtWorkplace)
             return;
+
+        // Reset the timed patrol cooldown so we don't get a double patrol shortly after
+        lastPatrolCheckTime = gameManager.dayTime;
 
         patrolController.StartPatrol();
     }

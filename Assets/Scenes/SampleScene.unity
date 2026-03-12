@@ -1241,7 +1241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   curGameState: 1
-  questManager: {fileID: 0}
+  questManager: {fileID: 1424111763}
   MaxDays: 10000000
   curDay: 1
   dayTime: 0
@@ -1251,6 +1251,7 @@ MonoBehaviour:
   susMeter: 0
   progressMeter: 0
   projectProgress: {fileID: 11400000, guid: c627106112bb2ca47a9338401d1a0fa1, type: 2}
+  teammates: []
 --- !u!4 &201541368
 Transform:
   m_ObjectHideFlags: 0
@@ -1927,6 +1928,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1109893497}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &456901894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 456901895}
+  m_Layer: 7
+  m_Name: RaycastOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &456901895
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456901894}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.52, z: 0.64}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1547445862}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &459845086
 Mesh:
   m_ObjectHideFlags: 0
@@ -2114,7 +2146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 528744910}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RaycastOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5212,7 +5244,7 @@ GameObject:
   - component: {fileID: 1313274861}
   - component: {fileID: 1313274863}
   - component: {fileID: 1313274862}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Teammate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5232,7 +5264,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -5376,6 +5408,7 @@ MonoBehaviour:
     tryActInterval: 3
     probCurveExponent: 2
   energyDecreaseScaleWhenWorking: 3
+  energyYappingScale: 0
   bladderStatConfig:
     decrease: 1
     increase: 1
@@ -5388,6 +5421,23 @@ MonoBehaviour:
     actThreshold: 20
     tryActInterval: 5
     probCurveExponent: 2
+  funStatConfig:
+    decrease: 10
+    increase: 10
+    actThreshold: 1
+    tryActInterval: 5
+    probCurveExponent: 5
+  yapConfig:
+    detectionRadius: 3
+    checkInterval: 1
+    probabilityPatrollerToPatroller: 1
+    probabilityPatrollerToWorker: 0.5
+    duration: 5
+    durationVariance: 2
+    funIncrease: 5
+    disturbedEfficiencyScale: 0.5
+    disturbedDuration: 10
+    globalCooldown: 15
   baseWalkSpeed: 3
   walkSpeedEnergyScale: 1.5
   walkSpeedBladderScale: 1.5
@@ -6901,6 +6951,243 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1543510717}
   m_CullTransparentMesh: 1
+--- !u!1 &1547445855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1547445862}
+  - component: {fileID: 1547445861}
+  - component: {fileID: 1547445860}
+  - component: {fileID: 1547445859}
+  - component: {fileID: 1547445858}
+  - component: {fileID: 1547445857}
+  - component: {fileID: 1547445856}
+  m_Layer: 7
+  m_Name: Teammate (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1547445856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547445855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6176e158ef4d06c44a123d75fa4fd4dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeammatePath
+  patrolWaypoints:
+  - {fileID: 620248606}
+  - {fileID: 1374499365}
+  - {fileID: 1294700348}
+  waitTimeLongWaypoint: 3
+  waitTimeShortWaypoint: 1
+--- !u!114 &1547445857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547445855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45f6155886faff74aa316d656caa9063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeammateController
+  initialTeammateState: 0
+  curTeammateState: 0
+  energyStatConfig:
+    decrease: 2
+    increase: 10
+    actThreshold: 30
+    tryActInterval: 3
+    probCurveExponent: 2
+  energyDecreaseScaleWhenWorking: 3
+  energyYappingScale: 0
+  bladderStatConfig:
+    decrease: 1
+    increase: 1
+    actThreshold: 20
+    tryActInterval: 5
+    probCurveExponent: 2
+  hungerStatConfig:
+    decrease: 1
+    increase: 1
+    actThreshold: 20
+    tryActInterval: 5
+    probCurveExponent: 2
+  funStatConfig:
+    decrease: 10
+    increase: 10
+    actThreshold: 1
+    tryActInterval: 5
+    probCurveExponent: 5
+  yapConfig:
+    detectionRadius: 3
+    checkInterval: 1
+    probabilityPatrollerToPatroller: 1
+    probabilityPatrollerToWorker: 0.5
+    duration: 5
+    durationVariance: 2
+    funIncrease: 5
+    disturbedEfficiencyScale: 0.5
+    disturbedDuration: 10
+    globalCooldown: 15
+  baseWalkSpeed: 3
+  walkSpeedEnergyScale: 1.5
+  walkSpeedBladderScale: 1.5
+  walkSpeedHungerScale: 1.5
+  curDestination: 0
+  workplace: {fileID: 1177701488}
+  toilet: {fileID: 0}
+  exit: {fileID: 0}
+  angle: 90
+  radius: 10
+  detectionThreshold: 100
+  pointsPerCheck: 0
+  traceAgainst:
+    serializedVersion: 2
+    m_Bits: 0
+  rayCastOrigin: {fileID: 456901895}
+  foodPreferences: []
+  energyPreferences: []
+  teammateStateText: {fileID: 605183217}
+  energyText: {fileID: 142134923}
+  bladderText: {fileID: 1480537002}
+  hungerText: {fileID: 1267916127}
+  curDestText: {fileID: 1543510719}
+  makeProgressInterval: 15
+  baseWorkEfficiency: 1
+  patrolCheckInterval: 5
+  patrolProbability: 0.163
+  player: {fileID: 0}
+--- !u!195 &1547445858
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547445855}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!136 &1547445859
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547445855}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1547445860
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547445855}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: f69f5ae10e46c83418fa698847f6c053, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1547445861
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547445855}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1547445862
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547445855}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.38, y: 1.62, z: 3.65}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 456901895}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1547739194
 GameObject:
   m_ObjectHideFlags: 0
@@ -9314,6 +9601,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 360266235225151677, guid: c697abdd554d8964b99adab2ea859a8f, type: 3}
+      propertyPath: 'barks.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 0f357f90a50641e458ba119a2d268fce, type: 2}
     - target: {fileID: 7316737831180952072, guid: c697abdd554d8964b99adab2ea859a8f, type: 3}
       propertyPath: m_Name
       value: Test Character for Voicelines
@@ -10252,6 +10543,7 @@ SceneRoots:
   - {fileID: 1018323221}
   - {fileID: 8107217517825935839}
   - {fileID: 1313274860}
+  - {fileID: 1547445862}
   - {fileID: 677380589}
   - {fileID: 201541368}
   - {fileID: 1424111764}
