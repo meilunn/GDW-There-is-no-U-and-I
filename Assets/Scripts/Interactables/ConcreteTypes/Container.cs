@@ -1,17 +1,19 @@
 public class Container : PlaceInteractable {
-	private Hinge hinge;
+	private Hinge[] hinges;
 
 	public override void Awake() {
 		base.Awake();
-		hinge = GetComponentInChildren<Hinge>();
+		hinges = GetComponentsInChildren<Hinge>();
 	}
 
 	public override bool Interact() {
-		if(hinge.IsOpen) {
-			if(Player.Instance.ItemInHand) return base.Interact();
-			else _ = hinge.Close();
-		} else {
-			_ = hinge.Open();
+		foreach (Hinge hinge in hinges) {
+			if (hinge.IsOpen) {
+				if (Player.Instance.ItemInHand) return base.Interact();
+				else _ = hinge.Close();
+			} else {
+				_ = hinge.Open();
+			}
 		}
 		return true;
 	}
