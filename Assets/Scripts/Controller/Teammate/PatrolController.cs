@@ -22,11 +22,13 @@ public class PatrolController : MonoBehaviour
     private bool lastDest;
 
     private float stayTime;
+    public bool IsWaitingAtWaypoint { get; private set; }
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         teammateController = GetComponent<TeammateController>();
+        
     }
 
     private void Update()
@@ -35,6 +37,7 @@ public class PatrolController : MonoBehaviour
         if (teammateController.curTeammateState == TeammateController.TeammateState.Patrolling 
             && agent.remainingDistance <= 0.1f)
         {
+            IsWaitingAtWaypoint = true;
             stayTime += Time.deltaTime;
             if (stayTime >= waitTimeCurWaypoint)
             {
@@ -45,6 +48,15 @@ public class PatrolController : MonoBehaviour
                     SetNextDestination();
             }
         }
+        else
+        {
+            IsWaitingAtWaypoint = false;
+        }
+    }
+    
+    public bool IsPatrolInProgress()
+    {
+        return index >= 0 && index < patrolWaypoints.Length;
     }
 
     public void StartPatrol()

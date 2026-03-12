@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour {
 	private float requiredHappinessPerDay;
 	private float happinessToday;
 	public ProjectProgress projectProgress;
+	
+	public TeammateController[] teammates;
 
 	void Awake() {
 		if (instance != null) {
@@ -63,6 +65,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Start() {
+		if (teammates == null || teammates.Length == 0)
+			teammates = FindObjectsByType<TeammateController>(FindObjectsSortMode.None);
 		StartCoroutine(SetupNewDay());
 	}
 

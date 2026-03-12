@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0eb4aff5ac2429e83d791cd1fe6636c, type: 3}
   m_Name: Shitting_Linus
   m_EditorClassIdentifier: Assembly-CSharp::Bark
-  barkText: In need of sustenance in T-now.
+  barkText: Brb, gotta make space for more energy drinks.
   voiceClip: {fileID: 0}
   character: 3

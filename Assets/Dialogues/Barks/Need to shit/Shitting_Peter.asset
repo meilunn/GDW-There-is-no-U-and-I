@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0eb4aff5ac2429e83d791cd1fe6636c, type: 3}
   m_Name: Shitting_Peter
   m_EditorClassIdentifier: Assembly-CSharp::Bark
-  barkText: "I\u2019m starving, go make me a sandwich!"
+  barkText: "Need to shit. Don\u2019t break anything while I\u2019m gone!"
   voiceClip: {fileID: 0}
   character: 2
