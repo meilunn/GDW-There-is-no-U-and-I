@@ -56,10 +56,13 @@ public class DialogueSystem : MonoBehaviour
     private const string TutorialKey = "TutorialDialoguePlayed";
     private const string TowerKey = "TowerDialoguePlayed";
     */
-
+    
+    public bool InDialogue { get; private set; }
+    
     private Queue<DialogueLine> dialogueQueue; // Queue of dialogue lines with speakers
     private string currentLine = "";
     private bool isTyping = false;
+    public DialogueType CurrentDialogueType { get; private set; }
     [SerializeField] private bool typeWriterEffect = false;
     [SerializeField] private float timeBetweenLetters = 0.5f;
 
@@ -89,7 +92,7 @@ public class DialogueSystem : MonoBehaviour
     }
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame && InDialogue)
         {
             DisplayNextLine();
         }
@@ -98,6 +101,8 @@ public class DialogueSystem : MonoBehaviour
 
     public void StartDialogue(int index, DialogueType type)
     {
+        dialogueText.maxVisibleCharacters = 0;
+        CurrentDialogueType = type;
         List<Dialogue> dialogues = null;
         //bool[] dialoguePlayed = null;
         switch (type)
@@ -144,6 +149,7 @@ public class DialogueSystem : MonoBehaviour
     
     public void StartDialogue(Dialogue dialogue)
     {
+        InDialogue = true;
         dialogueQueue.Clear();
 
         foreach (var line in dialogue.dialogues)
@@ -231,9 +237,11 @@ public class DialogueSystem : MonoBehaviour
 
     private void EndDialogue()
     {
+        Debug.Log("End Dialogue");
+        InDialogue = false;
+        isTyping = false;
         dialoguePanel.SetActive(false);
         OnDialogueEnd?.Invoke();
-        //gameManager.InvokeResumeGame(); Start Game
     }
 
     /*

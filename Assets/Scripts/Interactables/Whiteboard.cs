@@ -1,22 +1,26 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
+using UnityEngine;
 
 public class Whiteboard : Interactable {
 	private TMP_Text teamTodos;
 	private TMP_Text playerQuests;
+	[SerializeField] private float timeBetweenLetters = 0.03f;
 
 	void Awake() {
 		teamTodos = transform.Find("Canvas/TeamTodos").GetComponent<TMP_Text>();
 		playerQuests = transform.Find("Canvas/PlayerTasks").GetComponent<TMP_Text>();
 	}
 
-	void OnEnable() {
-		GameManager.OnDayStart += DailyUpdate;
+	void Start() {
+		DialogueSystem.Instance.OnDialogueEnd.AddListener(DisplayTasks);
 	}
 
-	void OnDisable() {
-		GameManager.OnDayStart -= DailyUpdate;
+	void OnDestroy() {
+		if (DialogueSystem.Instance != null)
+			DialogueSystem.Instance.OnDialogueEnd.RemoveListener(DisplayTasks);
 	}
 
 	public override bool Interact() {
@@ -46,4 +50,25 @@ public class Whiteboard : Interactable {
 		}
 		this.playerQuests.text = sb.ToString();
 	}
+
+	private void DisplayTasks() {
+		Debug.Log("Displaying tasks");
+		if (DialogueSystem.Instance.CurrentDialogueType != DialogueSystem.DialogueType.StandUp) return;
+		DailyUpdate();
+		StartCoroutine(TypewriterEffect(teamTodos));
+		StartCoroutine(TypewriterEffect(playerQuests));
+	}
+
+	private IEnumerator TypewriterEffect(TMP_Text textComponent) {
+		DailyUpdate();
+		textComponent.ForceMeshUpdate();
+		int totalCharacters = textComponent.textInfo.characterCount;
+		textComponent.maxVisibleCharacters = 0;
+
+		for (int i = 1; i <= totalCharacters; i++) {
+			textComponent.maxVisibleCharacters = i;
+			yield return new WaitForSecondsRealtime(timeBetweenLetters);
+		}
+	}
+	
 }

@@ -68,6 +68,16 @@ public class GameManager : MonoBehaviour {
 		if (teammates == null || teammates.Length == 0)
 			teammates = FindObjectsByType<TeammateController>(FindObjectsSortMode.None);
 		StartCoroutine(SetupNewDay());
+		
+	}
+	void OnEnable() {
+		if (DialogueSystem.Instance != null)
+			DialogueSystem.Instance.OnDialogueEnd.AddListener(StartWorkDay);
+	}
+
+	void OnDisable() {
+		if (DialogueSystem.Instance != null)
+			DialogueSystem.Instance.OnDialogueEnd.RemoveListener(StartWorkDay);
 	}
 
 	void Update() {
@@ -102,6 +112,7 @@ public class GameManager : MonoBehaviour {
 		dayTime = dayStartTime;
 		bool fired = susMeter >= 100f || happinessToday < requiredHappinessPerDay;
 		curGameState = GameState.StandUp;
+		DialogueSystem.Instance.StartDialogue(curDay-1,DialogueSystem.DialogueType.StandUp);
 		questManager.ClearQuests();
 
 
@@ -160,7 +171,10 @@ public class GameManager : MonoBehaviour {
 			curGameState = GameState.GameOver;
 			yield break;
 		}
+	}
 
+	public void StartWorkDay()
+	{
 		curGameState = GameState.Work;
 		happinessToday = 0;
 		OnDayStart?.Invoke();
