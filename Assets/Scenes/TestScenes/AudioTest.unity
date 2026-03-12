@@ -3400,9 +3400,9 @@ GameObject:
   - component: {fileID: 785843157}
   - component: {fileID: 785843156}
   - component: {fileID: 785843162}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: TileFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8475,7 +8475,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3898456631553017738, guid: 41ca24999f41a7948958562a2b9dc0dd, type: 3}
   m_PrefabInstance: {fileID: 8107217517825935839}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1858130498
+--- !u!114 &1858130508
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8484,30 +8484,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1858130488}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e99b7b3545f3984499746c784fda5f9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 1031867024
-      Data2: 1085915808
-      Data3: -1100423012
-      Data4: -2075982520
-    Path: event:/character/footsteps
-  Event: 
-  EventPlayTrigger: 1
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 1
-  NonRigidbodyVelocity: 0
-  Params:
-  - Name: Terrain
-    Value: 0
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  m_EditorClassIdentifier: Assembly-CSharp::Footstep
 --- !u!1 &1881507090
 GameObject:
   m_ObjectHideFlags: 0
@@ -10642,7 +10621,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3898456631553017738, guid: 41ca24999f41a7948958562a2b9dc0dd, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1858130498}
+      addedObject: {fileID: 1858130508}
   m_SourcePrefab: {fileID: 100100000, guid: 41ca24999f41a7948958562a2b9dc0dd, type: 3}
 --- !u!4 &8276921475378572088
 Transform:
