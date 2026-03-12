@@ -8,17 +8,17 @@ public class QuestManager : MonoBehaviour {
 	private readonly List<Quest> availableSabotageQuests = new();
 
 	void Awake() {
-		foreach(var quest in Resources.LoadAll<Quest>("Quests")) {
-			Debug.Log($"Loaded quest {quest.id}");
-			switch (quest.type) {
-				case QuestType.Job:
-					availableJobQuests.Add(quest);
-					break;
-				case QuestType.Sabotage:
-					availableSabotageQuests.Add(quest);
-					break;
-			}
-		}
+		// foreach(var quest in Resources.LoadAll<Quest>("Quests")) {
+		// 	Debug.Log($"Loaded quest {quest.id}");
+		// 	switch (quest.type) {
+		// 		case QuestType.Job:
+		// 			availableJobQuests.Add(quest);
+		// 			break;
+		// 		case QuestType.Sabotage:
+		// 			availableSabotageQuests.Add(quest);
+		// 			break;
+		// 	}
+		// }
 	}
 
 	/// <summary>

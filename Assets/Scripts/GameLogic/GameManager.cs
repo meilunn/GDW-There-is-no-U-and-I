@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour {
 	private float requiredHappinessPerDay;
 	private float happinessToday;
 	public ProjectProgress projectProgress;
-	
+
 	public TeammateController[] teammates;
 
 	void Awake() {
@@ -83,8 +83,8 @@ public class GameManager : MonoBehaviour {
 		if (teammates == null || teammates.Length == 0)
 			teammates = FindObjectsByType<TeammateController>(FindObjectsSortMode.None);
 		_ = SetupNewDay();
-		
 	}
+
 	void OnEnable() {
 		if (DialogueSystem.Instance != null)
 			DialogueSystem.Instance.OnDialogueEnd.AddListener(StartWorkDay);
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour {
 			dayTime = -1;
 			StartCoroutine(OnDayEnd());
 		}
-		if(dayTime >= 0) dayTime += timeScale * Time.deltaTime;
+		if (dayTime >= 0) dayTime += timeScale * Time.deltaTime;
 	}
 
 	float CalculateSusIncrease() {
@@ -115,8 +115,7 @@ public class GameManager : MonoBehaviour {
 		// return Mathf.Max(0f, Mathf.Min(100f, susIncrease));
 	}
 
-	public void IncreaseSus()
-	{
+	public void IncreaseSus() {
 		Debug.Log("Increase sus");
 		susMeter += susIncrease;
 	}
@@ -130,17 +129,17 @@ public class GameManager : MonoBehaviour {
 		susMeter += CalculateSusIncrease();
 
 		curDay++;
-		if(curDay < MaxDays) yield return SetupNewDay();
+		if (curDay < MaxDays) yield return SetupNewDay();
 		else Debug.Log("Game Ended, should show Siegererehrung and evaluate team progress");
 	}
 
 	async Awaitable SetupNewDay() {
 		Debug.Log("new day");
 		dayTime = dayStartTime;
-		if(susMeter >= 100f) EmploymentState = PlayerEmploymentState.TooSus;
-		else if(happinessToday < requiredHappinessPerDay) EmploymentState = PlayerEmploymentState.TooLazy;
+		if (susMeter >= 100f) EmploymentState = PlayerEmploymentState.TooSus;
+		else if (happinessToday < requiredHappinessPerDay) EmploymentState = PlayerEmploymentState.TooLazy;
 		curGameState = GameState.StandUp;
-		DialogueSystem.Instance.StartDialogue(curDay-1,DialogueSystem.DialogueType.StandUp);
+		DialogueSystem.Instance.StartDialogue(curDay - 1, DialogueSystem.DialogueType.StandUp);
 		questManager.ClearQuests();
 
 		if (EmploymentState == 0) {
@@ -203,8 +202,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void StartWorkDay()
-	{
+	public void StartWorkDay() {
 		curGameState = GameState.Work;
 		happinessToday = 0;
 		OnDayStart?.Invoke();
