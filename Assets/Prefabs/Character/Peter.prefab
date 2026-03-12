@@ -269,13 +269,13 @@ MonoBehaviour:
     tryActInterval: 5
     probCurveExponent: 2
   hungerStatConfig:
-    decrease: 0
+    decrease: 5
     increase: 1
     actThreshold: 20
     tryActInterval: 5
     probCurveExponent: 2
   funStatConfig:
-    decrease: 0
+    decrease: 5
     increase: 10
     actThreshold: 1
     tryActInterval: 5

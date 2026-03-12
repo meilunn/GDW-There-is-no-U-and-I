@@ -474,7 +474,7 @@ public class TeammateController : MonoBehaviour
                 gameManager.questManager.CreateAndStartQuest(QuestId.BringCoffee, this);
                 break;
             case EdibleData.EdibleType.EnergyDrink: 
-                gameManager.questManager.CreateAndStartQuest(QuestId.BringEnergyDrink, this);
+                gameManager.questManager.CreateAndStartQuest(QuestId.BringEnergy, this);
                 break;
         }
         Debug.Log($"{gameObject.name} wants {pref}");
