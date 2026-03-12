@@ -9,6 +9,8 @@ public class StandUpMeeting : MonoBehaviour {
 			seat.Sit();
 		}
 
+		await GameManager.instance.FadeTo(Fade.Transparent);
+
 		switch (GameManager.instance.EmploymentState) {
 			case GameManager.PlayerEmploymentState.Employed: {
 

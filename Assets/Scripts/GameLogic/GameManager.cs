@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour {
 	void Start() {
 		if (teammates == null || teammates.Length == 0)
 			teammates = FindObjectsByType<TeammateController>(FindObjectsSortMode.None);
-		StartCoroutine(SetupNewDay());
+		_ = SetupNewDay();
 		
 	}
 	void OnEnable() {
@@ -198,11 +198,6 @@ public class GameManager : MonoBehaviour {
 		curGameState = GameState.Work;
 		happinessToday = 0;
 		OnDayStart?.Invoke();
-	}
-
-	public enum Fade {
-		Transparent = 0,
-		Black = 1
 	}
 
 	public async Awaitable FadeTo(Fade alpha) {

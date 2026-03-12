@@ -116,7 +116,7 @@ public class Player : MonoBehaviour {
 
 
 	private void Update() {
-		if(moveLocks.Count != 0) Move();
+		if(moveLocks.Count == 0) Move();
 		Rotate();
 
 		RaycastHit hit;
