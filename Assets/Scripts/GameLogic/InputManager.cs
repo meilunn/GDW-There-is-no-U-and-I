@@ -1,11 +1,9 @@
-using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
     private Player playerController;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerController = Player.Instance;

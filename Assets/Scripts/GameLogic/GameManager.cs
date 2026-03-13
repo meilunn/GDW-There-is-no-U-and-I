@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
@@ -17,8 +18,19 @@ public class GameManager : MonoBehaviour {
 		GameOver
 	}
 
+	public enum PlayerEmploymentState {
+		Employed,
+		TooSus,
+		TooLazy,
+		TeamWon,
+		TeamLost
+	}
+
 	public GameState curGameState;
+	public PlayerEmploymentState EmploymentState { get; private set; }
 	public QuestManager questManager;
+	public StandUpMeeting standUpMeeting;
+	private CanvasGroup fadeToBlack;
 
 	public int MaxDays;
 	public int curDay;
@@ -32,7 +44,8 @@ public class GameManager : MonoBehaviour {
 	[Tooltip("Amount of ingame seconds that pass per real second.")]
 	private double timeScale = 120.0f;
 
-	public float susMeter = 0;  // 0-100
+	public float susIncrease;
+	private float susMeter = 0;  // 0-100
 	private float happinessMeter = 0;
 	private float maxHappinessMeter = 0;
 	[Tooltip("The amount of happiness the player can achieve per day. Higher values result in more quests and a higher difficulty.")]
@@ -50,7 +63,7 @@ public class GameManager : MonoBehaviour {
 	private float requiredHappinessPerDay;
 	private float happinessToday;
 	public ProjectProgress projectProgress;
-	
+
 	public TeammateController[] teammates;
 
 	void Awake() {
@@ -58,6 +71,8 @@ public class GameManager : MonoBehaviour {
 			Destroy(gameObject);
 			return;
 		}
+
+		fadeToBlack = transform.Find("Overlays/ScreenFade").GetComponent<CanvasGroup>();
 
 		// also need to set happiness in order to avoid getting fired on the first day
 		happinessToday = requiredHappinessPerDay = targetHappinessPerDay * 0.75f;
@@ -67,9 +82,9 @@ public class GameManager : MonoBehaviour {
 	void Start() {
 		if (teammates == null || teammates.Length == 0)
 			teammates = FindObjectsByType<TeammateController>(FindObjectsSortMode.None);
-		StartCoroutine(SetupNewDay());
-		
+		_ = SetupNewDay();
 	}
+
 	void OnEnable() {
 		if (DialogueSystem.Instance != null)
 			DialogueSystem.Instance.OnDialogueEnd.AddListener(StartWorkDay);
@@ -86,9 +101,10 @@ public class GameManager : MonoBehaviour {
 
 		if (dayTime >= dayEndTime) {
 			curGameState = GameState.EndOfDay;
+			dayTime = -1;
 			StartCoroutine(OnDayEnd());
 		}
-		dayTime += timeScale * Time.deltaTime;
+		if (dayTime >= 0) dayTime += timeScale * Time.deltaTime;
 	}
 
 	float CalculateSusIncrease() {
@@ -99,24 +115,34 @@ public class GameManager : MonoBehaviour {
 		// return Mathf.Max(0f, Mathf.Min(100f, susIncrease));
 	}
 
-	IEnumerator OnDayEnd() {
+	public void IncreaseSus() {
+		Debug.Log("Increase sus");
+		susMeter += susIncrease;
+	}
+
+	private IEnumerator OnDayEnd() {
+		// wait for staff leaving
+		Debug.Log("Day ended. Waiting for staff to leave...");
 		yield return new WaitForSeconds(3f);
+		yield return FadeTo(Fade.Black);
 
 		susMeter += CalculateSusIncrease();
 
-		StartCoroutine(SetupNewDay());
+		curDay++;
+		if (curDay < MaxDays) yield return SetupNewDay();
+		else Debug.Log("Game Ended, should show Siegererehrung and evaluate team progress");
 	}
 
-	IEnumerator SetupNewDay() {
-		curDay++;
+	async Awaitable SetupNewDay() {
+		Debug.Log("new day");
 		dayTime = dayStartTime;
-		bool fired = susMeter >= 100f || happinessToday < requiredHappinessPerDay;
+		if (susMeter >= 100f) EmploymentState = PlayerEmploymentState.TooSus;
+		else if (happinessToday < requiredHappinessPerDay) EmploymentState = PlayerEmploymentState.TooLazy;
 		curGameState = GameState.StandUp;
-		DialogueSystem.Instance.StartDialogue(curDay-1,DialogueSystem.DialogueType.StandUp);
+		DialogueSystem.Instance.StartDialogue(curDay - 1, DialogueSystem.DialogueType.StandUp);
 		questManager.ClearQuests();
 
-
-		if (!fired) {
+		if (EmploymentState == 0) {
 			// Generate new daily quests
 
 			List<Quest> selectedQuests = new();
@@ -159,25 +185,31 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 
+			Debug.Log("Selected quests:");
+
 			foreach (var quest in selectedQuests) {
-				questManager.AddQuest(quest.id, null, true);
+				Debug.Log(quest.Title);
+				questManager.AddQuest(quest.id, null, true).Start();
 			}
 		}
 
-		// TODO: Handle Standup Meeting
+		await standUpMeeting.StartMeeting();
 
-		if (fired) {
+		if (EmploymentState != 0) {
 			Debug.Log("You're fired!");
 			curGameState = GameState.GameOver;
-			yield break;
+			return;
 		}
 	}
 
-	public void StartWorkDay()
-	{
+	public void StartWorkDay() {
 		curGameState = GameState.Work;
 		happinessToday = 0;
 		OnDayStart?.Invoke();
+	}
+
+	public async Awaitable FadeTo(Fade alpha) {
+		await fadeToBlack.DOFade((float)alpha, 1f).AsyncWaitForCompletion();
 	}
 
 	public void AddHappiness(float amount) {

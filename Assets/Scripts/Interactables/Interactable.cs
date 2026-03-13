@@ -16,10 +16,20 @@ public abstract class Interactable : MonoBehaviour
         TurnInteractable(false);
         OnStart();
     }
+
+	public virtual void Enable() {
+		enabled = true;
+	}
+
+	public virtual void Disable() {
+		enabled = false;
+		outline.enabled = false;
+	}
     
     protected virtual void OnStart() {}
     public void TurnInteractable(bool toActive)
     {
+		if(!enabled) return;
         if (outline)
         {
             outline.enabled = toActive;

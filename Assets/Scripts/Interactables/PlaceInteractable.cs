@@ -6,9 +6,11 @@ public class PlaceInteractable : Interactable {
 	public TeammateController owner;
 
 	private PlaceSlot[] slots;
-	void Awake() {
+
+	public virtual void Awake() {
 		slots = GetComponentsInChildren<PlaceSlot>();
 	}
+
 	public override bool Interact() {
 		MovableInteractable item = Player.Instance.ItemInHand;
 		if (item != null) {
@@ -79,7 +81,7 @@ public class PlaceInteractable : Interactable {
 
 	public PlaceSlot GetEmptySlotForType(MovableInteractable.Type itemType) {
 		foreach (PlaceSlot slot in slots) {
-			if(slot.itemsAllowed.HasFlag(itemType) && !slot.isTaken) return slot;
+			if (slot.itemsAllowed.HasFlag(itemType) && !slot.isTaken) return slot;
 		}
 		return null;
 	}

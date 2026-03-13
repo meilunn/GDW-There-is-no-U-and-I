@@ -8,8 +8,17 @@ using DG.Tweening;
 [RequireComponent(typeof(AudioSource))]
 public class VoiceLineSystem : MonoBehaviour
 {
+    public enum BarkType
+    {
+        Bored,
+        Hungry,
+        Shitting,
+        Satisfied,
+        Sussy,
+        Tired,
+        Yapping
+    }
     [SerializeField] private List<Bark> barks;
-    [SerializeField] private TextMeshProUGUI lineText;
     [SerializeField] private GameObject speechBubbleUI;
     [SerializeField] private TMP_Text speechBubbleText;
     [SerializeField] private bool useTypewriterEffect = false;
@@ -25,10 +34,8 @@ public class VoiceLineSystem : MonoBehaviour
         PlayBark(0);
     }
     
-    public void PlayBark(int index)
+    public void PlayBark(BarkType index)
     {
-        if (index < 0 || index >= barks.Count) return;
-
         hideBubbleTween?.Kill();
 
         if (typewriterCoroutine != null)
@@ -38,19 +45,20 @@ public class VoiceLineSystem : MonoBehaviour
         }
 
         speechBubbleUI.SetActive(true);
-
+        Debug.Log("Playing bark: " + index);
         if (useTypewriterEffect)
         {
-            typewriterCoroutine = StartCoroutine(TypeLine(barks[index].barkText));
+            typewriterCoroutine = StartCoroutine(TypeLine(barks[(int)index].barkText));
         }
         else
         {
-            speechBubbleText.text = barks[index].barkText;
+            speechBubbleText.text = barks[(int)index].barkText;
+            HideBubble();
         }
 
-        if (barks[index].voiceClip != null)
+        if (barks[(int)index].voiceClip != null)
         {
-            audioSource.PlayOneShot(barks[index].voiceClip);
+            audioSource.PlayOneShot(barks[(int)index].voiceClip);
         }
     }
 
@@ -74,6 +82,7 @@ public class VoiceLineSystem : MonoBehaviour
     
     private void HideBubble()
     {
+        Debug.Log("Hiding bubble");
         hideBubbleTween?.Kill();
         hideBubbleTween = DOVirtual.DelayedCall(3f, () =>
         {

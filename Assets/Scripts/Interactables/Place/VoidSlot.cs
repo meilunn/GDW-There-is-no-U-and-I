@@ -3,9 +3,12 @@ public class VoidSlot : PlaceSlot {
 		return (itemsAllowed & newItem.type) != 0;
 	}
 
-	public override void PlaceItem(MovableInteractable newItem) {
-        if (newItem == null) return;
-        newItem.PlaceInWorld(gameObject.transform);
-		Destroy(newItem.gameObject);
+	public override void PlaceItem(MovableInteractable item) {
+		if (item == null) return;
+		item.PlaceInWorld(gameObject.transform);
+		foreach (var module in modules) {
+			module.OnPlace(item);
+		}
+		Destroy(item.gameObject);
 	}
 }

@@ -19,3 +19,8 @@ public static class Util {
 		return items[^1].Key;
 	}
 }
+
+public enum Fade {
+	Transparent = 0,
+	Black = 1
+}

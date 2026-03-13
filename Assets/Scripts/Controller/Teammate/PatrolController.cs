@@ -61,19 +61,17 @@ public class PatrolController : MonoBehaviour
 
     public void StartPatrol()
     {
-        Debug.Log("Starting patrol");
+        Debug.Log($"{gameObject.name} starting patrol");
         teammateController.curTeammateState = TeammateController.TeammateState.Patrolling;
         teammateController.curDestination = TeammateController.Place.None;
 
         SetNextDestination();
         agent.speed = teammateController.GetWalkSpeed();
-
-        Debug.Log($"Navmesh agent speed: {agent.speed}");
     }
 
     public void EndPatrol()
     {
-        Debug.Log("Ending patrol");
+        Debug.Log($"{gameObject.name} ending patrol");
 
         index = -1;
         lastDest = false;
@@ -97,8 +95,6 @@ public class PatrolController : MonoBehaviour
             waitTimeCurWaypoint = waitTimeLongWaypoint;
         else 
             waitTimeCurWaypoint = waitTimeShortWaypoint;
-
-        Debug.Log($"Next waypoint set to index {index}, \nis long: {curWaypointIsLong}, is last: {lastDest}");
     }
 
     private void OnDrawGizmos()

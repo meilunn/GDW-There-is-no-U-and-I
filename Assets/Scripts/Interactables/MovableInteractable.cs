@@ -14,6 +14,7 @@ public class MovableInteractable : Interactable
     
     public override bool Interact()
     {
+		if(!enabled) return false;
         MovableInteractable itemInHand = Player.Instance.ItemInHand;
         if (itemInHand == null)
         {
@@ -76,6 +77,8 @@ public class MovableInteractable : Interactable
         Plate =  1 << 5,
         EnergyDrink =  1 << 6,
         USB = 1 << 7,
-		Trash = 1 << 8
+		Trash = 1 << 8,
+		WaterBottle = 1 << 10,
+		Vodka = 1 << 11
     }
 }

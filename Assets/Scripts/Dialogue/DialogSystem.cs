@@ -81,8 +81,6 @@ public class DialogueSystem : MonoBehaviour
 
         dialogueQueue = new Queue<DialogueLine>();
         dialoguePanel.SetActive(false);
-
-        //LoadProgress();
     }
 
     //Test
