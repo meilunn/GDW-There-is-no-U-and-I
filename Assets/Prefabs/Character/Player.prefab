@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 2164335971141797820}
   - component: {fileID: 7378485293946311899}
   - component: {fileID: 1842928219272848988}
+  - component: {fileID: 2198956794184115139}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -242,7 +243,7 @@ MonoBehaviour:
   playerSpeed: 6
   acceleration: 30
   footstepEmitter: {fileID: 0}
-  stepInterval: 0.5
+  stepInterval: 0.2
   playerCam: {fileID: 6510101110846024073}
   eyes: {fileID: 8098634072223549795}
   minPitch: -45
@@ -419,6 +420,39 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3898456631553017738}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2198956794184115139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3898456631553017738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1031867024
+      Data2: 1085915808
+      Data3: -1100423012
+      Data4: -2075982520
+    Path: event:/character/footsteps
+  Event: 
+  EventPlayTrigger: 0
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params:
+  - Name: Terrain
+    Value: 0
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5471758995881551948
 GameObject:
   m_ObjectHideFlags: 0
