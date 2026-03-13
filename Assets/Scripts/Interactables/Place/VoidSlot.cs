@@ -9,6 +9,6 @@ public class VoidSlot : PlaceSlot {
 		foreach (var module in modules) {
 			module.OnPlace(item);
 		}
-		Destroy(item.gameObject);
+		item.gameObject.SetActive(false);
 	}
 }
