@@ -250,7 +250,7 @@ MonoBehaviour:
   interactionRange: 7
   traceAgainst:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   ItemInHand: {fileID: 0}
   PlayerHand: {fileID: 2067741899479924598}
   MoveInput: {x: 0, y: 0}
