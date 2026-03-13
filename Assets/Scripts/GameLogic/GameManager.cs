@@ -122,6 +122,9 @@ public class GameManager : MonoBehaviour {
 
 	private IEnumerator OnDayEnd() {
 		// wait for staff leaving
+
+		questManager.OnQuestComplete -= QuestCompleteHandler;
+
 		Debug.Log("Day ended. Waiting for staff to leave...");
 		yield return new WaitForSeconds(3f);
 		yield return FadeTo(Fade.Black);
@@ -194,12 +197,18 @@ public class GameManager : MonoBehaviour {
 
 		
 
+		questManager.OnQuestComplete += QuestCompleteHandler;
+
 		if (EmploymentState != 0) {
 			Debug.Log("You're fired!");
 			curGameState = GameState.GameOver;
 			await FadeTo(Fade.Black);
 			return;
 		}
+	}
+
+	private void QuestCompleteHandler(Quest _) {
+		Whiteboard.UpdateAllPlayerTasks(questManager.Quests);
 	}
 
 	public void StartWorkDay() {

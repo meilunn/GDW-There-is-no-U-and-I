@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour {
+	public event Action<Quest> OnQuestComplete;
 	public List<Quest> Quests { get; private set; } = new();
 	private readonly List<Quest> availableJobQuests = new();
 	public List<Quest> AvailableJobQuests => availableJobQuests;
@@ -29,12 +31,13 @@ public class QuestManager : MonoBehaviour {
 	public bool CompleteObjective(ObjectiveId objectiveId, TeammateController owner) {
 		foreach (var quest in Quests) {
 			if(!quest.IsActive) continue;
-			if(quest.CurrentObjective?.id != objectiveId) continue;
+			if(quest.CurrentObjective.id != objectiveId) continue;
 			if(quest.CurrentObjective.ownerRequired && quest.owner != owner) continue;
 			Debug.Log("Completing objective " + objectiveId.ToString());
 			bool res = quest.CompleteCurrentObjective();
 			if(res) {
 				Debug.Log($"Completed quest {quest.Title}");
+				OnQuestComplete?.Invoke(quest);
 			}
 			return true;
 		}

@@ -8,10 +8,14 @@ public class Whiteboard : Interactable {
 	private TMP_Text teamTodos;
 	private TMP_Text playerQuests;
 	[SerializeField] private float timeBetweenLetters = 0.03f;
+	// Möge Gott mir diesen Code vergeben
+	private static readonly List<Whiteboard> instances = new();
+
 
 	void Awake() {
 		teamTodos = transform.Find("Canvas/TeamTodos").GetComponent<TMP_Text>();
 		playerQuests = transform.Find("Canvas/PlayerTasks").GetComponent<TMP_Text>();
+		instances.Add(this);
 	}
 
 	void Start() {
@@ -21,6 +25,7 @@ public class Whiteboard : Interactable {
 	void OnDestroy() {
 		if (DialogueSystem.Instance != null)
 			DialogueSystem.Instance.OnDialogueEnd -= DisplayTasks;
+		instances.Remove(this);
 	}
 
 	public override bool Interact() {
@@ -57,6 +62,12 @@ public class Whiteboard : Interactable {
 		DailyUpdate();
 		StartCoroutine(TypewriterEffect(teamTodos));
 		StartCoroutine(TypewriterEffect(playerQuests));
+	}
+
+	public static void UpdateAllPlayerTasks(List<Quest> playerQuests) {
+		foreach(var instance in instances) {
+			instance.UpdatePlayerTasks(playerQuests);
+		}
 	}
 
 	private IEnumerator TypewriterEffect(TMP_Text textComponent) {
