@@ -1175,6 +1175,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8543412349690777760, guid: 0b16809360f6a37d6b292357a96cc9c2, type: 3}
   m_PrefabInstance: {fileID: 26682127}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &28270654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 28270655}
+  - component: {fileID: 28270656}
+  m_Layer: 0
+  m_Name: Eve
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &28270655
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28270654}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.6087605, z: -0, w: 0.79335415}
+  m_LocalPosition: {x: 0, y: 1, z: -3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1533150057}
+  m_LocalEulerAnglesHint: {x: 0, y: -75, z: 0}
+--- !u!114 &28270656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28270654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d80d9413e147cad4384de3b094703f41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StandUpSeat
+  occupant: {fileID: 1978708674}
 --- !u!1 &29066130
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,6 +1252,7 @@ Transform:
   - {fileID: 922549757}
   - {fileID: 391549010}
   - {fileID: 1030090940}
+  - {fileID: 1533150057}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &29965122
@@ -5453,6 +5499,51 @@ Transform:
   - {fileID: 1236146919}
   m_Father: {fileID: 388597665}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &164047925
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 164047926}
+  - component: {fileID: 164047927}
+  m_Layer: 0
+  m_Name: Joy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &164047926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164047925}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.6475651, z: -0, w: 0.76201016}
+  m_LocalPosition: {x: 2, y: 1, z: -2.4169998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1533150057}
+  m_LocalEulerAnglesHint: {x: 0, y: -80.717, z: 0}
+--- !u!114 &164047927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164047925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d80d9413e147cad4384de3b094703f41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StandUpSeat
+  occupant: {fileID: 1557947594}
 --- !u!1001 &167472132
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20279,6 +20370,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1277085843699709743, guid: a5fa0f2e9c4f08f84b1d629e767ace4b, type: 3}
   m_PrefabInstance: {fileID: 876089552}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &688143506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 688143507}
+  - component: {fileID: 688143508}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &688143507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688143506}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.8368007, z: -0, w: 0.54750764}
+  m_LocalPosition: {x: 1, y: 1, z: 2.6750002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1533150057}
+  m_LocalEulerAnglesHint: {x: 0, y: -113.608, z: 0}
+--- !u!114 &688143508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688143506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c52d5a6fd2c6a84cb3d7a0b7b8e4a27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StandUpPlayerSeat
 --- !u!1001 &688378589
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20597,6 +20732,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5269988228742880424, guid: fe712c4558c11d98c828d974f485ccab, type: 3}
   m_PrefabInstance: {fileID: 704764588}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &705920299
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 705920300}
+  - component: {fileID: 705920301}
+  m_Layer: 0
+  m_Name: Pretschner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &705920300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705920299}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.5948227, z: 0, w: 0.80385697}
+  m_LocalPosition: {x: -4, y: 1, z: -2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1533150057}
+  m_LocalEulerAnglesHint: {x: 0, y: 73, z: 0}
+--- !u!114 &705920301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705920299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d80d9413e147cad4384de3b094703f41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StandUpSeat
+  occupant: {fileID: 1379061163}
 --- !u!1001 &706823460
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23446,6 +23626,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1199478666559534794, guid: b4ec778071dfccb08808a01760fae0d1, type: 3}
   m_PrefabInstance: {fileID: 808572116}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &808973184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 808973185}
+  - component: {fileID: 808973186}
+  m_Layer: 0
+  m_Name: Linus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &808973185
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808973184}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.9238795, z: -0, w: 0.3826836}
+  m_LocalPosition: {x: -2, y: 1, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1533150057}
+  m_LocalEulerAnglesHint: {x: 0, y: -135, z: 0}
+--- !u!114 &808973186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808973184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d80d9413e147cad4384de3b094703f41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StandUpSeat
+  occupant: {fileID: 1021158864}
 --- !u!1001 &809698130
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37787,7 +38012,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6671e645f5d2574091177974a39d278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StandUpMeeting
-  seats: []
+  seats:
+  - {fileID: 164047927}
+  - {fileID: 28270656}
+  - {fileID: 705920301}
+  - {fileID: 808973186}
+  - {fileID: 688143508}
 --- !u!114 &1344254818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43821,6 +44051,42 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 819438298016524188, guid: 8b1091729ae9f42418df71b5fde15dcc, type: 3}
   m_PrefabInstance: {fileID: 1527908084}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1533150056
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1533150057}
+  m_Layer: 0
+  m_Name: MeetingSpots
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1533150057
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533150056}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.46748, y: 0, z: 10.01655}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 164047926}
+  - {fileID: 28270655}
+  - {fileID: 705920300}
+  - {fileID: 808973185}
+  - {fileID: 688143507}
+  m_Father: {fileID: 29066131}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1537139346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44823,6 +45089,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8543412349690777760, guid: 0b16809360f6a37d6b292357a96cc9c2, type: 3}
   m_PrefabInstance: {fileID: 1554252987}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1557947594 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6292085527058563996, guid: 8b1091729ae9f42418df71b5fde15dcc, type: 3}
+  m_PrefabInstance: {fileID: 1527908084}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45f6155886faff74aa316d656caa9063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TeammateController
 --- !u!1001 &1565274138
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54369,7 +54646,7 @@ Transform:
   m_GameObject: {fileID: 1875678542}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.335455, y: 1.4950001, z: -11.239568}
+  m_LocalPosition: {x: 4.335455, y: 1.6700001, z: -11.239568}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

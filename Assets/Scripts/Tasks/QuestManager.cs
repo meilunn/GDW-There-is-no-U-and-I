@@ -8,17 +8,17 @@ public class QuestManager : MonoBehaviour {
 	private readonly List<Quest> availableSabotageQuests = new();
 
 	void Awake() {
-		// foreach(var quest in Resources.LoadAll<Quest>("Quests")) {
-		// 	Debug.Log($"Loaded quest {quest.id}");
-		// 	switch (quest.type) {
-		// 		case QuestType.Job:
-		// 			availableJobQuests.Add(quest);
-		// 			break;
-		// 		case QuestType.Sabotage:
-		// 			availableSabotageQuests.Add(quest);
-		// 			break;
-		// 	}
-		// }
+		foreach(var quest in Resources.LoadAll<Quest>("Quests")) {
+			Debug.Log($"Loaded quest {quest.id}");
+			switch (quest.type) {
+				case QuestType.Job:
+					availableJobQuests.Add(quest);
+					break;
+				case QuestType.Sabotage:
+					availableSabotageQuests.Add(quest);
+					break;
+			}
+		}
 	}
 
 	/// <summary>
@@ -82,7 +82,6 @@ public class QuestManager : MonoBehaviour {
 	/// <param name="questId"></param>
 	/// <param name="owner"></param>
 	public void CreateAndStartQuest(QuestId questId, TeammateController owner) {
-		AddQuest(questId, owner);
-		StartQuest(questId);
+		AddQuest(questId, owner).Start();
 	}
 }
