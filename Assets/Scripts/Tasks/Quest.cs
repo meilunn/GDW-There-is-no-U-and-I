@@ -6,7 +6,8 @@ public enum QuestId {
 	RefillToiletPaper,
 	BringFood,
 	BringCoffee,
-	BringEnergy
+	BringEnergy,
+	WaterPlant
 }
 
 // this can be used for UI ig?

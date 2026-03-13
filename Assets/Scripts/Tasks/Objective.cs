@@ -6,7 +6,8 @@ public enum ObjectiveId {
 	ToiletPaperRefill,
 	BringFoodToTable,
 	BringCoffeeToTable,
-	BringEnergyToTable
+	BringEnergyToTable,
+	WaterPlant,
 }
 
 [CreateAssetMenu(fileName = "New Objective", menuName = "Quests/Objective")]
