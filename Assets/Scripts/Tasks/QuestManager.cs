@@ -29,7 +29,7 @@ public class QuestManager : MonoBehaviour {
 	public bool CompleteObjective(ObjectiveId objectiveId, TeammateController owner) {
 		foreach (var quest in Quests) {
 			if(!quest.IsActive) continue;
-			if(quest.CurrentObjective.id != objectiveId) continue;
+			if(quest.CurrentObjective?.id != objectiveId) continue;
 			if(quest.CurrentObjective.ownerRequired && quest.owner != owner) continue;
 			Debug.Log("Completing objective " + objectiveId.ToString());
 			bool res = quest.CompleteCurrentObjective();
@@ -82,6 +82,7 @@ public class QuestManager : MonoBehaviour {
 	/// <param name="questId"></param>
 	/// <param name="owner"></param>
 	public void CreateAndStartQuest(QuestId questId, TeammateController owner) {
-		AddQuest(questId, owner).Start();
+		var quest = AddQuest(questId, owner);
+		if(quest) quest.Start();
 	}
 }
