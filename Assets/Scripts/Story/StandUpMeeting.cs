@@ -29,9 +29,10 @@ public class StandUpMeeting : MonoBehaviour {
 		if (DialogueSystem.Instance == null || DialogueSystem.Instance.CurrentDialogueType != DialogueSystem.DialogueType.StandUp)
 			return;
 
+		Whiteboard.AnimateTasksForAll();
+
 		switch (GameManager.instance.EmploymentState) {
 			case GameManager.PlayerEmploymentState.Employed: {
-				DialogueSystem.Instance.StartDialogue(GameManager.instance.curDay - 1, DialogueSystem.DialogueType.StandUp);
 				foreach (var seat in seats) {
 					seat.Release();
 				}

@@ -135,9 +135,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player Controller
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 00793ffafef0b7e40b49c448ac043f22, type: 2}
   m_sharedMaterial: {fileID: -9141377492449598758, guid: 00793ffafef0b7e40b49c448ac043f22, type: 2}
@@ -274,7 +272,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Tisch aufr\xE4umen\nM\xFCll wegwerfen\nSp\xFClmaschine einr\xE4umen"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 00793ffafef0b7e40b49c448ac043f22, type: 2}
   m_sharedMaterial: {fileID: -9141377492449598758, guid: 00793ffafef0b7e40b49c448ac043f22, type: 2}

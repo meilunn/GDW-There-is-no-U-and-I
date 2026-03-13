@@ -18,13 +18,7 @@ public class Whiteboard : Interactable {
 		instances.Add(this);
 	}
 
-	void Start() {
-		DialogueSystem.Instance.OnDialogueEnd += DisplayTasks;
-	}
-
 	void OnDestroy() {
-		if (DialogueSystem.Instance != null)
-			DialogueSystem.Instance.OnDialogueEnd -= DisplayTasks;
 		instances.Remove(this);
 	}
 
@@ -62,6 +56,12 @@ public class Whiteboard : Interactable {
 		DailyUpdate();
 		StartCoroutine(TypewriterEffect(teamTodos));
 		StartCoroutine(TypewriterEffect(playerQuests));
+	}
+
+	public static void AnimateTasksForAll() {
+		foreach(var instance in instances) {
+			instance.DisplayTasks();
+		}
 	}
 
 	public static void UpdateAllPlayerTasks(List<Quest> playerQuests) {

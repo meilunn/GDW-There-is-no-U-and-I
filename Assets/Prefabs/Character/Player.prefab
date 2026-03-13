@@ -239,8 +239,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9aa5020e274c6947912db807c697b3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  playerSpeed: 10
-  acceleration: 50
+  playerSpeed: 6
+  acceleration: 30
+  footstepEmitter: {fileID: 0}
+  stepInterval: 0.5
   playerCam: {fileID: 6510101110846024073}
   eyes: {fileID: 8098634072223549795}
   minPitch: -45
@@ -304,15 +306,6 @@ MonoBehaviour:
   dialoguePanel: {fileID: 0}
   speakerLabel: {fileID: 0}
   speakerImage: {fileID: 0}
-  OnDialogueStart:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDialogueEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  OnNewLine:
-    m_PersistentCalls:
-      m_Calls: []
   standUpDialogues:
   - {fileID: 11400000, guid: ed20b8fac7895ed4f83bde062a39f188, type: 2}
   - {fileID: 0}
