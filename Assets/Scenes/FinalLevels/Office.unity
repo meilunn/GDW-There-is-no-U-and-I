@@ -20735,11 +20735,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4883964976090163417, guid: bb4bfb6afecaba44e9cbad75cd2d41b1, type: 3}
   m_PrefabInstance: {fileID: 2108063519}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &676367347 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8400065268838445241, guid: bb4bfb6afecaba44e9cbad75cd2d41b1, type: 3}
-  m_PrefabInstance: {fileID: 2108063519}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &676367348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47654,11 +47649,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2141005655593344002, guid: 728599da3f859e4be98088595fb5f98b, type: 3}
   m_PrefabInstance: {fileID: 1620877067}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1628731357 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6289771216077868986, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-  m_PrefabInstance: {fileID: 1646434838}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1635433345
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47862,63 +47852,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4248981155582249870, guid: ef1550abca2e4f815aab83ae7d1c12ff, type: 3}
   m_PrefabInstance: {fileID: 1958923496}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1646434838
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 676367347}
-    m_Modifications:
-    - target: {fileID: 6289771216077868986, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6289771216077868986, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6289771216077868986, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6289771216077868986, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6289771216077868986, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6289771216077868986, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6289771216077868986, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6289771216077868986, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6289771216077868986, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6289771216077868986, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6629880517392864512, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
-      propertyPath: m_Name
-      value: ToiletPaper
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e9161bad9dc2a40469d267a79b9269dc, type: 3}
 --- !u!1001 &1652429620
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62352,10 +62285,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8400065268838445241, guid: bb4bfb6afecaba44e9cbad75cd2d41b1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1628731357}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4883964976090163417, guid: bb4bfb6afecaba44e9cbad75cd2d41b1, type: 3}
       insertIndex: -1
