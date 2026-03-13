@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: WaterPlant
   m_EditorClassIdentifier: Assembly-CSharp::Quest
   id: 5
-  objectives: []
+  objectives:
+  - {fileID: 11400000, guid: d8649df8f1dec314fa41477486645489, type: 2}
   type: 0
   availableAsOfDay: 1
   chooseProbability: 10

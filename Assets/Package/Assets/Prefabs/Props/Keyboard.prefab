@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4375744807570676700}
   - component: {fileID: 798860263197348985}
   - component: {fileID: 3238906601165119667}
+  - component: {fileID: 5647880966051920047}
   m_Layer: 0
   m_Name: Keyboard
   m_TagString: Untagged
@@ -90,3 +91,34 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5647880966051920047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4031306695160545638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1112078576
+      Data2: 1080796746
+      Data3: 1963879064
+      Data4: -394326921
+    Path: event:/background/mouseClicks
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 1
+  OverrideMinDistance: 0.6
+  OverrideMaxDistance: 2.3
