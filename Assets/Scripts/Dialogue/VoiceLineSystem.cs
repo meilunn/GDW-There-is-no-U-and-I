@@ -31,7 +31,6 @@ public class VoiceLineSystem : MonoBehaviour
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        PlayBark(0);
     }
     
     public void PlayBark(BarkType index)
@@ -45,7 +44,7 @@ public class VoiceLineSystem : MonoBehaviour
         }
 
         speechBubbleUI.SetActive(true);
-        Debug.Log("Playing bark: " + index);
+        Debug.Log(gameObject + " Playing bark: " + index);
         if (useTypewriterEffect)
         {
             typewriterCoroutine = StartCoroutine(TypeLine(barks[(int)index].barkText));

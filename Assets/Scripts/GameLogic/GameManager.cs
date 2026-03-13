@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public GameState curGameState;
-	public PlayerEmploymentState EmploymentState { get; private set; }
+	public PlayerEmploymentState EmploymentState;
 	public QuestManager questManager;
 	public StandUpMeeting standUpMeeting;
 	private CanvasGroup fadeToBlack;
@@ -81,18 +81,18 @@ public class GameManager : MonoBehaviour {
 
 	void Start() {
 		if (teammates == null || teammates.Length == 0)
-			teammates = FindObjectsByType<TeammateController>(FindObjectsSortMode.None);
+			teammates = FindObjectsByType<TeammateController>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 		_ = SetupNewDay();
 	}
 
 	void OnEnable() {
 		if (DialogueSystem.Instance != null)
-			DialogueSystem.Instance.OnDialogueEnd.AddListener(StartWorkDay);
+			DialogueSystem.Instance.OnDialogueEnd += StartWorkDay;
 	}
 
 	void OnDisable() {
 		if (DialogueSystem.Instance != null)
-			DialogueSystem.Instance.OnDialogueEnd.RemoveListener(StartWorkDay);
+			DialogueSystem.Instance.OnDialogueEnd -= StartWorkDay;
 	}
 
 	void Update() {
@@ -139,7 +139,6 @@ public class GameManager : MonoBehaviour {
 		if (susMeter >= 100f) EmploymentState = PlayerEmploymentState.TooSus;
 		else if (happinessToday < requiredHappinessPerDay) EmploymentState = PlayerEmploymentState.TooLazy;
 		curGameState = GameState.StandUp;
-		DialogueSystem.Instance.StartDialogue(curDay - 1, DialogueSystem.DialogueType.StandUp);
 		questManager.ClearQuests();
 
 		if (EmploymentState == 0) {
@@ -186,18 +185,19 @@ public class GameManager : MonoBehaviour {
 			}
 
 			Debug.Log("Selected quests:");
-
+			await standUpMeeting.StartMeeting(curDay);
 			foreach (var quest in selectedQuests) {
 				Debug.Log(quest.Title);
 				questManager.AddQuest(quest.id, null, true).Start();
 			}
 		}
 
-		await standUpMeeting.StartMeeting();
+		
 
 		if (EmploymentState != 0) {
 			Debug.Log("You're fired!");
 			curGameState = GameState.GameOver;
+			await FadeTo(Fade.Black);
 			return;
 		}
 	}

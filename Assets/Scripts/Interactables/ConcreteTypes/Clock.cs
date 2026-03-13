@@ -42,12 +42,17 @@ public class Clock : Interactable {
 	}
 
 	void Update() {
-		double time = GameManager.instance.dayTime + activeTimeOffset;
-		double hourRevs = time / hourDivisor;
-		double minuteRevs = time / minuteDivisor;
+		if (GameManager.instance.curGameState == GameManager.GameState.Work)
+		{
 
-		hourHand.localRotation = Quaternion.Euler(0, 0, (float)hourRevs);
-		minuteHand.localRotation = Quaternion.Euler(0, 0, (float)minuteRevs);
+
+			double time = GameManager.instance.dayTime + activeTimeOffset;
+			double hourRevs = time / hourDivisor;
+			double minuteRevs = time / minuteDivisor;
+
+			hourHand.localRotation = Quaternion.Euler(0, 0, (float)hourRevs);
+			minuteHand.localRotation = Quaternion.Euler(0, 0, (float)minuteRevs);
+		}
 	}
 
 	IEnumerator TimeChangeCoroutine() {

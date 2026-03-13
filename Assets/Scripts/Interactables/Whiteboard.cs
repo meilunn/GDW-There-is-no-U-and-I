@@ -15,12 +15,12 @@ public class Whiteboard : Interactable {
 	}
 
 	void Start() {
-		DialogueSystem.Instance.OnDialogueEnd.AddListener(DisplayTasks);
+		DialogueSystem.Instance.OnDialogueEnd += DisplayTasks;
 	}
 
 	void OnDestroy() {
 		if (DialogueSystem.Instance != null)
-			DialogueSystem.Instance.OnDialogueEnd.RemoveListener(DisplayTasks);
+			DialogueSystem.Instance.OnDialogueEnd -= DisplayTasks;
 	}
 
 	public override bool Interact() {

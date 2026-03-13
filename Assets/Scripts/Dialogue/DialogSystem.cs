@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-using UnityEngine.Events;
 
 public enum Character
 {
@@ -37,11 +36,9 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private GameObject dialoguePanel; // The dialogue UI panel
     [SerializeField] private TMP_Text speakerLabel;
     [SerializeField] private Image speakerImage;
-
-    [Header("Events")]
-    public UnityEvent OnDialogueStart;
-    public UnityEvent OnDialogueEnd;
-    public UnityEvent OnNewLine;
+    public event Action OnDialogueStart;
+    public event Action OnDialogueEnd;
+    public event Action OnNewLine;
 
     [Header("Dialogues")]
     [SerializeField] private List<Dialogue> standUpDialogues;
@@ -83,11 +80,6 @@ public class DialogueSystem : MonoBehaviour
         dialoguePanel.SetActive(false);
     }
 
-    //Test
-    private void Start()
-    {
-        StartDialogue(0,DialogueType.StandUp);
-    }
     private void Update()
     {
         if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame && InDialogue)
