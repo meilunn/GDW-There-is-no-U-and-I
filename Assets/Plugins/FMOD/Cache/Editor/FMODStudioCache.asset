@@ -120,7 +120,7 @@ MonoBehaviour:
   Path: Assets/FMOD/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639089432475043174
+  lastModified: 639090249523794962
   FileSizes:
   - Name: 
     Value: 1348
@@ -195,7 +195,7 @@ MonoBehaviour:
   Path: Assets/FMOD/Desktop/Background.bank
   Name: Background
   StudioPath: bank:/Background
-  lastModified: 639089432475020582
+  lastModified: 639090255720204963
   FileSizes: []
   Exists: 1
 --- !u!114 &-496878462907003187
@@ -231,7 +231,7 @@ MonoBehaviour:
   Path: Assets/FMOD/Desktop/Menu.bank
   Name: Menu
   StudioPath: bank:/Menu
-  lastModified: 639089432475053215
+  lastModified: 639090249523850082
   FileSizes: []
   Exists: 1
 --- !u!114 &11400000
@@ -268,7 +268,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -5734559625528291465}
   cacheVersion: 131858
-  cacheTime: 639089432475085855
+  cacheTime: 639090255720204963
   SerializableEventsDict:
   - key: event:/background/clockTicks
     index: 0
@@ -330,7 +330,7 @@ MonoBehaviour:
   Path: Assets/FMOD/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639089432475085855
+  lastModified: 639090255449230802
   FileSizes: []
   Exists: 1
 --- !u!114 &6418947423020366958
@@ -429,7 +429,7 @@ MonoBehaviour:
   Path: Assets/FMOD/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639089432475029929
+  lastModified: 639090249523794962
   FileSizes: []
   Exists: 1
 --- !u!114 &8209243283511757034

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FMODUnity;
+using FMOD.Studio;
 
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour {
@@ -12,6 +14,12 @@ public class Player : MonoBehaviour {
 	[SerializeField] private float acceleration = 15.0f;
 	private Vector3 velocity;
 	private float verticalVelocity;
+	
+	[Header("Footsteps")]
+	[SerializeField] private StudioEventEmitter footstepEmitter;
+	[SerializeField] private float stepInterval = 0.5f;
+
+	private float stepTimer;
 
 	[Header("Camera")]
 	[SerializeField] private CinemachineCamera playerCam;
@@ -102,6 +110,8 @@ public class Player : MonoBehaviour {
 		Vector3 actualVelocity = new(velocity.x, 0f, velocity.z);
 
 		controller.Move(actualVelocity * Time.deltaTime);
+		
+		HandleFootsteps();
 	}
 
 	private void Rotate() {
@@ -166,5 +176,30 @@ public class Player : MonoBehaviour {
 
 	public void RemoveMoveLock(GameObject locker) {
 		moveLocks.Remove(locker);
+	}
+	
+	private void HandleFootsteps()
+	{
+		if (footstepEmitter == null) return;
+
+		Vector3 horizontalVelocity = controller.velocity;
+		horizontalVelocity.y = 0f;
+
+		bool isMoving = horizontalVelocity.magnitude > 0.1f && controller.isGrounded;
+
+		if (isMoving)
+		{
+			if (!footstepEmitter.IsPlaying())
+			{
+				footstepEmitter.Play();
+			}
+		}
+		else
+		{
+			if (footstepEmitter.IsPlaying())
+			{
+				footstepEmitter.Stop();
+			}
+		}
 	}
 }
