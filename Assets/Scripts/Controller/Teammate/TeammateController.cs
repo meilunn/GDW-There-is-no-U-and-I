@@ -136,6 +136,8 @@ public class TeammateController : MonoBehaviour
     public float walkSpeedEnergyScale;
     public float walkSpeedBladderScale;
     public float walkSpeedHungerScale;
+    [Tooltip("Extra distance tolerance for considering a place reached (meters), useful for collision offsets")]
+    public float arrivalAnimationEpsilon = 1.0f;
 
     [Header("Field of View params")] 
     public float angle = 90f;
@@ -223,18 +225,21 @@ public class TeammateController : MonoBehaviour
         switch (curTeammateState)
         {
             case TeammateState.AtWorkplace:
+                if (!IsNearPlace(workplace))
+                {
+                    GoToDestination(Place.Workplace);
+                    break;
+                }
+
                 if (energy <= 0)
                 {
                     Debug.Log($"{gameObject.name} fell asleep");
 
                     curTeammateState = TeammateState.Sleeping;
-                    animator.SetBool("Sleeping", true);
                     break;
                 }
                 
                 CheckSus();
-                
-                animator.SetBool("Typing", true);
                 // make progress
                 int makeProgIntervallInSec = makeProgressInterval * 60;
                 if (gameManager.dayTime >= lastProgressMadeTime + makeProgIntervallInSec)
@@ -267,10 +272,9 @@ public class TeammateController : MonoBehaviour
                 break;
 
             case TeammateState.GoingToDestination:
-                animator.SetBool("Walking", true);
                 // if agent hasn't arrived at dest
                 CheckSus();
-                if (agent.remainingDistance > 0.1f) break;
+                if (!HasReachedNavDestination()) break;
 
                 // else
                 Debug.Log($"{gameObject.name} arrived at {curDestination}");
@@ -295,11 +299,13 @@ public class TeammateController : MonoBehaviour
                 }
                 
                 curDestination = Place.None;
+                // Apply animation in the exact frame arrival is detected.
+                UpdateAnimatorState();
 
                 break;
 
             case TeammateState.Sleeping:
-                animator.SetBool("Sleeping", true);
+                //animator.SetBool("Sleeping", true);
                 if (energy >= 100) // wake up
                 {
                     Debug.Log($"{gameObject.name} wakes up");
@@ -311,19 +317,14 @@ public class TeammateController : MonoBehaviour
                 break;
 
             case TeammateState.Yapping:
-                animator.SetBool("Typing", false);
-                animator.SetBool("Walking", false);
-                animator.SetBool("Sitting", false);
                 break;
 
             case TeammateState.Patrolling:
-                animator.SetBool("Walking", true);
                 CheckSus();
                 TryStartYapping();
                 break;
 
             case TeammateState.Shitting: 
-                animator.SetBool("Sitting", true);
                 if (bladder >= 100)
                 {
                     Debug.Log($"{gameObject.name} finished shitting");
@@ -334,13 +335,65 @@ public class TeammateController : MonoBehaviour
 
             default:
                 CheckSus();
-                animator.SetBool("Typing", false);
-                animator.SetBool("Walking", false);
-                animator.SetBool("Sitting", false);
                 break;
 
             // TODO: other states?
         }
+
+        UpdateAnimatorState();
+    }
+
+    private void UpdateAnimatorState()
+    {
+        if (animator == null) return;
+
+        bool sleeping = false;
+        bool walking = false;
+        bool sitting = false;
+        bool typing = false;
+
+        switch (curTeammateState)
+        {
+            case TeammateState.AtWorkplace:
+                // Only sit/type once physically at workplace.
+                if (IsNearPlace(workplace))
+                {
+                    sitting = true;
+                    typing = true;
+                }
+                else
+                {
+                    walking = true;
+                }
+                break;
+
+            case TeammateState.GoingToDestination:
+            case TeammateState.Patrolling:
+                walking = true;
+                break;
+
+            case TeammateState.Sleeping:
+                sleeping = true;
+                break;
+
+            case TeammateState.Shitting:
+                sitting = true;
+                break;
+        }
+
+        animator.SetBool("Sleeping", sleeping);
+        animator.SetBool("Walking", walking);
+        animator.SetBool("Sitting", sitting);
+        animator.SetBool("Typing", typing);
+    }
+
+    private bool IsNearPlace(GameObject place)
+    {
+        if (place == null) return false;
+
+        float threshold = agent != null ? agent.stoppingDistance + arrivalAnimationEpsilon : arrivalAnimationEpsilon;
+        float sqrDist = (transform.position - place.transform.position).sqrMagnitude;
+        return sqrDist <= threshold * threshold;
     }
 
     private void CheckSus()
@@ -738,7 +791,7 @@ public class TeammateController : MonoBehaviour
         bladderMultiplier = Mathf.Max(bladderMultiplier, 0.1f);
         hungerMultiplier = Mathf.Max(hungerMultiplier, 0.1f);
 
-        float walkSpeed = baseWalkSpeed * energyMultiplier * hungerMultiplier * bladderMultiplier * 2f;
+        float walkSpeed = baseWalkSpeed * energyMultiplier * hungerMultiplier * bladderMultiplier;
 
         Debug.Log($"{gameObject.name} walkSpeed set to: {walkSpeed}");
 
@@ -748,6 +801,7 @@ public class TeammateController : MonoBehaviour
     public void GoToDestination(Place place)
     {
         curTeammateState = TeammateState.GoingToDestination;
+        agent.isStopped = false;
 
         agent.speed = GetWalkSpeed();
 
@@ -772,6 +826,21 @@ public class TeammateController : MonoBehaviour
         Debug.Log($"{gameObject.name} going to destination: {curDestination}");
     }
 
+    /// <summary>
+    /// Reliable "arrived" check for NavMeshAgent.
+    /// Avoids false positives while a path is still being calculated.
+    /// </summary>
+    private bool HasReachedNavDestination()
+    {
+        if (agent == null) return false;
+        if (agent.pathPending) return false;
+        if (agent.pathStatus != NavMeshPathStatus.PathComplete) return false;
+        if (agent.remainingDistance > agent.stoppingDistance + 0.05f) return false;
+
+        // Agent either has no path left or has nearly stopped.
+        return !agent.hasPath || agent.velocity.sqrMagnitude < 0.01f;
+    }
+
     public void DayReset()
     {
         lastProgressMadeTime = lastPatrolCheckTime = gameManager.dayStartTime;
@@ -793,6 +862,8 @@ public class TeammateController : MonoBehaviour
         yapDisturbedTimer = 0f;
         isDisturbed = false;
         yapPartner = null;
+
+        UpdateAnimatorState();
     }
 
     /*
@@ -807,7 +878,7 @@ public class TeammateController : MonoBehaviour
         curDestText.text = $"Cur Dest: {curDestination}";
     }
     */
-    
+    /*
     // Draw places
     private void OnDrawGizmos()
     {
@@ -820,7 +891,7 @@ public class TeammateController : MonoBehaviour
         UnityEditor.Handles.color = c;
         Vector3 rotatedForward = Quaternion.Euler(0, -angle * 0.5f, 0) * transform.forward;
         //UnityEditor.Handles.DrawSolidArc(rayCastOrigin.position, Vector3.up, rotatedForward, angle, radius);
-    }
+    }*/
 
     private EdibleData.EdibleType ChooseEdible(List<EdiblePreference> preferences)
     {

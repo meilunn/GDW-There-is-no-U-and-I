@@ -320,6 +320,7 @@ MonoBehaviour:
   walkSpeedEnergyScale: 1.5
   walkSpeedBladderScale: 1.5
   walkSpeedHungerScale: 1.5
+  arrivalAnimationEpsilon: 3
   angle: 90
   radius: 10
   detectionThreshold: 100

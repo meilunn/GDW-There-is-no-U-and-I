@@ -83,7 +83,7 @@ public class VoiceLineSystem : MonoBehaviour
     {
         Debug.Log("Hiding bubble");
         hideBubbleTween?.Kill();
-        hideBubbleTween = DOVirtual.DelayedCall(3f, () =>
+        hideBubbleTween = DOVirtual.DelayedCall(5f, () =>
         {
             speechBubbleUI.SetActive(false);
         });

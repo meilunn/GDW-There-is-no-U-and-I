@@ -107,7 +107,7 @@ public class Player : MonoBehaviour {
 			// otherwise player will not fall down fast enough
 			verticalVelocity += Physics.gravity.y * gravityScale * Time.deltaTime;
 
-		Vector3 actualVelocity = new(velocity.x, 0f, velocity.z);
+		Vector3 actualVelocity = new(velocity.x, verticalVelocity, velocity.z);
 
 		controller.Move(actualVelocity * Time.deltaTime);
 		
