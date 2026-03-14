@@ -261,8 +261,8 @@ MonoBehaviour:
     actThreshold: 30
     tryActInterval: 3
     probCurveExponent: 2
-  energyDecreaseScaleWhenWorking: 3
-  energyYappingScale: 0
+  energyDecreaseScaleWhenWorking: 1
+  energyYappingScale: -5
   bladderStatConfig:
     decrease: 1
     increase: 1
@@ -276,9 +276,9 @@ MonoBehaviour:
     tryActInterval: 5
     probCurveExponent: 2
   funStatConfig:
-    decrease: 10
+    decrease: 0.1
     increase: 10
-    actThreshold: 1
+    actThreshold: 9.4
     tryActInterval: 5
     probCurveExponent: 5
   curDestination: 0
@@ -292,28 +292,32 @@ MonoBehaviour:
   angle: 90
   radius: 10
   detectionThreshold: 100
-  pointsPerCheck: 0
+  pointsPerCheck: 3
   traceAgainst:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1048576
   rayCastOrigin: {fileID: 3175803018057942451}
   makeProgressInterval: 15
-  baseWorkEfficiency: 1
+  baseWorkEfficiency: 3
   patrolCheckInterval: 5
   patrolProbability: 0.163
   yapConfig:
     detectionRadius: 3
     checkInterval: 1
-    probabilityPatrollerToPatroller: 1
-    probabilityPatrollerToWorker: 0.5
-    duration: 5
-    durationVariance: 2
+    probabilityPatrollerToPatroller: 0.3
+    probabilityPatrollerToWorker: 0.1
+    duration: 2
+    durationVariance: 1.5
     funIncrease: 5
-    disturbedEfficiencyScale: 0.5
-    disturbedDuration: 10
-    globalCooldown: 15
-  foodPreferences: []
-  energyPreferences: []
+    disturbedEfficiencyScale: 0.3
+    disturbedDuration: 15
+    globalCooldown: 30
+  foodPreferences:
+  - type: 2
+    weight: 10
+  energyPreferences:
+  - type: 2
+    weight: 10
 --- !u!114 &8289023499421324408
 MonoBehaviour:
   m_ObjectHideFlags: 0

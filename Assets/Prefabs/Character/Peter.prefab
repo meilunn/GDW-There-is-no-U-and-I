@@ -262,10 +262,10 @@ MonoBehaviour:
     tryActInterval: 3
     probCurveExponent: 2
   energyDecreaseScaleWhenWorking: 3
-  energyYappingScale: 0
+  energyYappingScale: 2
   bladderStatConfig:
-    decrease: 0
-    increase: 1
+    decrease: 1
+    increase: 10
     actThreshold: 20
     tryActInterval: 5
     probCurveExponent: 2
@@ -302,10 +302,10 @@ MonoBehaviour:
   patrolCheckInterval: 5
   patrolProbability: 0.163
   yapConfig:
-    detectionRadius: 3
+    detectionRadius: 5
     checkInterval: 1
     probabilityPatrollerToPatroller: 1
-    probabilityPatrollerToWorker: 0.5
+    probabilityPatrollerToWorker: 0.759
     duration: 5
     durationVariance: 2
     funIncrease: 5
@@ -317,9 +317,7 @@ MonoBehaviour:
     weight: 1
   energyPreferences:
   - type: 0
-    weight: 1
-  - type: 2
-    weight: 1
+    weight: 3
 --- !u!114 &6269313202115466571
 MonoBehaviour:
   m_ObjectHideFlags: 0
