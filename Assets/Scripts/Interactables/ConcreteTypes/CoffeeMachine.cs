@@ -14,6 +14,12 @@ public class CoffeeMachine : PlaceInteractable {
 	private EdibleData decafData;
 	[SerializeField]
 	private GameObject filledCupPrefab;
+	private SusData susData;
+
+	protected override void OnStart() {
+		base.OnStart();
+		susData = GetComponent<SusData>();
+	}
 
 	public void OnCoffeePress() {
 		if(running) return;
@@ -32,6 +38,7 @@ public class CoffeeMachine : PlaceInteractable {
 		if(CheckForItem(EdibleData.EdibleType.Coffee, out var _, out var _)) return;
 		running = true;
 		item.Disable(); //prevents the player from picking up the cup while it's brewing
+		if(decaf) susData.Enable();
 
 		// TODO: Start Animation
 
@@ -44,6 +51,7 @@ public class CoffeeMachine : PlaceInteractable {
 		slot.PlaceItem(filledCup);
 		Destroy(item.gameObject);
 		running = false;
+		if(decaf) susData.Disable();
 	}
 
 	private async Awaitable PressButton(GameObject button) {
