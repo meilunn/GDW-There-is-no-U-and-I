@@ -186,13 +186,15 @@ public class TeammateController : MonoBehaviour
     public TMP_Text energyText;
     public TMP_Text bladderText;
     public TMP_Text hungerText;
-    public TMP_Text curDestText;
-*/ 
+    public TMP_Text curDestText;  
+*/  
+    public Animator animator;
     private GameManager gameManager;
     private NavMeshAgent agent;
     private PatrolController patrolController;
     private VoiceLineSystem voiceLineSystem;
-
+    
+    
 	private const float PiHalf = Mathf.PI / 2f;
     #endregion
 
@@ -210,13 +212,14 @@ public class TeammateController : MonoBehaviour
         //GoToDestination(Place.Workplace);
     }
 
+    
     private void Update()
     {
         UpdateStats();
         UpdateYapping();
         UpdateDisturbance();
         //UpdateUI();
-
+        
         switch (curTeammateState)
         {
             case TeammateState.AtWorkplace:
@@ -225,12 +228,13 @@ public class TeammateController : MonoBehaviour
                     Debug.Log($"{gameObject.name} fell asleep");
 
                     curTeammateState = TeammateState.Sleeping;
-
+                    animator.SetBool("Sleeping", true);
                     break;
                 }
-
+                
                 CheckSus();
-
+                
+                animator.SetBool("Typing", true);
                 // make progress
                 int makeProgIntervallInSec = makeProgressInterval * 60;
                 if (gameManager.dayTime >= lastProgressMadeTime + makeProgIntervallInSec)
@@ -263,6 +267,7 @@ public class TeammateController : MonoBehaviour
                 break;
 
             case TeammateState.GoingToDestination:
+                animator.SetBool("Walking", true);
                 // if agent hasn't arrived at dest
                 CheckSus();
                 if (agent.remainingDistance > 0.1f) break;
@@ -275,7 +280,7 @@ public class TeammateController : MonoBehaviour
                     case Place.Workplace:
                         curTeammateState = TeammateState.AtWorkplace;
                         lastPatrolCheckTime = gameManager.dayTime;
-
+                        
                         break;
                     case Place.Toilet:
                         // TODO: do something after arrived at toilet
@@ -294,6 +299,7 @@ public class TeammateController : MonoBehaviour
                 break;
 
             case TeammateState.Sleeping:
+                animator.SetBool("Sleeping", true);
                 if (energy >= 100) // wake up
                 {
                     Debug.Log($"{gameObject.name} wakes up");
@@ -305,14 +311,19 @@ public class TeammateController : MonoBehaviour
                 break;
 
             case TeammateState.Yapping:
+                animator.SetBool("Typing", false);
+                animator.SetBool("Walking", false);
+                animator.SetBool("Sitting", false);
                 break;
 
             case TeammateState.Patrolling:
+                animator.SetBool("Walking", true);
                 CheckSus();
                 TryStartYapping();
                 break;
 
             case TeammateState.Shitting: 
+                animator.SetBool("Sitting", true);
                 if (bladder >= 100)
                 {
                     Debug.Log($"{gameObject.name} finished shitting");
@@ -323,6 +334,9 @@ public class TeammateController : MonoBehaviour
 
             default:
                 CheckSus();
+                animator.SetBool("Typing", false);
+                animator.SetBool("Walking", false);
+                animator.SetBool("Sitting", false);
                 break;
 
             // TODO: other states?
@@ -805,7 +819,7 @@ public class TeammateController : MonoBehaviour
         Color c = new(0, 0, 0.6f, 0.4f);
         UnityEditor.Handles.color = c;
         Vector3 rotatedForward = Quaternion.Euler(0, -angle * 0.5f, 0) * transform.forward;
-        UnityEditor.Handles.DrawSolidArc(rayCastOrigin.position, Vector3.up, rotatedForward, angle, radius);
+        //UnityEditor.Handles.DrawSolidArc(rayCastOrigin.position, Vector3.up, rotatedForward, angle, radius);
     }
 
     private EdibleData.EdibleType ChooseEdible(List<EdiblePreference> preferences)

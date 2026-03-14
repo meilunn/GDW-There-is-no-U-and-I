@@ -149,7 +149,7 @@ public class Player : MonoBehaviour {
 		currentInteractable = null;
 	}
 	private void ExchangeInteractable(Interactable newInteractable) {
-		Debug.Log(newInteractable.gameObject.name);
+		//Debug.Log(newInteractable.gameObject.name);
 		if (currentInteractable != null) {
 			currentInteractable.TurnInteractable(false);
 			newInteractable.TurnInteractable(true);

@@ -1267,7 +1267,6 @@ Transform:
   - {fileID: 1805043681}
   - {fileID: 279123154}
   - {fileID: 2105937908}
-  - {fileID: 950709327}
   - {fileID: 2028106786}
   - {fileID: 2067378266}
   - {fileID: 510282942}
@@ -1279,6 +1278,7 @@ Transform:
   - {fileID: 997438693}
   - {fileID: 801396483}
   - {fileID: 236699681}
+  - {fileID: 950709327}
   - {fileID: 2139331253}
   - {fileID: 182474880}
   - {fileID: 75740733}
@@ -5057,18 +5057,62 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3302143472245786593, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
       propertyPath: m_Name
-      value: LiftableTable (4)
+      value: Eve Table
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3302143472245786593, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 182474883}
+    - targetCorrespondingSourceObject: {fileID: 3302143472245786593, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 182474882}
   m_SourcePrefab: {fileID: 100100000, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
 --- !u!4 &182474880 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2781044592729234779, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
   m_PrefabInstance: {fileID: 182474879}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &182474881 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3302143472245786593, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
+  m_PrefabInstance: {fileID: 182474879}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &182474882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182474881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &182474883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182474881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521d337341fc02d409a4ec678369f646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceInteractable
+  outline: {fileID: 182474882}
+  itemPosition: {fileID: 0}
+  owner: {fileID: 1978708674}
 --- !u!1001 &184057561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22726,18 +22770,62 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7611199663737720906, guid: 4ad49a1b7b52086a2bfa57f0698e8699, type: 3}
       propertyPath: m_Name
-      value: Table (1)
+      value: Joy Table
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7611199663737720906, guid: 4ad49a1b7b52086a2bfa57f0698e8699, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 950709330}
+    - targetCorrespondingSourceObject: {fileID: 7611199663737720906, guid: 4ad49a1b7b52086a2bfa57f0698e8699, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 950709329}
   m_SourcePrefab: {fileID: 100100000, guid: 4ad49a1b7b52086a2bfa57f0698e8699, type: 3}
 --- !u!4 &950709327 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7127994692462480112, guid: 4ad49a1b7b52086a2bfa57f0698e8699, type: 3}
   m_PrefabInstance: {fileID: 950709326}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &950709328 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7611199663737720906, guid: 4ad49a1b7b52086a2bfa57f0698e8699, type: 3}
+  m_PrefabInstance: {fileID: 950709326}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &950709329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950709328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &950709330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950709328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521d337341fc02d409a4ec678369f646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceInteractable
+  outline: {fileID: 182474882}
+  itemPosition: {fileID: 0}
+  owner: {fileID: 1978708674}
 --- !u!1001 &951075557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52888,18 +52976,62 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3302143472245786593, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
       propertyPath: m_Name
-      value: LiftableTable (5)
+      value: Linus Table
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3302143472245786593, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2139331256}
+    - targetCorrespondingSourceObject: {fileID: 3302143472245786593, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2139331255}
   m_SourcePrefab: {fileID: 100100000, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
 --- !u!4 &2139331253 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2781044592729234779, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
   m_PrefabInstance: {fileID: 2139331252}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2139331254 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3302143472245786593, guid: 3f840083eb70e2a3b8d030c9450d7e19, type: 3}
+  m_PrefabInstance: {fileID: 2139331252}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2139331255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139331254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &2139331256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139331254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521d337341fc02d409a4ec678369f646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceInteractable
+  outline: {fileID: 2139331255}
+  itemPosition: {fileID: 0}
+  owner: {fileID: 1021158864}
 --- !u!1001 &2141603456
 PrefabInstance:
   m_ObjectHideFlags: 0

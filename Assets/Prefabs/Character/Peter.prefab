@@ -259,7 +259,7 @@ MonoBehaviour:
     decrease: 2
     increase: 10
     actThreshold: 30
-    tryActInterval: 3
+    tryActInterval: 15
     probCurveExponent: 2
   energyDecreaseScaleWhenWorking: 3
   energyYappingScale: 2
@@ -267,19 +267,19 @@ MonoBehaviour:
     decrease: 1
     increase: 10
     actThreshold: 20
-    tryActInterval: 5
+    tryActInterval: 20
     probCurveExponent: 2
   hungerStatConfig:
     decrease: 5
-    increase: 1
+    increase: 15
     actThreshold: 20
-    tryActInterval: 5
+    tryActInterval: 30
     probCurveExponent: 2
   funStatConfig:
     decrease: 5
     increase: 10
     actThreshold: 1
-    tryActInterval: 5
+    tryActInterval: 20
     probCurveExponent: 5
   curDestination: 0
   workplace: {fileID: 0}
@@ -318,6 +318,7 @@ MonoBehaviour:
   energyPreferences:
   - type: 0
     weight: 3
+  animator: {fileID: 6514242280793498557}
 --- !u!114 &6269313202115466571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,6 +456,11 @@ PrefabInstance:
 --- !u!4 &902707858116393415 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dd7fee9f0ea9410e890933e4b11e4dce, type: 3}
+  m_PrefabInstance: {fileID: 796479071441018412}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6514242280793498557 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: dd7fee9f0ea9410e890933e4b11e4dce, type: 3}
   m_PrefabInstance: {fileID: 796479071441018412}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2902156576078128995

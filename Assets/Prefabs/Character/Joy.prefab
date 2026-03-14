@@ -290,27 +290,27 @@ MonoBehaviour:
     decrease: 2
     increase: 10
     actThreshold: 30
-    tryActInterval: 3
+    tryActInterval: 30
     probCurveExponent: 2
   energyDecreaseScaleWhenWorking: 3
-  energyYappingScale: 0
+  energyYappingScale: 2.62
   bladderStatConfig:
     decrease: 1
     increase: 1
     actThreshold: 20
-    tryActInterval: 5
+    tryActInterval: 30
     probCurveExponent: 2
   hungerStatConfig:
-    decrease: 1
+    decrease: 3
     increase: 1
     actThreshold: 20
     tryActInterval: 5
     probCurveExponent: 2
   funStatConfig:
-    decrease: 1
-    increase: 3
-    actThreshold: 1
-    tryActInterval: 5
+    decrease: 5
+    increase: 5
+    actThreshold: 39.4
+    tryActInterval: 20
     probCurveExponent: 5
   curDestination: 0
   workplace: {fileID: 0}
@@ -343,8 +343,13 @@ MonoBehaviour:
     disturbedEfficiencyScale: 0.5
     disturbedDuration: 10
     globalCooldown: 15
-  foodPreferences: []
-  energyPreferences: []
+  foodPreferences:
+  - type: 1
+    weight: 0
+  energyPreferences:
+  - type: 2
+    weight: 0
+  animator: {fileID: 1197389106325115416}
 --- !u!114 &6380643640572960086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,6 +453,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b301617a45adfed79e3d4ed28422b64, type: 3}
+--- !u!95 &1197389106325115416 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 9b301617a45adfed79e3d4ed28422b64, type: 3}
+  m_PrefabInstance: {fileID: 4753389589608984457}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5079453280964413538 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9b301617a45adfed79e3d4ed28422b64, type: 3}
