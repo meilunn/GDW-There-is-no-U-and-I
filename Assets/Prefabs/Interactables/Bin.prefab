@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Outline
-  outlineMode: 0
+  outlineMode: 1
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 2
   precomputeOutline: 1
@@ -292,8 +292,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VoidSlot
   itemsAllowed: -1
-  isTaken: 0
   item: {fileID: 0}
+  owner: {fileID: 0}
 --- !u!1 &7903823297712993935
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,5 +339,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlaceSlot
   itemsAllowed: 256
-  isTaken: 0
   item: {fileID: 0}
+  owner: {fileID: 0}
