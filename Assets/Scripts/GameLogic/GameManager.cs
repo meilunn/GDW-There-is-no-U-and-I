@@ -115,9 +115,9 @@ public class GameManager : MonoBehaviour {
 		// return Mathf.Max(0f, Mathf.Min(100f, susIncrease));
 	}
 
-	public void IncreaseSus() {
-		Debug.Log("Increase sus");
-		susMeter += susIncrease;
+	public void IncreaseSus(float sus) {
+		susMeter += sus;
+		Debug.Log($"Sus increased by {sus}. Current sus: {susMeter}");
 	}
 
 	private IEnumerator OnDayEnd() {

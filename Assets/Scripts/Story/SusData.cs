@@ -6,7 +6,8 @@ public enum SusAction {
 	BrewDecaf,
 	SpillCoffee,
 	MixCocktail,
-	UseDrugs
+	UseDrugs,
+	ChangeClock,
 }
 
 public enum PenaltyFunction {

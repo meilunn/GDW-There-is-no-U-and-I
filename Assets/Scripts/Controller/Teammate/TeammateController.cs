@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -191,6 +192,8 @@ public class TeammateController : MonoBehaviour
     private NavMeshAgent agent;
     private PatrolController patrolController;
     private VoiceLineSystem voiceLineSystem;
+
+	private const float PiHalf = Mathf.PI / 2f;
     #endregion
 
     #region Methods
@@ -226,7 +229,7 @@ public class TeammateController : MonoBehaviour
                     break;
                 }
 
-                DetectHand();
+                CheckSus();
 
                 // make progress
                 int makeProgIntervallInSec = makeProgressInterval * 60;
@@ -261,7 +264,7 @@ public class TeammateController : MonoBehaviour
 
             case TeammateState.GoingToDestination:
                 // if agent hasn't arrived at dest
-                DetectHand();
+                CheckSus();
                 if (agent.remainingDistance > 0.1f) break;
 
                 // else
@@ -305,7 +308,7 @@ public class TeammateController : MonoBehaviour
                 break;
 
             case TeammateState.Patrolling:
-                DetectHand();
+                CheckSus();
                 TryStartYapping();
                 break;
 
@@ -319,56 +322,89 @@ public class TeammateController : MonoBehaviour
                 break;
 
             default:
-                DetectHand();
+                CheckSus();
                 break;
 
             // TODO: other states?
         }
     }
 
-    private void DetectHand()
+    private void CheckSus()
     {
-        Vector3 handPosition = Player.Instance.PlayerHand.position;
-        Vector3 distanceToHand = handPosition - transform.position;
+		if (!Player.Instance.IsSus) return;
 
-        if (distanceToHand.magnitude <= radius)
-        {
-            if (Vector3.Dot(distanceToHand.normalized, transform.forward) > Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad))
-            {
-                Vector3 direction = handPosition - rayCastOrigin.position;
+		Debug.Log("Player is Sus");
 
-                if (Physics.Raycast(rayCastOrigin.position, direction, out RaycastHit hit, traceAgainst))
-                {
-                    //Debug.Log(hit.collider.gameObject.name);
+		foreach (var susData in Player.Instance.SusObjects.ToList()) {
+			// if not in range, return early
+			Vector3 v = susData.transform.position - transform.position;
+			
+			if(!(
+				susData.range is float.PositiveInfinity || 
+				v.sqrMagnitude <= susData.range * susData.range
+			)) continue;
+			if (!susData.autoInflictOnEveryoneInRange) {
+				// need to perform detection check
+				if(!(Vector3.Dot(Vector3.Normalize(v), transform.forward) > Mathf.Cos(angle * PiHalf))) 
+					// not in FOV
+					continue;
+				if(Physics.Raycast(rayCastOrigin.position, v, out RaycastHit hit, traceAgainst)) {
+					var components = hit.collider.GetComponents<SusData>();
+					if(components.Length == 0 || !components.Contains(susData))
+						// raycast hit something else
+						continue;
+				}
+			}
+			Debug.DrawRay(rayCastOrigin.position, v, Color.red);
+
+			float penalty = susData.OnDetect(this);
+			Debug.Log($"Penalty for {gameObject.name} detecting {susData.gameObject.name}: {penalty}");
+			if (penalty > 0)
+				GameManager.instance.IncreaseSus(penalty);
+		}
+
+
+        // Vector3 handPosition = Player.Instance.PlayerHand.position;
+        // Vector3 distanceToHand = handPosition - transform.position;
+
+        // if (distanceToHand.magnitude <= radius)
+        // {
+        //     if (Vector3.Dot(distanceToHand.normalized, transform.forward) > Mathf.Cos(angle * 0.5f * Mathf.Deg2Rad))
+        //     {
+        //         Vector3 direction = handPosition - rayCastOrigin.position;
+
+        //         if (Physics.Raycast(rayCastOrigin.position, direction, out RaycastHit hit, traceAgainst))
+        //         {
+        //             //Debug.Log(hit.collider.gameObject.name);
                     
-                    if (hit.collider.TryGetComponent(out MovableInteractable detectedItem) &&
-                        detectedItem == Player.Instance.ItemInHand && detectedItem.isSuspicious)
-                    {
-                        Debug.DrawRay(rayCastOrigin.position, direction, Color.red);
+        //             if (hit.collider.TryGetComponent(out MovableInteractable detectedItem) &&
+        //                 detectedItem == Player.Instance.ItemInHand && detectedItem.isSuspicious)
+        //             {
+        //                 Debug.DrawRay(rayCastOrigin.position, direction, Color.red);
 
-                        currentPoints += (int)Math.Ceiling(pointsPerCheck * Time.deltaTime);
+        //                 currentPoints += (int)Math.Ceiling(pointsPerCheck * Time.deltaTime);
 
-                        //TODO: calculate current/needed detect-points depending on sleepiness
+        //                 //TODO: calculate current/needed detect-points depending on sleepiness
 
-                        if (currentPoints >= detectionThreshold)
-                        {
-                            gameManager.IncreaseSus();
-                            currentPoints = 0;
-                        }
-                    }
-                    else
-                    {
-                        Debug.DrawRay(rayCastOrigin.position, direction, Color.green);
+        //                 if (currentPoints >= detectionThreshold)
+        //                 {
+        //                     gameManager.IncreaseSus();
+        //                     currentPoints = 0;
+        //                 }
+        //             }
+        //             else
+        //             {
+        //                 Debug.DrawRay(rayCastOrigin.position, direction, Color.green);
 
-                        if (currentPoints > 0) currentPoints -= (int)Math.Ceiling(1 * Time.deltaTime);
-                    }
-                }
-            }
-            else
-            {
-                if (currentPoints > 0) currentPoints -= (int)Math.Ceiling(1 * Time.deltaTime);
-            }
-        }
+        //                 if (currentPoints > 0) currentPoints -= (int)Math.Ceiling(1 * Time.deltaTime);
+        //             }
+        //         }
+        //     }
+        //     else
+        //     {
+        //         if (currentPoints > 0) currentPoints -= (int)Math.Ceiling(1 * Time.deltaTime);
+        //     }
+        // }
     }
 
 
